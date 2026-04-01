@@ -1,0 +1,147 @@
+# Template file for 'vuurmuur'
+pkgname=vuurmuur
+version=0.8.2
+revision=5
+build_style=gnu-configure
+# Force installation to /usr
+configure_args="--prefix=/usr --sysconfdir=/etc --localstatedir=/var"
+hostmakedepends="pkg-config automake libtool"
+# Dependencies used when using, dialog is optional is for wizard but not detect interface
+depends="iptables iproute2 iptrafvol dialog logrotate"
+short_desc="Powerful firewall manager built on top of iptables"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-2.0-or-later"
+homepage="https://www.vuurmuur.org"
+distfiles="https://www.vuurmuur.org/releases/stable/${pkgname}-${version}.tar.gz"
+checksum=6388c4df83b327603f632e15b3201c297247f91d8adcc49172675738b935a5b3
+# Dependencies used when compiling
+makedepends="libnetfilter_log-devel ncurses-devel libmnl-devel libnetfilter_conntrack-devel"
+
+conf_files="/etc/vuurmuur/config.conf \
+/etc/vuurmuur/plugins/textdir.conf \
+/etc/vuurmuur/rules/rules.conf \
+/etc/vuurmuur/rules/blocklist.conf \
+/etc/vuurmuur/vuurmuur_conf.conf \
+/etc/vuurmuur/zones/dmz/zone.config \
+/etc/vuurmuur/zones/lan/zone.config \
+/etc/vuurmuur/zones/vpn/zone.config \
+/etc/vuurmuur/zones/inet/zone.config \
+/etc/vuurmuur/zones/inet/networks/world/network.config
+/etc/vuurmuur/services/ftp \
+/etc/vuurmuur/services/https \
+/etc/vuurmuur/services/ident \
+/etc/vuurmuur/services/imaps \
+/etc/vuurmuur/services/jabber \
+/etc/vuurmuur/services/lisa \
+/etc/vuurmuur/services/mysql \
+/etc/vuurmuur/services/nfs \
+/etc/vuurmuur/services/pcanywhere \
+/etc/vuurmuur/services/pop3 \
+/etc/vuurmuur/services/pptp \
+/etc/vuurmuur/services/rdp \
+/etc/vuurmuur/services/samba \
+/etc/vuurmuur/services/socks \
+/etc/vuurmuur/services/ssh \
+/etc/vuurmuur/services/telnet \
+/etc/vuurmuur/services/traceroute \
+/etc/vuurmuur/services/usermin \
+/etc/vuurmuur/services/webmin \
+/etc/vuurmuur/services/windowsmedia \
+/etc/vuurmuur/services/aim \
+/etc/vuurmuur/services/dns \
+/etc/vuurmuur/services/http \
+/etc/vuurmuur/services/icq \
+/etc/vuurmuur/services/imap \
+/etc/vuurmuur/services/irc \
+/etc/vuurmuur/services/ldap \
+/etc/vuurmuur/services/msn \
+/etc/vuurmuur/services/news \
+/etc/vuurmuur/services/ntp \
+/etc/vuurmuur/services/ping \
+/etc/vuurmuur/services/pop3s \
+/etc/vuurmuur/services/razor \
+/etc/vuurmuur/services/rsync \
+/etc/vuurmuur/services/smtp \
+/etc/vuurmuur/services/squid-proxy \
+/etc/vuurmuur/services/syslog \
+/etc/vuurmuur/services/tinc \
+/etc/vuurmuur/services/upnp \
+/etc/vuurmuur/services/vnc \
+/etc/vuurmuur/services/whois \
+/etc/vuurmuur/services/yahoo \
+/etc/logrotate.d/vuurmuur"
+
+do_install() {
+    # 1. Standard binary installation
+    make DESTDIR=${DESTDIR} install
+
+    # 2. Creating the directory structure
+    vmkdir etc/vuurmuur 0700
+    for dir in interfaces plugins rules services; do
+        vmkdir etc/vuurmuur/${dir} 0700
+        # Add an empty file to prevent the directory from being deleted
+        touch ${DESTDIR}/etc/vuurmuur/${dir}/.keep_vuurmuur
+    done
+
+    # 3. Copying zones (dmz, inet, lan, vpn) and services (aim, ...)
+    vcopy "installer/zones" etc/vuurmuur/    
+    vmkdir etc/vuurmuur/services 0700
+    for s in services/*; do
+        # Install the services and pass the Makefiles
+        [[ "$s" == *Makefile* || "$s" == *.in || "$s" == *.am ]] && continue
+        vinstall "$s" 600 etc/vuurmuur/services
+    done
+
+    # 4. Processing config.conf - for just in case
+    # Copy the sample and replace /usr/local with /usr everywhere, if exist
+    cp config/config.conf.sample ${DESTDIR}/etc/vuurmuur/config.conf
+    sed -i "s|/usr/local|/usr|g" ${DESTDIR}/etc/vuurmuur/config.conf
+    chmod 0600 ${DESTDIR}/etc/vuurmuur/config.conf
+
+    # 5. Processing vuurmuur_conf.conf - for just in case
+    cp config/vuurmuur_conf.conf.sample ${DESTDIR}/etc/vuurmuur/vuurmuur_conf.conf
+    sed -i "s|/usr/local|/usr|g" ${DESTDIR}/etc/vuurmuur/vuurmuur_conf.conf
+    # Also correct the path to the config (if the sample is generic)
+    sed -i "s|CONFIG_FILE=.*|CONFIG_FILE=/etc/vuurmuur/config.conf|g" ${DESTDIR}/etc/vuurmuur/vuurmuur_conf.conf
+    chmod 0644 ${DESTDIR}/etc/vuurmuur/vuurmuur_conf.conf
+
+    # 6. Creating textdir.conf
+    echo "LOCATION=/etc/vuurmuur" > ${DESTDIR}/etc/vuurmuur/plugins/textdir.conf
+    chmod 0600 ${DESTDIR}/etc/vuurmuur/plugins/textdir.conf
+
+    # 7. Empty rules files (needed for syntax validation at startup)
+    touch ${DESTDIR}/etc/vuurmuur/rules/rules.conf
+    touch ${DESTDIR}/etc/vuurmuur/rules/blocklist.conf
+    chmod 0600 ${DESTDIR}/etc/vuurmuur/rules/*.conf
+
+    # 8. Runit and Log Services
+    # 8.1. Installing the main 'vuurmuur' service
+    vsv vuurmuur
+
+    # 8.2. Install the 'vuurmuur-log' logging service
+    vmkdir etc/sv/vuurmuur-log
+    vcopy "${FILESDIR}/vuurmuur-log/run" etc/sv/vuurmuur-log/
+    chmod 755 ${DESTDIR}/etc/sv/vuurmuur-log/run
+
+    # 8.3 Create the structure for logs
+    vmkdir var/log/vuurmuur 0750
+    touch ${DESTDIR}/var/log/vuurmuur/.keep_vuurmuur
+
+    # 9. Adjust permissions to meet Vuurmuur's strict requirements
+    # Force permissions to 0700 on the entire configuration folder
+    # to stop log warnings
+    chmod -R 0700 ${DESTDIR}/etc/vuurmuur
+
+    # 10. Install files .desktop
+    vinstall "${FILESDIR}/vuurmuur.desktop" 644 usr/share/applications
+    vinstall "${FILESDIR}/vuurmuur-wizard.desktop" 644 usr/share/applications
+
+    # Configuration files must be 0600
+    find ${DESTDIR}/etc/vuurmuur -type f -exec chmod 0600 {} +
+
+    # Exception for interface file
+    chmod 0644 ${DESTDIR}/etc/vuurmuur/vuurmuur_conf.conf
+
+    # 11. Install logrotate config
+    vinstall scripts/vuurmuur-logrotate 644 etc/logrotate.d vuurmuur
+}
