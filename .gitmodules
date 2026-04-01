@@ -1,0 +1,6 @@
+[submodule "cachyos-kernel-patches"]
+	path = cachyos-kernel-patches
+	url = https://github.com/CachyOS/kernel-patches.git
+[submodule "linux-tkg"]
+	path = linux-tkg
+	url = https://github.com/Frogging-Family/linux-tkg.git
