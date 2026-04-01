@@ -87,7 +87,7 @@ do_configure() {
 	# as modules (allmodconfig).
 	local arch subarch _suffix
         # Define suffix name for kernel,modules,System and config
-        _suffix="_${revision}-cachyos-bore"
+        _suffix="_${revision}-cachyos-bore-v3"
 
 	case "$XBPS_TARGET_MACHINE" in
 		i686*) arch=i386;;
