@@ -2,7 +2,7 @@
 pkgname=linux6.19-cachyos-bore-v3
 version=6.19.10
 revision=1
-short_desc="Linux BORE + Clang + ThinLTO + Cachy Sauce scheduler Kernel by CachyOS with other patches and improvements - (${version%.*} series) opt. v3"
+short_desc="Linux BORE + Cachy Sauce scheduler Kernel by CachyOS with other patches and improvements - (${version%.*} series)"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
@@ -32,9 +32,9 @@ noshlibprovides=yes
 preserve=yes
 
 hostmakedepends="tar xz bc elfutils-devel flex gmp-devel kmod libmpc-devel
- pkg-config openssl-devel perl uboot-mkimage cpio pahole python3 zstd rust rust-std rust-src rust-bindgen clang llvm lld bc rsync"
+ pkg-config openssl-devel perl uboot-mkimage cpio pahole python3 zstd rust rust-std rust-src rust-bindgen"
 
-_kernver="${version/rc/0-rc}_${revision}-cachyos-bore"
+_kernver="${version/rc/0-rc}_${revision}-cachyos-bore-v3"
 
 triggers="kernel-hooks"
 kernel_hooks_version="${_kernver}"
@@ -104,17 +104,15 @@ do_configure() {
 	if [ -f ${FILESDIR}/${subarch:-$arch}-dotconfig-custom ]; then
 		msg_normal "Detected a custom .config file for your arch, using it.\n"
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig-custom .config
-                make ${makejobs} ARCH=$arch ${_cross} LLVM=1 LLVM_IAS=1 oldconfig
+		make ${makejobs} ARCH=$arch ${_cross} oldconfig
 	elif [ -f ${FILESDIR}/${subarch:-$arch}-dotconfig ]; then
 		msg_normal "Detected a .config file for your arch, using it.\n"
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig .config
-                make ${makejobs} ARCH=$arch ${_cross} LLVM=1 LLVM_IAS=1 olddefconfig
-
+		make ${makejobs} ARCH=$arch ${_cross} oldconfig
 	fi
 
 	# Always use our revision to CONFIG_LOCALVERSION to match our pkg version.
-	sed -i -e "s|^\(CONFIG_LOCALVERSION=\).*|\1\"${_suffix}\"|" .config
-
+        sed -i -e "s|^\(CONFIG_LOCALVERSION=\).*|\1\"${_suffix}\"|" .config
 }
 
 do_build() {
@@ -130,8 +128,8 @@ do_build() {
 		riscv64*) _args="Image modules dtbs"; arch=riscv;;
 	esac
 	export LDFLAGS=
-    	make ARCH=$arch ${_cross} ${makejobs} LLVM=1 LLVM_IAS=1 prepare
-        make ARCH=$arch ${_cross} ${makejobs} LLVM=1 LLVM_IAS=1 ${_args}
+	make ARCH=$arch ${_cross} ${makejobs} prepare
+	make ARCH=$arch ${_cross} ${makejobs} ${_args}
 }
 
 do_install() {
@@ -153,7 +151,7 @@ do_install() {
 	ln -sf usr/lib/ ${DESTDIR}
 
 	# Install kernel, firmware and modules
-	make ${makejobs} ARCH=${subarch:-$arch} INSTALL_MOD_PATH=${DESTDIR} ${_cross} LLVM=1 LLVM_IAS=1 modules_install
+	make ${makejobs} ARCH=${subarch:-$arch} INSTALL_MOD_PATH=${DESTDIR} ${_cross} modules_install
 
 	hdrdest=${DESTDIR}/usr/src/kernel-headers-${_kernver}
 
