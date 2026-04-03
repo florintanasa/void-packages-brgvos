@@ -770,8 +770,8 @@ libbrasero-media3.so.1 brasero-2.91.90_1
 libbrasero-utils3.so.1 brasero-2.91.90_1
 libXss.so.1 libXScrnSaver-1.1.3_1
 libyelp.so.0 yelp-3.36.0_1
-libpeas-1.0.so.0 libpeas-1.0.0_2
-libpeas-gtk-1.0.so.0 libpeas-1.0.0_2
+libpeas-1.0.so.1 libpeas-1.38.1_1
+libpeas-gtk-1.0.so.1 libpeas-1.38.1_1
 libpeas-2.so.0 libpeas2-2.0.1_1
 libtotem.so.0 libtotem-3.6.2_1
 libclutter-1.0.so.0 clutter-1.14.0_1
@@ -3556,9 +3556,9 @@ libbelr.so.1 belr-0.1.3_1
 libbelcard.so.1 belcard-1.0.2_1
 libsoci_core.so.4.0 soci-4.0.3_1
 libshaderc_shared.so.1 shaderc-2018.0_1
-libglslang.so.15 glslang-15.0.0_1
-libglslang-default-resource-limits.so.15 glslang-15.0.0_1
-libSPIRV.so glslang-15.0.0_1
+libglslang.so.16 glslang-16.2.0_1
+libglslang-default-resource-limits.so.16 glslang-16.2.0_1
+libSPIRV.so.16 glslang-16.2.0_1
 libSPIRV-Tools-shared.so SPIRV-Tools-2022.3_1
 libmaxminddb.so.0 libmaxminddb-1.3.2_1
 libmysqlpp.so.3 mysql++-3.2.5_1
@@ -3602,6 +3602,7 @@ libpantheon-files-widgets.so.6 libio.elementary.files-6.0.0_1
 libwlroots.so.12 wlroots0.17-0.17.0_1
 libwlroots-0.18.so wlroots0.18-0.18.0_1
 libwlroots-0.19.so wlroots0.19-0.19.0_1
+libwlroots-0.20.so wlroots0.20-0.20.0_1
 libbaseencode.so.1 libbaseencode-1.0.9_1
 libcotp.so.4 libcotp-4.0.0_1
 libunarr.so.1 libunarr-1.0.1_1
@@ -3709,11 +3710,11 @@ libqhttpengine.so.1 qhttpengine-1.0.1_1
 libqmdnsengine.so.0 qmdnsengine-0.1.0_1
 libyang.so.1 libyang-1.0r5_1
 libhtp.so.2 libhtp-0.5.30_1
-libgedit-48.2.so gedit-48.2_1
+libgedit-50.so gedit-50.0_1
 libgedit-amtk-5.so.0 libgedit-amtk-5.8.0_1
-libgedit-gtksourceview-300.so.3 libgedit-gtksourceview-299.4.0_1
+libgedit-gtksourceview-300.so.5 libgedit-gtksourceview-299.7.0_1
 libgedit-gfls-1.so.0 libgedit-gfls-0.1.0_1
-libgedit-tepl-6.so.3 libgedit-tepl-6.13.0_1
+libgedit-tepl-6.so.4 libgedit-tepl-6.14.0_1
 libchewing.so.3 libchewing-0.5.1_1
 libdwarves.so.1 pahole-1.12_1
 libdwarves_emit.so.1 pahole-1.12_1
