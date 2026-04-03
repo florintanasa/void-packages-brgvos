@@ -4,3 +4,6 @@
 [submodule "linux-tkg"]
 	path = linux-tkg
 	url = https://github.com/Frogging-Family/linux-tkg.git
+[submodule "graysky-kernel-pacthes"]
+	path = graysky-kernel-pacthes
+	url = https://github.com/graysky2/kernel_compiler_patch
