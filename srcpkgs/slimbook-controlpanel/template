@@ -20,4 +20,7 @@ wrksrc="slimbook-controlpanel-main"
 post_install() {
     # Remove systemd files
     rm -rf ${DESTDIR}/usr/lib/systemd
+
+    # Install the desktop file for the Menu
+    vinstall ${FILESDIR}/slimbook-controlpanel.desktop 644 usr/share/applications
 }
