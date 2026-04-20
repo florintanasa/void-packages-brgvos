@@ -3,7 +3,6 @@ pkgname=libslimbook
 version=1.21.0
 revision=1
 build_style=meson
-configure_args="-Dlibdir=lib"
 hostmakedepends="pkg-config"
 makedepends="libusb-devel pciutils-devel"
 short_desc="Core library for Slimbook hardware integration"
