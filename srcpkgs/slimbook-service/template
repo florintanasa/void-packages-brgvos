@@ -21,9 +21,9 @@ do_install() {
         vmkdir usr/bin
 	vinstall bin/slimbookindicator 755 usr/bin
 
-	# 2. Install the event-notify daemon and other scripts
+	# 2. Install the event-notify daemon, iscons and other scripts
 	vmkdir usr/share/slimbook
-	vcopy "usr/share/slimbook/*.py" usr/share/slimbook
+	vcopy "usr/share/slimbook/*" usr/share/slimbook
 
 	# 3. Install Desktop files
 	vmkdir usr/share/applications
