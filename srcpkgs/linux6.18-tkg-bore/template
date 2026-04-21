@@ -109,12 +109,12 @@ do_configure() {
 		msg_normal "Detected a .config file for your arch, using it.\n"
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig .config
 
-		# Set some configs 
-		./scripts/config --enable CONFIG_USB_AIRSPY 
-		./scripts/config --enable CONFIG_USB_MSI2500
-		./scripts/config --enable CONFIG_USB_HACKRF
-        ./scripts/config --set-str CONFIG_DRM_PANIC_SCREEN "kmsg"
-		
+		# Set some configs
+		#./scripts/config --enable CONFIG_USB_AIRSPY
+		#./scripts/config --enable CONFIG_USB_MSI2500
+		#./scripts/config --enable CONFIG_USB_HACKRF
+		#./scripts/config --set-str CONFIG_DRM_PANIC_SCREEN "kmsg"
+
 		make ${makejobs} ARCH=$arch ${_cross} oldconfig
 	fi
 
