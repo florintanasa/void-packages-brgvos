@@ -2,7 +2,7 @@
 Name=Slimbook Control Panel
 Comment=Configure Slimbook hardware and performance
 Exec=slimbook-controlpanel
-Icon=slimbook_be1ofus_light
+Icon=slimbook-controlpanel
 Terminal=false
 Type=Application
 Categories=Settings;System;Qt;
