@@ -420,7 +420,7 @@ libavutil.so.56 libavutil-4.0_1
 libavfilter.so.7 libavfilter-4.0_1
 libSDL-1.2.so.0 sdl12-compat-1.2.68_1
 libSDL_image-1.2.so.0 SDL_image-1.2.10_1
-libx264.so.157 x264-20190507.2245_1
+libx264.so.165 x264-20250402.165_1
 libopenh264.so.7 openh264-2.4.1_1
 libxvidcore.so.4 xvidcore-1.2.2_1
 libtag.so.2 taglib-2.0.2_1
@@ -728,7 +728,7 @@ libsamplerate.so.0 libsamplerate-0.1.7_1
 libmms.so.0 libmms-0.6_1
 libsmbios.so.2 libsmbios-2.2.28_1
 libsmbios_c.so.2 libsmbios-2.2.28_1
-libjasper.so.4 libjasper-1.900.27_1
+libjasper.so.7 libjasper-4.2.9_1
 librecode.so.3 librecode-3.7.14_1
 libenca.so.0 libenca-1.13_1
 libwavpack.so.1 libwavpack-4.60.1_1
@@ -2534,7 +2534,7 @@ libtidy.so.58 libtidy5-5.8.0_1
 libSDL2_gfx-1.0.so.0 SDL2_gfx-1.0.1_1
 libinjeqt.so.1 injeqt-1.1.0_1
 libgadu.so.3 libgadu-1.12.1_1
-libhiredis.so.1.1.0 hiredis-1.1.0_1
+libhiredis.so.1.3.0 hiredis-1.3.0_1
 libIL.so.1 devil-1.7.8_1
 libILU.so.1 devil-1.7.8_1
 libILUT.so.1 devil-1.7.8_1
@@ -3091,10 +3091,10 @@ libyaz_server.so.5 yaz-5.23.1_1
 libgcab-1.0.so.0 gcab-0.7_1
 libwpe-1.0.so.1 libwpe-1.10.0_1
 libWPEBackend-fdo-1.0.so.1 wpebackend-fdo-1.8.3_1
-libliveMedia.so.81 live555-2020.08.11_2
-libgroupsock.so.8 live555-2020.08.11_2
+libliveMedia.so.118 live555-2026.04.22_1
+libgroupsock.so.33 live555-2026.04.22_1
 libUsageEnvironment.so.3 live555-2020.08.11_2
-libBasicUsageEnvironment.so.1 live555-2020.08.11_2
+libBasicUsageEnvironment.so.2 live555-2026.04.22_1
 libappstream.so.5 AppStream-1.0.2_1
 libAppStreamQt.so.3 AppStream-qt-1.0.2_1
 libappstream-compose.so.0 AppStream-compose-1.0.2_1
