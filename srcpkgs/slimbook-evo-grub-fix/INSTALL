@@ -1,7 +1,7 @@
 #!/bin/sh
 # Install script with backup for BRGV-OS an respin Void
 GRUB_FILE="/etc/default/grub"
-HOOK_MARKER="# Added by BRGV-OS slimbook-grub-fix"
+HOOK_MARKER="# Added by BRGV-OS slimbook-evo-grub-fix"
 HOOK_LINE='for i in /etc/default/grub.d/*.cfg; do . "$i"; done'
 
 case "$ACTION" in
