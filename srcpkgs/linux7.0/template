@@ -1,6 +1,6 @@
 # Template file for 'linux7.0'
 pkgname=linux7.0
-version=7.0.6
+version=7.0.7
 revision=1
 short_desc="Linux kernel and modules (${version%.*} series)"
 maintainer="Duncaen <duncaen@voidlinux.org>"
@@ -18,7 +18,7 @@ rc*) distfiles="https://git.kernel.org/torvalds/t/linux-${version%.*}-${version#
 esac
 
 checksum="bb7f6d80b387c757b7d14bb93028fcb90f793c5c0d367736ee815a100b3891f0
- abd193ca459744d3af3f875d649d01d84dc5e810083e5f1c67eba551c86c4404"
+ 7d77ddb1913d8ebcff615ce21b4b5f4f98f048b6124c6fc1c31c0b2d2280c7c2"
 
 python_version=3
 
