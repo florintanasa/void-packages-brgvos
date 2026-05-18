@@ -1,6 +1,6 @@
 # Template file for 'linux6.18-tkg-bore-lto-v3'
 pkgname=linux6.18-tkg-bore-lto-v3
-version=6.18.31
+version=6.18.32
 revision=1
 short_desc="Linux kernel and modules (${version%.*} series) with TKG patches, Full LTO with optimization v3"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
@@ -18,7 +18,7 @@ rc*) distfiles="https://git.kernel.org/torvalds/t/linux-${version%.*}-${version#
 esac
 
 checksum="9106a4605da9e31ff17659d958782b815f9591ab308d03b0ee21aad6c7dced4b
- c9d79cae1609400dae3bad8a771b4f0e2a34840866fe7c58ef743b9fdea57b53"
+ 983a951b6572cf547c8fd9148c0cbd4f8dc3d773d76afe5df58de519f04e7243"
 
 python_version=3
 
@@ -110,8 +110,7 @@ do_configure() {
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig .config
 		
 		# Set some configs to set optimization for version 3 CPU
-		#./scripts/config --disable CONFIG_GENERIC_CPU
-		#./scripts/config --enable CONFIG_X86_64_V3
+		#./scripts/config --set-val CONFIG_X86_64_VERSION 3
 		
         # Set configs for CLANG and FullLTO
         #./scripts/config --disable CONFIG_LTO_NONE
