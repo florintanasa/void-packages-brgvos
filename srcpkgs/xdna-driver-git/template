@@ -1,16 +1,16 @@
 # Template file for 'xdna-driver-git'
 pkgname=xdna-driver-git
-version=2026.05.21.0
+version=2026.05.22.0
 revision=1
 build_style=cmake
 configure_args="-DREG_BUILD=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCPACK_GENERATOR=TGZ -DXDNA_CPACK_LINUX_PKG_FLAVOR=arch"
-hostmakedepends="cmake pkg-config git dkms"
+hostmakedepends="cmake pkg-config git"
 makedepends="xdna-driver-xrt-git libdrm-devel opencl-headers ocl-icd-devel boost-devel ncurses-devel openssl-devel rapidjson libuuid-devel systemtap-devel"
-depends="dkms xdna-driver-xrt-git"
-short_desc="AMD XDNA Driver and Shim library for Ryzen AI NPU"
+depends="xdna-driver-xrt-git"
+short_desc="Shim library for AMD Ryzen AI NPU (Using in-tree kernel driver)"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0-only, custom:AMD"
-homepage="https://github.com"
+homepage="https://github.com/amd/xdna-driver"
 
 do_fetch() {
 	:
@@ -35,23 +35,7 @@ do_install() {
 	vmkdir usr/lib/xrt/modules
 	vcopy "build/src/shim/lib*" usr/lib/xrt/modules/
 
-	# 2. Instalăm sursele driverului de kernel în /usr/src pentru DKMS
-	vmkdir usr/src/amdxdna-${version}
-	vcopy "drivers/accel/amdxdna/*" usr/src/amdxdna-${version}/
-
-	# 3. GENERĂM DINAMIC dkms.conf cu generare automată de kernel-config offline
-	cat <<-EOF > ${DESTDIR}/usr/src/amdxdna-${version}/dkms.conf
-	PACKAGE_NAME="amdxdna"
-	PACKAGE_VERSION="${version}"
-	BUILT_MODULE_NAME="amdxdna"
-	DEST_MODULE_LOCATION="/kernel/drivers/accel/amdxdna"
-	AUTOINSTALL="yes"
-
-	# Forțăm rularea scriptului config_kernel.sh înainte de compilarea modulelor pentru a genera structurile corecte
-	MAKE="sh ./config_kernel.sh \\\${kernel_source_dir} && make -C \\\${kernel_source_dir} M=\\\${dkms_tree}/\\\${PACKAGE_NAME}/\\\${PACKAGE_VERSION}/build EXTRA_CFLAGS=\"-I\\\${dkms_tree}/\\\${PACKAGE_NAME}/\\\${PACKAGE_VERSION}/build\" modules"
-	EOF
-
-	# 4. Instalăm permisiunile pentru memorie (limits.d)
+	# 2. Instalăm permisiunile pentru memorie (limits.d)
 	vmkdir etc/security/limits.d
 	vinstall "${FILESDIR}/99-amdxdna.conf" 644 etc/security/limits.d
 }
