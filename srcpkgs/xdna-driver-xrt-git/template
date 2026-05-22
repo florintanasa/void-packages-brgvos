@@ -1,12 +1,12 @@
 # Template file for 'xdna-driver-xrt-git'
 pkgname=xdna-driver-xrt-git
-version=2026.05.21.1
+version=2026.05.21.2
 revision=1
 build_style=cmake
-configure_args="-DXRT_NPU_BUILD=ON -DXRT_BUILD_TOOLS=ON -DXRT_NATIVE_BUILD=ON -DCMAKE_INSTALL_LIBDIR=lib"
+configure_args="-DXRT_NPU_BUILD=ON -DXRT_BUILD_TOOLS=ON -DXRT_ENABLE_ACCEL=ON -DCMAKE_INSTALL_LIBDIR=lib"
 hostmakedepends="cmake pkg-config git tar protobuf wget python3-yaml python3-Markdown python3-Jinja2"
 makedepends="opencl-headers boost-devel rapidjson ocl-icd-devel systemtap-devel libdrm-devel ncurses-devel openssl-devel protobuf-devel libuuid-devel libcurl-devel python3-devel python3-pybind11"
-short_desc="Xilinx Runtime (XRT) tailored for AMD XDNA NPU devices (Branch 1.8)"
+short_desc="Xilinx Runtime (XRT) tailored for AMD XDNA NPU native driver"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, GPL-2.0-or-later"
 homepage="https://github.com/amd/xdna-driver"
@@ -17,16 +17,13 @@ do_fetch() {
 
 do_extract() {
 	cd ${XBPS_BUILDDIR}
-	git clone --recursive --branch 1.8 https://github.com/amd/xdna-driver ${pkgname}-${version}
+	git clone --recursive https://github.com/amd/xdna-driver ${pkgname}-${version}
 }
 
 wrksrc="${pkgname}-${version}"
 build_wrksrc="xrt/src"
 
 pre_configure() {
-	if [ -f "CMake/pkg.cmake" ]; then
-		vsed -i 's/message(FATAL_ERROR "Unknown Linux package flavor:/message(STATUS "Overriding flavor for Void Linux. Previous distro:/g' CMake/pkg.cmake
-	fi
 	if [ -f "xrt/src/CMake/pkg.cmake" ]; then
 		vsed -i 's/message(FATAL_ERROR "Unknown Linux package flavor:/message(STATUS "Overriding flavor for Void Linux. Previous distro:/g' xrt/src/CMake/pkg.cmake
 	fi
