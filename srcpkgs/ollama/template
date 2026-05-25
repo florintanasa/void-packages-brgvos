@@ -1,7 +1,7 @@
 # Template file for 'ollama'
 pkgname=ollama
 version=0.24.0
-revision=1
+revision=2
 archs="x86_64"
 hostmakedepends="zstd tar"
 depends="zstd"
@@ -9,23 +9,17 @@ system_accounts="ollama"
 nostrip=yes
 make_dirs="/var/lib/ollama 0755 ollama ollama"
 allow_unknown_shlibs=yes
-short_desc="Get up and running with large language models locally (With ROCm)"
+short_desc="Get up and running with large language models locally"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://ollama.com"
+distfiles="https://ollama.com/download/ollama-linux-amd64.tar.zst"
 
-distfiles="
- https://ollama.com/download/ollama-linux-amd64.tar.zst
- https://ollama.com/download/ollama-linux-amd64-rocm.tar.zst
-"
-
-checksum="15c5f8d66ba06e0d3b4719df8868612dbd66e14e82760929bb3552e1657cdcdb
- 11523a7c74e6a632baa96ab53253123d2a1ad6964a48b35c23513a49a18d229a"
+checksum="15c5f8d66ba06e0d3b4719df8868612dbd66e14e82760929bb3552e1657cdcdb"
 
 do_install() {
 	mkdir -p ${DESTDIR}/usr
 	tar -x --zstd -f ${XBPS_SRCDISTDIR}/${pkgname}-${version}/ollama-linux-amd64.tar.zst -C ${DESTDIR}/usr
-	tar -x --zstd -f ${XBPS_SRCDISTDIR}/${pkgname}-${version}/ollama-linux-amd64-rocm.tar.zst -C ${DESTDIR}/usr
 
 	mv ${DESTDIR}/usr/bin/ollama ${DESTDIR}/usr/bin/ollama_bin 2>/dev/null || true
 	vmkdir usr/bin
