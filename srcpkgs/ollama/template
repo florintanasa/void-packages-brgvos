@@ -1,7 +1,7 @@
 # Template file for 'ollama'
 pkgname=ollama
-version=0.24.0
-revision=3
+version=0.31.1
+revision=1
 archs="x86_64"
 hostmakedepends="zstd tar"
 depends="zstd"
@@ -16,9 +16,9 @@ short_desc="Get up and running with large language models locally (binary)"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://ollama.com"
-distfiles="https://ollama.com/download/ollama-linux-amd64.tar.zst"
+distfiles="https://github.com/ollama/ollama/releases/download/v0.31.1/ollama-linux-amd64.tar.zst"
 
-checksum="15c5f8d66ba06e0d3b4719df8868612dbd66e14e82760929bb3552e1657cdcdb"
+checksum="d297381efc136451f6fabb9dd644a67f70fe51c16815a0c4a95ff0e327a3afb4"
 
 do_install() {
 	mkdir -p ${DESTDIR}/usr
