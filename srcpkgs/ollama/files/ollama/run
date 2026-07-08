@@ -5,7 +5,10 @@
 exec 2>&1
 
 # Point to the official global paths where XBPS extracted the ROCm libraries
-export LD_LIBRARY_PATH="/usr/lib:/usr/lib64:/usr/lib/ollama:/usr/lib/ollama/rocm:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/usr/lib:/usr/lib64:/usr/lib/ollama:/usr/lib/ollama/rocm_v7_2:$LD_LIBRARY_PATH"
+
+# For AMD AI 9 series
+export OLLAMA_IGPU_ENABLE=1
 
 # Global production path for downloaded models
 export OLLAMA_MODELS="/var/lib/ollama"

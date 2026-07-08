@@ -11,6 +11,15 @@ exec 2>&1
 chown -R lemonade:lemonade /var/lib/lemonade /etc/lemonade
 chmod 750 /var/lib/lemonade /etc/lemonade
 
+# Create directory lemonade in  /run (tmpfs) and give rights to user lemonade
+mkdir -p /run/lemonade
+chown lemonade:lemonade /run/lemonade
+chmod 700 /run/lemonade
+
+# Export variables                                                               
+export XDG_RUNTIME_DIR="/run/lemonade"
+export RUNTIME_DIRECTORY="/run/lemonade"
+
 # Verify the existence of the working directory before execution
 cd /var/lib/lemonade || exit 1
 
