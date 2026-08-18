@@ -1,10 +1,10 @@
 # Template file for 'FastFlowLM-git'
 pkgname=FastFlowLM-git
-version=2026.05.22.0
+version=2026.08.18.0
 revision=1
 build_style=cmake
 hostmakedepends="cmake pkg-config git cargo rust"
-makedepends="boost-devel xdna-driver-xrt-git libcurl-devel fftw-devel ffmpeg6-devel libuuid-devel libdrm-devel libgomp-devel"
+makedepends="boost-devel xdna-driver-xrt-git libcurl-devel fftw-devel ffmpeg6-devel libuuid-devel libdrm-devel libgomp-devel readline-devel"
 depends="xdna-driver-xrt-git"
 short_desc="Fast LLM inference engine optimized for AMD XDNA NPU from git"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
@@ -47,6 +47,6 @@ do_install() {
 
 	DESTDIR="${DESTDIR}" cmake --install "${target_build_dir}"
 
-	vlicense "../LICENSE_BINARY.txt"
+	vlicense "../assets/superseded/LICENSE_BINARY.txt"
 	vlicense "../LICENSE_RUNTIME.txt"
 }
