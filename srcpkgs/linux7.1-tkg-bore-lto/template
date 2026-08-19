@@ -108,6 +108,13 @@ do_configure() {
 		msg_normal "Detected a .config file for your arch, using it.\n"
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig .config
 
+		# Disable debug info
+        ./scripts/config --disable CONFIG_DEBUG_INFO
+        ./scripts/config --disable CONFIG_DEBUG_INFO_DWARF5
+        ./scripts/config --disable CONFIG_DEBUG_INFO_BTF
+        ./scripts/config --disable CONFIG_DEBUG_INFO_BTF_MODULES
+        ./scripts/config --enable CONFIG_DEBUG_INFO_NONE
+
         # Set configs for CLANG and FullLTO
         ./scripts/config --disable CONFIG_LTO_NONE
         ./scripts/config --disable CONFIG_LTO_CLANG_THIN
