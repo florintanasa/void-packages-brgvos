@@ -1,6 +1,6 @@
 # Template file for 'xdna-driver-xrt-git'
 pkgname=xdna-driver-xrt-git
-version=2026.08.18.0
+version=2026.08.19.0
 revision=1
 build_style=cmake
 configure_args="-DXRT_NPU_BUILD=ON -DXRT_BUILD_TOOLS=ON -DXRT_ENABLE_ACCEL=ON -DCMAKE_INSTALL_LIBDIR=lib"
