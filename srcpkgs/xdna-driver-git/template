@@ -1,6 +1,6 @@
 # Template file for 'xdna-driver-git'
 pkgname=xdna-driver-git
-version=2026.08.18.0
+version=2026.08.19.0
 revision=1
 build_style=cmake
 configure_args="-DREG_BUILD=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCPACK_GENERATOR=TGZ -DXDNA_CPACK_LINUX_PKG_FLAVOR=arch"
@@ -31,11 +31,15 @@ pre_configure() {
 }
 
 do_install() {
-	# 1. Instalăm librăria shim pentru NPU în căile standard de runtime XRT
+	# 1. Install libraries shim for NPU
 	vmkdir usr/lib/xrt/modules
 	vcopy "build/src/shim/lib*" usr/lib/xrt/modules/
 
-	# 2. Instalăm permisiunile pentru memorie (limits.d)
+	# 2. Memory permmision (limits.d)
 	vmkdir etc/security/limits.d
 	vinstall "${FILESDIR}/99-amdxdna.conf" 644 etc/security/limits.d
+
+	# 3. Future-proof Discovery Path symlinks tied to generic names
+	ln -sf /usr/lib/xrt/modules/libxrt_driver_xdna.so ${DESTDIR}/usr/lib/libxrt_plugin_xdna.so
+	ln -sf /usr/lib/xrt/modules/libxrt_driver_xdna.so ${DESTDIR}/usr/lib/libxrt_amdxdna.so
 }
