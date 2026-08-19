@@ -116,6 +116,7 @@ do_configure() {
         ./scripts/config --enable CONFIG_CLANG_LTO_STACKPROTECT
 		
 		# Set some configs
+        ./scripts/config --enable CONFIG_MEDIA_SDR_SUPPORT
 		./scripts/config --enable CONFIG_USB_AIRSPY
 		./scripts/config --enable CONFIG_USB_MSI2500
 		./scripts/config --enable CONFIG_USB_HACKRF
