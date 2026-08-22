@@ -16,6 +16,13 @@ mkdir -p /run/lemonade
 chown lemonade:lemonade /run/lemonade
 chmod 700 /run/lemonade
 
+# If config.json not exist copy and set the owner and rights, usefully for first time start 
+if [ ! -f /var/lib/lemonade/config.json ]; then
+    cp /usr/share/lemonade-server/resources/defaults.json /var/lib/lemonade/config.json
+    chown lemonade:lemonade /var/lib/lemonade/config.json
+    chmod 640 /var/lib/lemonade/config.json
+fi
+
 # Export variables                                                               
 export XDG_RUNTIME_DIR="/run/lemonade"
 export RUNTIME_DIRECTORY="/run/lemonade"
@@ -29,4 +36,4 @@ export LEMONADE_RESOURCES_DIR="/usr/share/lemonade-server/resources"
 export HOME="/var/lib/lemonade"
 
 # Launch the isolated server under the user and group designated for your data
-exec chpst -u lemonade:lemonade lemond 2>&1
+exec chpst -U lemonade:lemonade lemond

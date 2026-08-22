@@ -1,6 +1,6 @@
 # Template file for 'lemonade-desktop'
 pkgname=lemonade-desktop
-version=10.9.0
+version=11.7.0
 revision=1
 build_style=cargo
 make_build_target="src/app"
@@ -14,7 +14,7 @@ homepage="https://github.com/lemonade-sdk/lemonade"
 
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz>lemonade-${version}.tar.gz"
 
-checksum="92d00ef05867cee5bc67993e154044f7af4beec792d4ea4b4192f662b00a2282"
+checksum="395d688ba870afa5e71d3af4a6c3de9873632d2c2686663de7accc6435b6cbad"
 
 export TAURI_SKIP_NPM_INSTALL=1
 
