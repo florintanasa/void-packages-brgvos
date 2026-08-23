@@ -1,7 +1,7 @@
 # Template file for 'ollama'
 pkgname=ollama
-version=0.31.1
-revision=3
+version=0.32.15
+revision=1
 archs="x86_64"
 hostmakedepends="zstd tar"
 depends="zstd"
@@ -16,9 +16,9 @@ short_desc="Get up and running with large language models locally (binary)"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://ollama.com"
-distfiles="https://github.com/ollama/ollama/releases/download/v0.31.1/ollama-linux-amd64.tar.zst"
+distfiles="https://github.com/ollama/ollama/releases/download/v${version}/ollama-linux-amd64.tar.zst"
 
-checksum="d297381efc136451f6fabb9dd644a67f70fe51c16815a0c4a95ff0e327a3afb4"
+checksum="50539c5fe9bf85887733355098dcdb266b433cb8c73fa180713417e9ed6e42bb"
 
 do_install() {
 	mkdir -p ${DESTDIR}/usr
@@ -30,7 +30,7 @@ do_install() {
 
 	vmkdir etc/security/limits.d
 	cat <<-EOF > ${DESTDIR}/etc/security/limits.d/99-ollama.conf
-	# Allow users in video/render groups to block memory for LLM execution
+	# Allow users in video groups to block memory for LLM execution
 	@video    soft   memlock   unlimited
 	@video    hard   memlock   unlimited
 	EOF
