@@ -1,0 +1,26 @@
+# Template file for 'llamacpp'
+pkgname=llamacpp
+version=0.2.0
+revision=1
+build_style=cmake
+configure_args="-DGGML_VULKAN=ON -DCMAKE_BUILD_TYPE=Release -DLLAMA_BUILD_TESTS=OFF -DCMAKE_INSTALL_LIBDIR=lib"
+hostmakedepends="pkg-config cmake ninja git nodejs shaderc glslang"
+makedepends="vulkan-loader-devel openssl-devel libgomp-devel SPIRV-Headers"
+depends=""
+short_desc="LLM inference in C/C++ with Vulkan backend"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/ggml-org/llama.cpp"
+distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz>llamacpp-${version}.tar.gz"
+checksum="72e6c3e70c584f84e61697e449ee388f43458d662ef8f3bd3f6b4a054c947958"
+
+llamacpp-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove usr/lib/cmake
+		vmove "usr/lib/*.so"
+	}
+}
