@@ -1,18 +1,53 @@
 # Template file for 'llamacpp'
 pkgname=llamacpp
 version=0.2.0
-revision=1
+revision=4
 build_style=cmake
 configure_args="-DGGML_VULKAN=ON -DCMAKE_BUILD_TYPE=Release -DLLAMA_BUILD_TESTS=OFF -DCMAKE_INSTALL_LIBDIR=lib"
 hostmakedepends="pkg-config cmake ninja git nodejs shaderc glslang"
 makedepends="vulkan-loader-devel openssl-devel libgomp-devel SPIRV-Headers"
 depends=""
+
+# System accounts and isolation parameters
+system_accounts="llamacpp"
+llamacpp_groups="video"
+llamacpp_homedir="/var/lib/llamacpp"
+llamacpp_shell="/sbin/nologin"
+
+# Protect configuration files from being overwritten during package updates
+conf_files="/etc/llamacpp/conf.d/zz-secrets.conf"
+
 short_desc="LLM inference in C/C++ with Vulkan backend"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://github.com/ggml-org/llama.cpp"
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz>llamacpp-${version}.tar.gz"
 checksum="72e6c3e70c584f84e61697e449ee388f43458d662ef8f3bd3f6b4a054c947958"
+
+post_install() {
+	# 1. Create service private storage directories and drop-in config path
+	mkdir -p ${DESTDIR}/var/lib/llamacpp
+	mkdir -p ${DESTDIR}/etc/llamacpp/conf.d
+	chmod 750 ${DESTDIR}/var/lib/llamacpp
+	chmod 750 ${DESTDIR}/etc/llamacpp
+	chmod 750 ${DESTDIR}/etc/llamacpp/conf.d
+	
+	touch ${DESTDIR}/var/lib/llamacpp/.keep_llamacpp_0
+
+	# 2. Install the active secrets configuration file directly
+	vinstall ${FILESDIR}/zz-secrets.conf 640 etc/llamacpp/conf.d
+
+	# 3. Prepare the central shared LLM repository structure within destdir
+	mkdir -p ${DESTDIR}/var/lib/llms/huggingface
+	touch ${DESTDIR}/var/lib/llms/huggingface/.keep_llamacpp_0
+	
+	# Force SGID (2770) permissions for the shared directory within the package
+	chmod 2770 ${DESTDIR}/var/lib/llms
+	chmod 2770 ${DESTDIR}/var/lib/llms/huggingface
+
+	# 4. Automatically install the runit service script from files/llama-server/run
+	vsv llama-server
+}
 
 llamacpp-devel_package() {
 	short_desc+=" - development files"

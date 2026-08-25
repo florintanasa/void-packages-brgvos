@@ -1,0 +1,16 @@
+# Core network configuration parameters
+# For local connection only
+HOST="127.0.0.1"                         
+# For network connection (listen on all interfaces)
+# HOST="0.0.0.0"
+PORT="9931"
+
+# Advanced runtime optimization arguments for llama-server
+# -fa on: Enables Flash Attention for lower memory usage on long context
+# -ngl 99: Offloads maximum layers to the AMD Vulkan backend
+# -t 4: Restricts execution to 4 highly-optimized CPU threads
+# -b 512 / -ub 128: Sets the processing and micro-batch size bounds
+# -ctk/ctv q4_0: Compresses the KV Cache to 4-bit quant to minimize unified memory footprints
+# Optional helper flags (add to OPTS if needed):
+# -lm none -sm none : Disables lookahead/draft speculative models to save VRAM
+OPTS="-fa on -ngl 99 -t 4 -b 512 -ub 128 -ctk q4_0 -ctv q4_0"
