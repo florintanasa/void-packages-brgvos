@@ -1,18 +1,27 @@
 # Template file for 'ollama'
 pkgname=ollama
-version=0.32.15
+version=0.33.0
 revision=1
 archs="x86_64"
 hostmakedepends="zstd tar"
 depends="zstd"
+
+# System accounts and isolation parameters
+system_groups="llm"
 system_accounts="ollama"
-ollama_groups="video"
+ollama_groups="video,llm"
+ollama_homedir="/var/lib/ollama"
+ollama_shell="/sbin/nologin"
+
 nostrip=yes
-make_dirs="/var/lib/ollama 0755 ollama ollama"
 allow_unknown_shlibs=yes
 shlib_provides="!libelf.so.1"
 shlib_requires="!libcuda.so.1"
-short_desc="Get up and running with large language models locally (binary)"
+
+# Protect configuration files from being overwritten during package updates
+conf_files="/etc/ollama/conf.d/ollama.conf"
+
+short_desc="Get up and running with large language models locally (binary layout)"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://ollama.com"
@@ -21,20 +30,23 @@ distfiles="https://github.com/ollama/ollama/releases/download/v${version}/ollama
 checksum="50539c5fe9bf85887733355098dcdb266b433cb8c73fa180713417e9ed6e42bb"
 
 do_install() {
+	# 1. Extract precompiled assets straight into /usr
 	mkdir -p ${DESTDIR}/usr
 	tar -x --zstd -f ${XBPS_SRCDISTDIR}/${pkgname}-${version}/ollama-linux-amd64.tar.zst -C ${DESTDIR}/usr
 
+	# 2. Normalize the binary path structure
 	mv ${DESTDIR}/usr/bin/ollama ${DESTDIR}/usr/bin/ollama_bin 2>/dev/null || true
 	vmkdir usr/bin
 	mv ${DESTDIR}/usr/bin/ollama_bin ${DESTDIR}/usr/bin/ollama 2>/dev/null || true
 
-	vmkdir etc/security/limits.d
-	cat <<-EOF > ${DESTDIR}/etc/security/limits.d/99-ollama.conf
-	# Allow users in video groups to block memory for LLM execution
-	@video    soft   memlock   unlimited
-	@video    hard   memlock   unlimited
-	EOF
+	# 3. Create configuration drop-in layouts within destdir
+	mkdir -p ${DESTDIR}/var/lib/ollama
+	mkdir -p ${DESTDIR}/etc/ollama/conf.d
 
-	vmkdir etc/sv/ollama
-	vinstall ${FILESDIR}/ollama/run 755 etc/sv/ollama run
+	# 4. Install configuration drop-in file (protected by conf_files)
+	vinstall ${FILESDIR}/ollama.conf 644 etc/ollama/conf.d
+
+	# 5. Automatically install the runit service script from files/ollama/run
+	vsv ollama
 }
+

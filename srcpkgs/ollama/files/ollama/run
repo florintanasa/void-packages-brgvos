@@ -4,26 +4,29 @@
 # Redirect standard errors to the system log
 exec 2>&1
 
+# FORCE SYSTEM LIMITS FOR LLM HARDWARE ACCELERATION (Runit bypasses PAM/limits.d)
+ulimit -Sl unlimited
+ulimit -Hl unlimited
+
+# Load drop-in configurations sequentially from /etc/ollama/conf.d
+if [ -d /etc/ollama/conf.d ]; then
+	for f in /etc/ollama/conf.d/*.conf; do
+		[ -r "$f" ] && . "$f"
+	done
+fi
+
 # Point to the official global paths where XBPS extracted the ROCm libraries
 export LD_LIBRARY_PATH="/usr/lib:/usr/lib64:/usr/lib/ollama:/usr/lib/ollama/rocm_v7_2:$LD_LIBRARY_PATH"
 
-# For AMD AI 9 series
-export OLLAMA_IGPU_ENABLE=1
-
-# Global production path for downloaded models
-export OLLAMA_MODELS="/var/lib/ollama"
-
 # Force Ollama to generate its configuration keys and cache inside its own secure directory
 export HOME="/var/lib/ollama"
+export XDG_CACHE_HOME="/var/lib/ollama/.cache"
 
-# Critical override for the Radeon 880M iGPU (RDNA 3.5 architecture)
-export HSA_OVERRIDE_GFX_VERSION=11.5.0
+# REDIRECT OLLAMA BLOB STORAGE TO THE UNIFIED REPOSITORY SUBFOLDER
+export OLLAMA_MODELS="/var/lib/llms/ollama"
 
-# Bind server to localhost for security by default
-export OLLAMA_HOST="127.0.0.1"
+# Verify the existence of the working directory before execution
+cd /var/lib/ollama || exit 1
 
-# Uncomment the line below if you want Ollama to be visible on your local network
-# export OLLAMA_HOST="0.0.0.0"
-
-# Launch the Ollama server securely under the 'ollama' system user
-exec chpst -u ollama:video /usr/bin/ollama serve
+# Launch the isolated server under the designated user and supplementary groups
+exec chpst -u ollama:ollama:video:llm /usr/bin/ollama serve

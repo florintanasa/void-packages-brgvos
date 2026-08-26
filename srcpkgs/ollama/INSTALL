@@ -1,0 +1,37 @@
+#!/bin/sh
+# This script runs after the package files are unpacked on the target system
+case "$1" in
+post)
+    echo "Setting the owner for ollama directories..."
+    chown -R ollama:ollama /var/lib/ollama
+    chown -R ollama:ollama /etc/ollama
+    chmod 750 /var/lib/ollama /etc/ollama /etc/ollama/conf.d
+
+    echo "Preparing dedicated subfolder for Ollama in the central repository..."
+    mkdir -p /var/lib/llms/ollama
+    chown root:llm /var/lib/llms/ollama
+    chmod 2770 /var/lib/llms/ollama
+
+    # Dynamic migration warning check
+    echo ""
+    echo "========================================================================="
+    echo " ATTENTION: Ollama model storage path has been globally unmapped!"
+    echo " All models are now centrally stored in: /var/lib/llms/ollama"
+    echo "========================================================================="
+    
+    if [ -d /var/lib/ollama/.ollama/models ] && [ "$(ls -A /var/lib/ollama/.ollama/models 2>/dev/null)" ]; then
+        echo ""
+        echo " WARNING: Existing legacy models detected in the old directory!"
+        echo " Please stop the service and move them manually using this command:"
+        echo "   sudo sv stop ollama"
+        echo "   sudo mv /var/lib/ollama/.ollama/models/* /var/lib/llms/ollama/"
+        echo "   sudo chown -R root:llm /var/lib/llms/ollama"
+        echo "   sudo find /var/lib/llms/ollama -type d -exec chmod 2770 {} +"
+        echo "   sudo find /var/lib/llms/ollama -type f -exec chmod 660 {} +"
+        echo "   sudo sv start ollama"
+        echo ""
+    fi
+    echo "========================================================================="
+    echo ""
+    ;;
+esac
