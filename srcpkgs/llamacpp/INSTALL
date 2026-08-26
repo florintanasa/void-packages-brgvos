@@ -1,0 +1,19 @@
+#!/bin/sh
+# This script runs after the package files are unpacked on the target system
+case "$1" in
+post)
+    echo "Setting the owner for llamacpp directories..."
+    chown -R llamacpp:llamacpp /var/lib/llamacpp
+    chown -R llamacpp:llamacpp /etc/llamacpp
+    chmod 750 /var/lib/llamacpp
+    chmod 750 /etc/llamacpp
+
+    echo "Setting the owner for Hugging Face directories..."
+    chown -R root:llm /var/lib/llms
+    chown -R root:llm /var/lib/llms/huggingface
+
+    echo "Setting strict permissions for Hugging Face directory..."
+    chmod 2770 /var/lib/llms
+    chmod 2770 /var/lib/llms/huggingface
+    ;;
+esac

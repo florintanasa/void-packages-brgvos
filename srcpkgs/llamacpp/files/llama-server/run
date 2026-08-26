@@ -4,9 +4,6 @@
 # Redirect standard errors to the system log
 exec 2>&1
 
-# Ensure environment profiles are loaded if present
-[ -r ./conf ] && . ./conf
-
 # Load drop-in configuration secrets if present in /etc
 if [ -d /etc/llamacpp/conf.d ]; then
 	for f in /etc/llamacpp/conf.d/*.conf; do
@@ -14,27 +11,7 @@ if [ -d /etc/llamacpp/conf.d ]; then
 	done
 fi
 
-# Ensure the shared storage group exists before managing permissions
-getent group llm >/dev/null || groupadd -r llm
-
-# Dynamically align the llamacpp user into the llm group if not already present
-if getent passwd llamacpp >/dev/null; then
-	id -nG llamacpp | grep -q llm || usermod -aG llm llamacpp
-fi
-
-# NATIVE BRGV-OS PERMISSION ASSURANCE (Runs as root before chpst)
-# Set ownership and permissions on service-specific private directories
-chown -R llamacpp:llamacpp /var/lib/llamacpp /etc/llamacpp
-chmod 750 /var/lib/llamacpp /etc/llamacpp
-
-# Enforce shared group ownership and permissions for the multi-backend repository recursively
-if [ -d /var/lib/llms ]; then
-	chown -R root:llm /var/lib/llms
-	find /var/lib/llms -type d -exec chmod 2770 {} +
-	find /var/lib/llms -type f -exec chmod 660 {} +
-fi
-
-# Create runtime directory in /run (tmpfs) and assign ownership to user llamacpp
+# VOLATILE RUNTIME ASSURANCE (Required at every boot since /run is a tmpfs in RAM)
 mkdir -p /run/llamacpp
 chown llamacpp:llamacpp /run/llamacpp
 chmod 700 /run/llamacpp
@@ -53,11 +30,13 @@ fi
 # Verify the existence of the working directory before execution
 cd /var/lib/llamacpp || exit 1
 
-# Default environment values if not overridden in ./conf or drop-ins
+# Default environment values if not overridden in drop-ins
 : ${HOST:="127.0.0.1"}
 : ${PORT:="9931"}
-: ${OPTS:="-fa on -ngl 99 -t 4 -b 512 -ub 128 -ctk q4_0 -ctv q4_0"}
+# Some options may work as defaults for most models, while others may not. 
+# The following is provided as an example:
+#: ${OPTS:="-fa on -ngl 99 -t 4 -b 512 -ub 128 -ctk q4_0 -ctv q4_0"}
+: ${OPTS:=""}
 
 # Launch the isolated server under the designated user and supplementary groups
 exec chpst -u llamacpp:llamacpp:video:llm llama-server --host "$HOST" --port "$PORT" $OPTS
-
