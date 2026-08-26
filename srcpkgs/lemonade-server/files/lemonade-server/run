@@ -41,5 +41,9 @@ fi
 : ${HOST:="localhost"}
 : ${PORT:="13305"}
 
+# FORCE SYSTEM LIMITS FOR NPU HARDWARE ACCESS (Must run as root before chpst)
+ulimit -Sl unlimited
+ulimit -Hl unlimited
+
 # Launch the isolated server under the designated user and supplementary groups
 exec chpst -u lemonade:lemonade:video:llm lemond --host "$HOST" --port "$PORT"
