@@ -27,7 +27,7 @@ license="MIT"
 homepage="https://ollama.com"
 distfiles="https://github.com/ollama/ollama/releases/download/v${version}/ollama-linux-amd64.tar.zst"
 
-checksum="50539c5fe9bf85887733355098dcdb266b433cb8c73fa180713417e9ed6e42bb"
+checksum="72c4b9d91c317742ffd11b92e0a7fbe6353072c6354d910f1a03fd3ce40403d4"
 
 do_install() {
 	# 1. Extract precompiled assets straight into /usr
@@ -43,6 +43,9 @@ do_install() {
 	mkdir -p ${DESTDIR}/var/lib/ollama
 	mkdir -p ${DESTDIR}/etc/ollama/conf.d
 
+	# PRESERVE THE PRIVATE STORAGE PATH WITH AN ANCHOR FILE
+	touch ${DESTDIR}/var/lib/ollama/.keep_ollama_0
+
 	# 4. Prepare the central repository subfolder and place the anchor file
 	mkdir -p ${DESTDIR}/var/lib/llms/ollama
 	touch ${DESTDIR}/var/lib/llms/ollama/.keep_ollama_0
@@ -53,4 +56,3 @@ do_install() {
 	# 6. Automatically install the runit service script from files/ollama/run
 	vsv ollama
 }
-
