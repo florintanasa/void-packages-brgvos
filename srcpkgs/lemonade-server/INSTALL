@@ -1,0 +1,16 @@
+#!/bin/sh
+# This script runs after the package files are unpacked on the target system
+case "$1" in
+post)
+    echo "Setting the owner for lemonade directories..."
+    echo "Setting the owner for lemonade directories..."
+    chown -R lemonade:lemonade /var/lib/lemonade
+    chown -R lemonade:lemonade /etc/lemonade
+    chmod 750 /var/lib/lemonade /var/lib/lemonade/bin /etc/lemonade /etc/lemonade/conf.d
+
+    echo "Ensuring central repository shared group mapping..."
+    echo "Ensuring central repository shared group mapping (non-recursive)..."
+    chown root:llm /var/lib/llms /var/lib/llms/huggingface /var/lib/llms/flm
+    chmod 2770 /var/lib/llms /var/lib/llms/huggingface /var/lib/llms/flm
+    ;;
+esac

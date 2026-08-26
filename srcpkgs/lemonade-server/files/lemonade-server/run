@@ -4,36 +4,42 @@
 # Redirect standard errors to the system log
 exec 2>&1
 
-# Ensure environment profiles are loaded if present
-[ -r ./conf ] && . ./conf
+# Load drop-in configurations sequentially from /etc/lemonade/conf.d
+if [ -d /etc/lemonade/conf.d ]; then
+	for f in /etc/lemonade/conf.d/*.conf; do
+		[ -r "$f" ] && . "$f"
+	done
+fi
 
-# NATIVE BRGV-OS PERMISSION ASSURANCE (Runs as root before chpst)
-chown -R lemonade:lemonade /var/lib/lemonade /etc/lemonade
-chmod 750 /var/lib/lemonade /etc/lemonade
-
-# Create directory lemonade in  /run (tmpfs) and give rights to user lemonade
+# VOLATILE RUNTIME ASSURANCE (Required at every boot since /run is a tmpfs in RAM)
 mkdir -p /run/lemonade
 chown lemonade:lemonade /run/lemonade
 chmod 700 /run/lemonade
 
-# If config.json not exist copy and set the owner and rights, usefully for first time start 
-if [ ! -f /var/lib/lemonade/config.json ]; then
-    cp /usr/share/lemonade-server/resources/defaults.json /var/lib/lemonade/config.json
-    chown lemonade:lemonade /var/lib/lemonade/config.json
-    chmod 640 /var/lib/lemonade/config.json
-fi
-
-# Export variables                                                               
+# Export runtime environment variables
 export XDG_RUNTIME_DIR="/run/lemonade"
 export RUNTIME_DIRECTORY="/run/lemonade"
 
 # Verify the existence of the working directory before execution
 cd /var/lib/lemonade || exit 1
 
+# Isolate internal cache/recipes locally, but redirect heavy models globally
 export LEMONADE_CACHE_DIR="/var/lib/lemonade"
 export LEMONADE_DATA_DIR="/var/lib/lemonade"
 export LEMONADE_RESOURCES_DIR="/usr/share/lemonade-server/resources"
+export LEMONADE_DEFAULTS_PATH="/usr/share/lemonade-server/resources/defaults.json"
 export HOME="/var/lib/lemonade"
+export HF_HOME="/var/lib/llms/huggingface"
+export FLM_MODEL_PATH="/var/lib/llms/flm"
 
-# Launch the isolated server under the user and group designated for your data
-exec chpst -U lemonade:lemonade lemond
+# Inject keys into environment if parsed from systemd-style configs (without export)
+if [ -n "$LEMONADE_API_KEY" ]; then
+	export LEMONADE_API_KEY="$LEMONADE_API_KEY"
+fi
+
+# Default environment values if not overridden in drop-ins
+: ${HOST:="localhost"}
+: ${PORT:="13305"}
+
+# Launch the isolated server under the designated user and supplementary groups
+exec chpst -u lemonade:lemonade:video:llm lemond --host "$HOST" --port "$PORT"
