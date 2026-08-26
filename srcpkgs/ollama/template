@@ -39,14 +39,18 @@ do_install() {
 	vmkdir usr/bin
 	mv ${DESTDIR}/usr/bin/ollama_bin ${DESTDIR}/usr/bin/ollama 2>/dev/null || true
 
-	# 3. Create configuration drop-in layouts within destdir
+	# 3. Create configuration and state drop-in layouts within destdir
 	mkdir -p ${DESTDIR}/var/lib/ollama
 	mkdir -p ${DESTDIR}/etc/ollama/conf.d
 
-	# 4. Install configuration drop-in file (protected by conf_files)
+	# 4. Prepare the central repository subfolder and place the anchor file
+	mkdir -p ${DESTDIR}/var/lib/llms/ollama
+	touch ${DESTDIR}/var/lib/llms/ollama/.keep_ollama_0
+
+	# 5. Install configuration drop-in file (protected by conf_files)
 	vinstall ${FILESDIR}/ollama.conf 644 etc/ollama/conf.d
 
-	# 5. Automatically install the runit service script from files/ollama/run
+	# 6. Automatically install the runit service script from files/ollama/run
 	vsv ollama
 }
 
