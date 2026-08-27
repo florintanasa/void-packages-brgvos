@@ -19,7 +19,7 @@ post)
     echo " To set certain parameters, refer to the files /etc/lemonade/conf.d/*.conf and /etc/sv/lemonade/run"
     echo "===================================================================================================="
     
-    if [ -d /var/lib/lemonade/.cache/huggingface/hub]; then
+    if [ -d /var/lib/lemonade/.cache/huggingface/hub ]; then
         echo ""
         echo " WARNING: Existing legacy models detected in the old directory!"
         echo " Please stop the service and move them manually using these commands:"
