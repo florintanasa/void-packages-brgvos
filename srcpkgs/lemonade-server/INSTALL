@@ -3,14 +3,35 @@
 case "$1" in
 post)
     echo "Setting the owner for lemonade directories..."
-    echo "Setting the owner for lemonade directories..."
     chown -R lemonade:lemonade /var/lib/lemonade
     chown -R lemonade:lemonade /etc/lemonade
     chmod 750 /var/lib/lemonade /var/lib/lemonade/bin /etc/lemonade /etc/lemonade/conf.d
 
-    echo "Ensuring central repository shared group mapping..."
     echo "Ensuring central repository shared group mapping (non-recursive)..."
     chown root:llm /var/lib/llms /var/lib/llms/huggingface /var/lib/llms/flm
     chmod 2770 /var/lib/llms /var/lib/llms/huggingface /var/lib/llms/flm
+
+    # Dynamic migration warning check for blobs and manifests
+    echo ""
+    echo "==================================================================================================="
+    echo " ATTENTION: Lemonade model storage path has been globally unmapped!"
+    echo " All models are now centrally stored in: /var/lib/llms/huggingface"
+    echo " To set certain parameters, refer to the files /etc/lemonade/conf.d/*.conf and /etc/sv/lemonade/run"
+    echo "===================================================================================================="
+    
+    if [ -d /var/lib/lemonade/.cache/huggingface/hub]; then
+        echo ""
+        echo " WARNING: Existing legacy models detected in the old directory!"
+        echo " Please stop the service and move them manually using these commands:"
+        echo "   sudo sv stop lemonade-server"
+        echo "   sudo mv /var/lib/lemonade/.cache/huggingface/hub /var/lib/llms/huggingface"
+        echo "   sudo chown -R root:llm /var/lib/llms/huggingface"
+        echo "   sudo find /var/lib/llms/huggingface -type d -exec chmod 2770 {} +"
+        echo "   sudo find /var/lib/llms/huggingface -type f -exec chmod 660 {} +"
+        echo "   sudo sv start lemonade-server"
+        echo ""
+    fi
+    echo "===================================================================================================="
+    echo ""
     ;;
 esac
