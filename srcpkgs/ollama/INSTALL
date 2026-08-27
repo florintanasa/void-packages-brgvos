@@ -12,19 +12,20 @@ post)
     chown root:llm /var/lib/llms/ollama
     chmod 2770 /var/lib/llms/ollama
 
-    # Dynamic migration warning check
+    # Dynamic migration warning check for blobs and manifests
     echo ""
     echo "========================================================================="
     echo " ATTENTION: Ollama model storage path has been globally unmapped!"
     echo " All models are now centrally stored in: /var/lib/llms/ollama"
     echo "========================================================================="
     
-    if [ -d /var/lib/ollama/.ollama/models ] && [ "$(ls -A /var/lib/ollama/.ollama/models 2>/dev/null)" ]; then
+    if [ -d /var/lib/ollama/blobs ] || [ -d /var/lib/ollama/manifests ]; then
         echo ""
         echo " WARNING: Existing legacy models detected in the old directory!"
-        echo " Please stop the service and move them manually using this command:"
+        echo " Please stop the service and move them manually using these commands:"
         echo "   sudo sv stop ollama"
-        echo "   sudo mv /var/lib/ollama/.ollama/models/* /var/lib/llms/ollama/"
+        echo "   sudo mv /var/lib/ollama/blobs /var/lib/llms/ollama/"
+        echo "   sudo mv /var/lib/ollama/manifests /var/lib/llms/ollama/"
         echo "   sudo chown -R root:llm /var/lib/llms/ollama"
         echo "   sudo find /var/lib/llms/ollama -type d -exec chmod 2770 {} +"
         echo "   sudo find /var/lib/llms/ollama -type f -exec chmod 660 {} +"
