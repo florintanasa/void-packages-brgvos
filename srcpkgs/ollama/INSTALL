@@ -9,9 +9,8 @@ post)
 
     echo "Preparing dedicated subfolder for Ollama in the central repository..."
     mkdir -p /var/lib/llms/ollama
-    chown root:llm /var/lib/llms
-    chown root:llm /var/lib/llms/ollama
-    chmod 2770 /var/lib/llms/ollama
+    chown root:llm /var/lib/llms /var/lib/llms/ollama
+    chmod 2770 /var/lib/llms /var/lib/llms/ollama
 
     # Dynamic migration warning check for blobs and manifests
     echo ""
