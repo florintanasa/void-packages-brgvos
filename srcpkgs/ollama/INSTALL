@@ -9,15 +9,17 @@ post)
 
     echo "Preparing dedicated subfolder for Ollama in the central repository..."
     mkdir -p /var/lib/llms/ollama
+    chown root:llm /var/lib/llms
     chown root:llm /var/lib/llms/ollama
     chmod 2770 /var/lib/llms/ollama
 
     # Dynamic migration warning check for blobs and manifests
     echo ""
-    echo "========================================================================="
+    echo "==================================================================================================="
     echo " ATTENTION: Ollama model storage path has been globally unmapped!"
     echo " All models are now centrally stored in: /var/lib/llms/ollama"
-    echo "========================================================================="
+    echo " To set certain parameters, refer to the files /etc/ollama/conf.d/ollama.conf and /etc/sv/ollama/run"
+    echo "===================================================================================================="
     
     if [ -d /var/lib/ollama/blobs ] || [ -d /var/lib/ollama/manifests ]; then
         echo ""
@@ -32,7 +34,7 @@ post)
         echo "   sudo sv start ollama"
         echo ""
     fi
-    echo "========================================================================="
+    echo "===================================================================================================="
     echo ""
     ;;
 esac
