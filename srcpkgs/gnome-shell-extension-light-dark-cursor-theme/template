@@ -1,0 +1,33 @@
+# Template file for 'gnome-shell-extension-light-dark-cursor-theme'
+pkgname=gnome-shell-extension-light-dark-cursor-theme
+version=2
+revision=1
+hostmakedepends="unzip"
+depends="gnome-shell glib"
+short_desc="Makes cursor theme follow system color scheme"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://extensions.gnome.org"
+distfiles="${homepage}/extension-data/light-dark-cursor-themebrgvos.v${version}.shell-extension.zip"
+
+checksum="cb87ae0cf228c2d7c87e61a51df28d3841f056cbaff1cb5e1d1f955b8f050f22"
+
+do_extract() {
+	# Unzip the official .zip archive into the temporary working directory of xbps-src
+	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/light-dark-cursor-themebrgvos.v${version}.shell-extension.zip
+}
+
+do_install() {
+	# The exact UUID used in the BRGV-OS distribution
+	local uuid="light-dark-cursor-theme@brgvos"
+	local extdir="usr/share/gnome-shell/extensions/${uuid}"
+
+	# 1. Create the global system extensions path inside the package
+	vmkdir "${extdir}"
+	
+	# 2. Copy all files extracted from zip directly to system destination
+	vcopy "*" "${extdir}"
+
+	# 3. Ensure schemas directory exists (required for compilation)
+	vmkdir "${extdir}/schemas"
+}
