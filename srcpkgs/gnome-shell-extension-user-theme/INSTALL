@@ -1,0 +1,10 @@
+#!/bin/sh
+# This script runs after the package files are unpacked on the target system
+case "$1" in
+post)
+    echo "Compiling GSettings schemas for user-theme..."
+    if [ -d /usr/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas ]; then
+        glib-compile-schemas /usr/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/schemas
+    fi
+    ;;
+esac
