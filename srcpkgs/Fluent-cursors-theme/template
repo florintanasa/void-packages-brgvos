@@ -1,0 +1,42 @@
+# Template file for 'Fluent-cursors-theme'
+pkgname=Fluent-cursors-theme
+version=0.1.0
+revision=1
+hostmakedepends="tar"
+depends=""
+short_desc="Fluent cursors suite for desktops, fork from Vince (vinceliuice)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-v3.0"
+homepage="https://github.com/florintanasa/Fluent-icon-theme"
+distfiles="${homepage}/releases/download/v${version}/Fluent-cursors-all.tar.gz
+ ${homepage}/raw/master/COPYING"
+
+checksum="d35456c63ef2a7cc83c8713bbd8d832976832cc8946996dbc6c2c3358c745f77
+ 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+
+do_extract() {
+    tar -xzf ${XBPS_SRCDISTDIR}/${pkgname}-${version}/Fluent-cursors-all.tar.gz -C ${wrksrc}
+    # Bring the downloaded license file into the workspace root for compliance registration
+    cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
+}
+
+do_install() {
+    # 0. Local variable
+    local icondir="usr/share/icons"
+
+    # 1. Create primary target layout structure inside destdir
+    vmkdir "${icondir}"
+
+    # 2. Safely copy EVERYTHING (including hidden folders) into the package tree
+    cp -a . "${DESTDIR}/${icondir}/"
+
+    # Purge the cloned license file from system icons root
+    rm -f "${DESTDIR}/${icondir}/COPYING"
+	
+    # 4. Enforce strict standard UNIX permissions across all assets
+    find "${DESTDIR}/${icondir}" -type f -exec chmod 644 {} +
+    find "${DESTDIR}/${icondir}/" -type d -exec chmod 755 {} +
+
+    # 5. Extract and register the license cleanly into /usr/share/licenses/
+    vlicense COPYING
+}
