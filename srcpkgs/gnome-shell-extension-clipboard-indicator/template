@@ -1,0 +1,33 @@
+# Template file for 'gnome-shell-extension-clipboard-indicator'
+pkgname=gnome-shell-extension-clipboard-indicator
+version=71
+revision=1
+hostmakedepends="unzip"
+depends="gnome-shell glib"
+short_desc="The most popular clipboard manager for GNOME"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://extensions.gnome.org"
+distfiles="${homepage}/extension-data/clipboard-indicatortudmotu.com.v${version}.shell-extension.zip"
+
+checksum="687cb404f9540958ddb0c1de638970572cef73f22f016e5d6c6d6f5d4cd55f97"
+
+do_extract() {
+	# Unzip the official .zip archive into the temporary working directory of xbps-src
+	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/clipboard-indicatortudmotu.com.v${version}.shell-extension.zip
+}
+
+do_install() {
+	# The exact UUID used in the BRGV-OS distribution
+	local uuid="clipboard-indicator@tudmotu.com"
+	local extdir="usr/share/gnome-shell/extensions/${uuid}"
+
+	# 1. Create the global system extensions path inside the package
+	vmkdir "${extdir}"
+	
+	# 2. Copy all files extracted from zip directly to system destination
+	vcopy "*" "${extdir}"
+
+	# 3. Ensure schemas directory exists (required for compilation)
+	vmkdir "${extdir}/schemas"
+}
