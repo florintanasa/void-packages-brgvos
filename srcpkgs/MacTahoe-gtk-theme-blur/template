@@ -1,0 +1,45 @@
+# Template file for 'MacTahoe-gtk-theme-blur'
+pkgname=MacTahoe-gtk-theme-blur
+version=0.1.0
+revision=1
+hostmakedepends="tar"
+depends="gtk-engine-murrine gnome-themes-extra"
+short_desc="MacOS Tahoe theme suite for gtk desktops (all color variants), fork from Vince
+(vinceliuice)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/florintanasa/MacTahoe-gtk-theme"
+distfiles="${homepage}/releases/download/v${version}/MacTahoe-themes-blur-all.tar.gz
+ ${homepage}/raw/main/COPYING"
+
+checksum="67a404dedfb13f0fccb083ccc3947c2cc1df07ea99bdf02e3bd324b71fb8d674
+ 47508b7d79f238a7e7225c21d2c9234b860c6d1931d8f9f2d545a2db0e26a25f"
+
+do_extract() {
+	# Extract the big uncompressed graphics tree straight into wrksrc anchor folder
+	tar -xzf ${XBPS_SRCDISTDIR}/${pkgname}-${version}/MacTahoe-themes-blur-all.tar.gz -C ${wrksrc}
+	# Bring the downloaded license file into the build workspace root
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
+}
+
+do_install() {
+	local themedir="usr/share/themes"
+
+	# 1. Create the primary system themes destination layout
+	vmkdir "${themedir}"
+
+	# 2. Safely copy all pre-compiled color variants straight into package destination
+	vcopy "*" "${themedir}"
+
+	# 3. Purge the cloned license file from system themes root
+	rm -f "${DESTDIR}/${themedir}/COPYING"
+	
+	# 3. Enforce secure standard UNIX permissions across all copied theme structures
+	find "${DESTDIR}/${themedir}" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/${themedir}" -type d -exec chmod 755 {} +
+        
+	# 4. Include the mandatory license file as required by the MIT license terms
+	vlicense COPYING
+}
+
+
