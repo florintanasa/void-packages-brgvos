@@ -1,0 +1,10 @@
+#!/bin/sh
+# This script runs after the package files are unpacked on the target system
+case "$1" in
+post)
+    echo "Compiling GSettings schemas for Simple Weather..."
+    if [ -d /usr/share/gnome-shell/extensions/simple-weather@romanlefler.com/schemas ]; then
+        glib-compile-schemas /usr/share/gnome-shell/extensions/simple-weather@romanlefler.com/schemas
+    fi
+    ;;
+esac
