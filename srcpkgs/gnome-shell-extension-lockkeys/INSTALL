@@ -1,0 +1,10 @@
+#!/bin/sh
+# This script runs after the package files are unpacked on the target system
+case "$1" in
+post)
+    echo "Compiling GSettings schemas for Lock Keys..."
+    if [ -d /usr/share/gnome-shell/extensions/lockkeys@vaina.lt/schemas ]; then
+        glib-compile-schemas /usr/share/gnome-shell/extensions/lockkeys@vaina.lt/schemas
+    fi
+    ;;
+esac
