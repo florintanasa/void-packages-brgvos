@@ -1,0 +1,139 @@
+# Template file for 'MacTahoe-icon-theme'
+pkgname=MacTahoe-icon-theme
+version=0.1.0
+revision=1
+hostmakedepends="tar"
+depends=""
+short_desc="MacOS Tahoe icons suite for desktops - Base variations"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/florintanasa/MacTahoe-icon-theme"
+distfiles="${homepage}/releases/download/v${version}/MacTahoe-icons-all.tar.gz
+ ${homepage}/raw/main/COPYING"
+
+checksum="513ed18b7abd25d5ad64dd69fe1ac2bc44dbd8787016260e7aa5138d4067e43a
+ 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+
+nostrip=yes
+noverifyrdeps=yes
+
+do_extract() {
+	tar -xzf ${XBPS_SRCDISTDIR}/${pkgname}-${version}/MacTahoe-icons-all.tar.gz -C ${wrksrc}
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
+}
+
+do_install() {
+	local icondir="usr/share/icons"
+	vmkdir "${icondir}"
+
+	# Install primary base theme components into main payload
+	cp -a MacTahoe "${DESTDIR}/${icondir}/" 2>/dev/null || true
+	cp -a MacTahoe-dark "${DESTDIR}/${icondir}/" 2>/dev/null || true
+	cp -a MacTahoe-light "${DESTDIR}/${icondir}/" 2>/dev/null || true
+
+	vlicense COPYING
+}
+
+MacTahoe-icon-theme-blue_package() {
+	short_desc="MacOS Tahoe icons suite - Blue variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/MacTahoe-blue "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-blue-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-blue-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+MacTahoe-icon-theme-green_package() {
+	short_desc="MacOS Tahoe icons suite - Green variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/MacTahoe-green "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-green-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-green-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+MacTahoe-icon-theme-grey_package() {
+	short_desc="MacOS Tahoe icons suite - Grey variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/MacTahoe-grey "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-grey-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-grey-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+MacTahoe-icon-theme-nord_package() {
+	short_desc="MacOS Tahoe icons suite - Nord variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/MacTahoe-nord "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-nord-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-nord-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+MacTahoe-icon-theme-orange_package() {
+	short_desc="MacOS Tahoe icons suite - Orange variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/MacTahoe-orange "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-orange-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-orange-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+MacTahoe-icon-theme-purple_package() {
+	short_desc="MacOS Tahoe icons suite - Purple variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/MacTahoe-purple "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-purple-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-purple-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+MacTahoe-icon-theme-red_package() {
+	short_desc="MacOS Tahoe icons suite - Red variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/MacTahoe-red "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-red-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-red-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+MacTahoe-icon-theme-yellow_package() {
+	short_desc="MacOS Tahoe icons suite - Yellow variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/MacTahoe-yellow "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-yellow-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/MacTahoe-yellow-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
