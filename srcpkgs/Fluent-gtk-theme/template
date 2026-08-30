@@ -1,0 +1,30 @@
+# Template file for 'Fluent-gtk-theme'
+pkgname=Fluent-gtk-theme
+version=0.1.0
+revision=1
+hostmakedepends="sassc glib-devel which"
+depends="gtk-engine-murrine gnome-themes-extra sassc"
+short_desc="Fluent design web-like theme for all GTK based desktops, fork from Vince
+(vinceliuice)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/florintanasa/Fluent-gtk-theme"
+distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
+
+checksum="b04a8909197e2bae110be118370126857824afb8b66ef64e96e386afee45b8b1"
+
+do_install() {
+	# Force absolute system paths so the scripts can resolve binaries via which
+	export PATH="/usr/bin:/usr/sbin:$PATH"
+	
+	# Global fallback override for the internal compilation script variables
+	export SASSC="/usr/bin/sassc"
+
+	# Executes the install script natively now that 'which' is available in chroot
+	./install.sh -d "${DESTDIR}/usr/share/themes" -t all --tweaks round
+
+	# SECURITY HOOK COMPLIANCE (Explicitly fixes any hazardous 666 or 777 masks)
+	find "${DESTDIR}/usr/share/themes" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/usr/share/themes" -type d -exec chmod 755 {} +
+}
+
