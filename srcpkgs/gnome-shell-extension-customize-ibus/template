@@ -1,0 +1,33 @@
+# Template file for 'gnome-shell-extension-customize-ibus'
+pkgname=gnome-shell-extension-customize-ibus
+version=94
+revision=1
+hostmakedepends="unzip"
+depends="gnome-shell glib"
+short_desc="Full customization of appearance, behavior, system tray and input source indicator"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0"
+homepage="https://extensions.gnome.org"
+distfiles="${homepage}/extension-data/customize-ibushollowman.ml.v${version}.shell-extension.zip"
+
+checksum="8972e1abd9e7911c385f10169cd96bc8842b6e5325fd6781a68ffa0abb456b49"
+
+do_extract() {
+	# Unzip the official .zip archive into the temporary working directory of xbps-src
+	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/customize-ibushollowman.ml.v${version}.shell-extension.zip
+}
+
+do_install() {
+	# The exact UUID used in the BRGV-OS distribution
+	local uuid="customize-ibus@hollowman.ml"
+	local extdir="usr/share/gnome-shell/extensions/${uuid}"
+
+	# 1. Create the global system extensions path inside the package
+	vmkdir "${extdir}"
+	
+	# 2. Copy all files extracted from zip directly to system destination
+	vcopy "*" "${extdir}"
+
+	# 3. Ensure schemas directory exists (required for compilation)
+	vmkdir "${extdir}/schemas"
+}
