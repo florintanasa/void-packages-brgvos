@@ -1,0 +1,138 @@
+# Template file for 'WhiteSur-icon-theme'
+pkgname=WhiteSur-icon-theme
+version=0.1.0
+revision=1
+hostmakedepends="tar"
+depends=""
+short_desc="White Sur icons suite - Base standard variations"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com"
+distfiles="${homepage}/releases/download/v${version}/WhiteSur-icons-all.tar.gz
+ ${homepage}/raw/master/COPYING"
+checksum="27a715071edadffa954766c8008a7447edadee7288c52991336fb44d8690cc0e
+ 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+
+nostrip=yes
+noverifyrdeps=yes
+
+do_extract() {
+	tar -xzf ${XBPS_SRCDISTDIR}/${pkgname}-${version}/WhiteSur-icons-all.tar.gz -C ${wrksrc}
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
+}
+
+do_install() {
+	local icondir="usr/share/icons"
+	vmkdir "${icondir}"
+
+	# Install primary base theme components into main payload
+	cp -a WhiteSur "${DESTDIR}/${icondir}/" 2>/dev/null || true
+	cp -a WhiteSur-dark "${DESTDIR}/${icondir}/" 2>/dev/null || true
+	cp -a WhiteSur-light "${DESTDIR}/${icondir}/" 2>/dev/null || true
+
+	vlicense COPYING
+}
+
+WhiteSur-icon-theme-green_package() {
+	short_desc="White Sur icons suite - Green color variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/WhiteSur-green "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-green-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-green-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+WhiteSur-icon-theme-grey_package() {
+	short_desc="White Sur icons suite - Grey color variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/WhiteSur-grey "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-grey-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-grey-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+WhiteSur-icon-theme-nord_package() {
+	short_desc="White Sur icons suite - Nord color variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/WhiteSur-nord "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-nord-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-nord-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+WhiteSur-icon-theme-orange_package() {
+	short_desc="White Sur icons suite - Orange color variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/WhiteSur-orange "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-orange-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-orange-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+WhiteSur-icon-theme-pink_package() {
+	short_desc="White Sur icons suite - Pink color variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/WhiteSur-pink "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-pink-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-pink-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+WhiteSur-icon-theme-purple_package() {
+	short_desc="White Sur icons suite - Purple color variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/WhiteSur-purple "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-purple-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-purple-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+WhiteSur-icon-theme-red_package() {
+	short_desc="White Sur icons suite - Red color variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/WhiteSur-red "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-red-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-red-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+WhiteSur-icon-theme-yellow_package() {
+	short_desc="White Sur icons suite - Yellow color variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/WhiteSur-yellow "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-yellow-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/WhiteSur-yellow-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
