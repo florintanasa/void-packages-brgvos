@@ -1,0 +1,33 @@
+# Template file for 'gnome-shell-extension-media-controls'
+pkgname=gnome-shell-extension-media-controls
+version=47
+revision=1
+hostmakedepends="unzip"
+depends="gnome-shell glib"
+short_desc="Show controls and information of the currently playing media in the panel"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://extensions.gnome.org"
+distfiles="${homepage}/extension-data/mediacontrolscliffniff.github.com.v${version}.shell-extension.zip"
+
+checksum="5ecb3ef0e19706b0f9f19aadee7a0b1fe34d8f1ef7bde5a185d32e7a24dd365c"
+
+do_extract() {
+	# Unzip the official .zip archive into the temporary working directory of xbps-src
+	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/mediacontrolscliffniff.github.com.v${version}.shell-extension.zip
+}
+
+do_install() {
+	# The exact UUID used in the BRGV-OS distribution
+	local uuid="mediacontrols@cliffniff.github.com"
+	local extdir="usr/share/gnome-shell/extensions/${uuid}"
+
+	# 1. Create the global system extensions path inside the package
+	vmkdir "${extdir}"
+	
+	# 2. Copy all files extracted from zip directly to system destination
+	vcopy "*" "${extdir}"
+
+	# 3. Ensure schemas directory exists (required for compilation)
+	vmkdir "${extdir}/schemas"
+}
