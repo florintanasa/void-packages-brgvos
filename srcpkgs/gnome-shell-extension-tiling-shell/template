@@ -1,0 +1,41 @@
+# Template file for 'gnome-shell-extension-tiling-shell'
+pkgname=gnome-shell-extension-tiling-shell
+version=76
+revision=1
+hostmakedepends="unzip"
+depends="gnome-shell glib"
+short_desc="Extend Gnome Shell with advanced tiling window management. Supports multiple monitors, Windows 11 Snap Assistant, Fancy Zones, automatic tiling, keyboard shortcuts, customised tiling layouts and more!"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0"
+homepage="https://extensions.gnome.org"
+distfiles="${homepage}/extension-data/tilingshellferrarodomenico.com.v${version}.shell-extension.zip"
+
+checksum="0a9f2b26de65294f53350d74089a3dae9376642784a722e98fc8d78fcc470a35"
+
+do_extract() {
+	# Unzip the official .zip archive into the temporary working directory of xbps-src
+	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/tilingshellferrarodomenico.com.v${version}.shell-extension.zip
+}
+
+do_install() {
+	# The exact UUID used
+	local uuid="tilingshell@ferrarodomenico.com"
+	local extdir="usr/share/gnome-shell/extensions/${uuid}"
+
+	# 1. Create the global system extensions path inside the package
+	vmkdir "${extdir}"
+	
+	# 2. Copy all files extracted from zip directly to system destination
+	vcopy "*" "${extdir}"
+
+	# 3. Ensure schemas directory exists (required for compilation)
+	vmkdir "${extdir}/schemas"
+
+	# 2. Rezolvă avertizarea: Asigură persistența folderului gol styles
+	mkdir -p "${DESTDIR}/${extdir}/styles"
+	touch "${DESTDIR}/${extdir}/styles/.keep_tilingshell_0"
+
+	# 3. Fix the rights - eliminate the written right
+	find "${DESTDIR}/${extdir}" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/${extdir}" -type d -exec chmod 755 {} +
+}
