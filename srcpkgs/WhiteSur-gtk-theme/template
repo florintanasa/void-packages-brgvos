@@ -1,0 +1,34 @@
+# Template file for 'WhiteSur-gtk-theme'
+pkgname=WhiteSur-gtk-theme
+version=0.1.0
+revision=1
+hostmakedepends="tar"
+depends="gtk-engine-murrine gnome-themes-extra"
+short_desc="MacOS White Sur like theme suite for gtk desktops, fork from Vince (vinceliuice)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/florintanasa/WhiteSur-gtk-theme"
+distfiles="${homepage}/releases/download/v${version}/WhiteSur-themes-all.tar.gz
+ ${homepage}/raw/master/COPYING"
+
+checksum="8d60ecc0b2f87037a5a77eb2c814dfcbb391e0b3f56bccaba11cf4501b41b838
+ 47508b7d79f238a7e7225c21d2c9234b860c6d1931d8f9f2d545a2db0e26a25f"
+
+do_extract() {
+	tar -xzf ${XBPS_SRCDISTDIR}/${pkgname}-${version}/WhiteSur-themes-all.tar.gz -C ${wrksrc}
+    cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
+}
+
+do_install() {
+	local themedir="usr/share/themes"
+
+	vmkdir "${themedir}"
+	vcopy "*" "${themedir}"
+
+    rm -f "${DESTDIR}/${themedir}/COPYING"
+
+	find "${DESTDIR}/${themedir}" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/${themedir}" -type d -exec chmod 755 {} +
+
+    vlicense COPYING
+}
