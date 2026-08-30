@@ -1,0 +1,10 @@
+#!/bin/sh
+# This script runs after the package files are unpacked on the target system
+case "$1" in
+post)
+    echo "Compiling GSettings schemas for Dash To Panel..."
+    if [ -d /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas ]; then
+        glib-compile-schemas /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas
+    fi
+    ;;
+esac
