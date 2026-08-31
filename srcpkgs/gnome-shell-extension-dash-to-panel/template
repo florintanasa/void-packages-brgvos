@@ -8,25 +8,35 @@ short_desc="An icon taskbar for the Gnome Shell"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0"
 homepage="https://extensions.gnome.org"
-distfiles="${homepage}/extension-data/dash-to-paneljderose9.github.com.v${version}.shell-extension.zip"
+distfiles="${homepage}/extension-data/dash-to-paneljderose9.github.com.v${version}.shell-extension.zip
+ https://raw.githubusercontent.com/home-sweet-gnome/dash-to-panel/refs/heads/master/COPYING"
 
-checksum="944ee1408d6f5b6e1cf646bc81dd7af4f9a7bb880b3d88dbb0d90ada8c000410"
+checksum="944ee1408d6f5b6e1cf646bc81dd7af4f9a7bb880b3d88dbb0d90ada8c000410
+ e1aa57b16350b3f421e49bd8b9401252d2b667616def1718c72576286249ae4f"
 
 do_extract() {
 	# Unzip the official .zip archive into the temporary working directory of xbps-src
 	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/dash-to-paneljderose9.github.com.v${version}.shell-extension.zip
+	# Copy LICENSE
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
 }
 
 do_install() {
-	# The exact UUID used in the BRGV-OS distribution
+	# Local variables
 	local uuid="dash-to-panel@jderose9.github.com"
 	local extdir="usr/share/gnome-shell/extensions/${uuid}"
+
+	# 1. Install License
+	vlicense COPYING
 
 	# 1. Create the global system extensions path inside the package
 	vmkdir "${extdir}"
 	
 	# 2. Copy all files extracted from zip directly to system destination
 	vcopy "*" "${extdir}"
+
+	# 4. Make clean
+	rm -f "${DESTDIR}/${extdir}/COPYING"
 
 	# 3. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
