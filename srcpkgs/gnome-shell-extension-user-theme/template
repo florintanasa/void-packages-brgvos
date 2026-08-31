@@ -8,26 +8,36 @@ short_desc="Load shell themes from user directory"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0-or-later"
 homepage="https://extensions.gnome.org"
-distfiles="${homepage}/extension-data/user-themegnome-shell-extensions.gcampax.github.com.v${version}.shell-extension.zip"
+distfiles="${homepage}/extension-data/user-themegnome-shell-extensions.gcampax.github.com.v${version}.shell-extension.zip
+ https://gitlab.gnome.org/GNOME/gnome-shell-extensions/-/raw/main/COPYING"
 
-checksum="bd8cda948665101960044269d78d0858447f491dc38d875fda77aaec735bf72c"
+checksum="bd8cda948665101960044269d78d0858447f491dc38d875fda77aaec735bf72c
+ 0f52f4acf166e2dfb9da74b90fa8ff122cd2b6868539e83c9733440de5e1343b"
 
 do_extract() {
 	# Unzip the official .zip archive into the temporary working directory of xbps-src
 	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/user-themegnome-shell-extensions.gcampax.github.com.v${version}.shell-extension.zip
+	# Copy LICENSE
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
 }
 
 do_install() {
-	# The exact UUID used in the BRGV-OS distribution
+	# Local variables
 	local uuid="user-theme@gnome-shell-extensions.gcampax.github.com"
 	local extdir="usr/share/gnome-shell/extensions/${uuid}"
 
-	# 1. Create the global system extensions path inside the package
+	# 1. Install License
+	vlicense COPYING
+
+	# 2. Create the global system extensions path inside the package
 	vmkdir "${extdir}"
 	
-	# 2. Copy all files extracted from zip directly to system destination
+	# 3. Copy all files extracted from zip directly to system destination
 	vcopy "*" "${extdir}"
 
-	# 3. Ensure schemas directory exists (required for compilation)
+	# 4. Make clean
+	rm -f "${DESTDIR}/${extdir}/COPYING"
+
+	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
 }
