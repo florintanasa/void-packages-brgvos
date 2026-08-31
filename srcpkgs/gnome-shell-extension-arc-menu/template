@@ -8,26 +8,36 @@ short_desc="Application menu for GNOME Shell"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0"
 homepage="https://extensions.gnome.org"
-distfiles="${homepage}/extension-data/arcmenuarcmenu.com.v${version}.shell-extension.zip"
+distfiles="${homepage}/extension-data/arcmenuarcmenu.com.v${version}.shell-extension.zip
+ https://gitlab.com/arcmenu/ArcMenu/-/raw/master/LICENSE"
 
-checksum="495504d9d1ca8de0547ff46c2dfdbaae25ef9ae184521ac9192b9b526e445bd1"
+checksum="495504d9d1ca8de0547ff46c2dfdbaae25ef9ae184521ac9192b9b526e445bd1
+ 895db8304420836c3ac98bde66e6baa0e7874ec1aba48206a9d7db585e67d7f1"
 
 do_extract() {
 	# Unzip the official .zip archive into the temporary working directory of xbps-src
 	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/arcmenuarcmenu.com.v${version}.shell-extension.zip
+	# Copy LICENSE
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/LICENSE ${wrksrc}/
 }
 
 do_install() {
-	# The exact UUID used in the BRGV-OS distribution
+	# Local variables
 	local uuid="arcmenu@arcmenu.com"
 	local extdir="usr/share/gnome-shell/extensions/${uuid}"
 
-	# 1. Create the global system extensions path inside the package
+	# 1. Install License
+	vlicense LICENSE
+
+	# 2. Create the global system extensions path inside the package
 	vmkdir "${extdir}"
 	
-	# 2. Copy all files extracted from zip directly to system destination
+	# 3. Copy all files extracted from zip directly to system destination
 	vcopy "*" "${extdir}"
 
-	# 3. Ensure schemas directory exists (required for compilation)
+	# 4. Make clean
+	rm -f "${DESTDIR}/${extdir}/LICENSE"
+
+	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
 }
