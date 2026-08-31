@@ -8,26 +8,36 @@ short_desc="Adds icons to the desktop. Fork of the original Desktop Icons extens
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-3.0"
 homepage="https://extensions.gnome.org"
-distfiles="${homepage}/extension-data/dingrastersoft.com.v${version}.shell-extension.zip"
+distfiles="${homepage}/extension-data/dingrastersoft.com.v${version}.shell-extension.zip
+ https://gitlab.com/rastersoft/desktop-icons-ng/-/raw/master/COPYING"
 
-checksum="429171dda75a6d449650679c77370fb7edd17b9b183d68e54ab6892ab478a3f3"
+checksum="429171dda75a6d449650679c77370fb7edd17b9b183d68e54ab6892ab478a3f3
+ 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
 
 do_extract() {
 	# Unzip the official .zip archive into the temporary working directory of xbps-src
 	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/dingrastersoft.com.v${version}.shell-extension.zip
+	# Copy LICENSE
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
 }
 
 do_install() {
-	# The exact UUID used in the BRGV-OS distribution
+	# Local variables
 	local uuid="ding@rastersoft.com"
 	local extdir="usr/share/gnome-shell/extensions/${uuid}"
 
-	# 1. Create the global system extensions path inside the package
+	# 1. Install License
+	vlicense COPYING
+
+	# 2. Create the global system extensions path inside the package
 	vmkdir "${extdir}"
 	
-	# 2. Copy all files extracted from zip directly to system destination
+	# 3. Copy all files extracted from zip directly to system destination
 	vcopy "*" "${extdir}"
 
-	# 3. Ensure schemas directory exists (required for compilation)
+	# 4. Make clean
+	rm -f "${DESTDIR}/${extdir}/COPYING"
+
+	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
 }
