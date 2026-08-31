@@ -7,7 +7,7 @@ depends=""
 short_desc="White Sur icons suite - Base standard variations"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-3.0-or-later"
-homepage="https://github.com"
+homepage="https://github.com/florintanasa/WhiteSur-icon-theme"
 distfiles="${homepage}/releases/download/v${version}/WhiteSur-icons-all.tar.gz
  ${homepage}/raw/master/COPYING"
 checksum="27a715071edadffa954766c8008a7447edadee7288c52991336fb44d8690cc0e
