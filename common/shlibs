@@ -4614,3 +4614,4 @@ libxrt_core.so.2 xdna-driver-xrt-git-2026.05.21.0_1
 libxrt_coreutil.so.2 xdna-driver-xrt-git-2026.05.21.0_1
 libcgif.so.0 cgif-0.5.3_1
 libdsk.so.5 libdsk-1.5.22_1
+libblend2d.so libblend2d-0.21.2_1
