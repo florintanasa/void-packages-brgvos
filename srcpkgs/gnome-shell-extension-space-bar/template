@@ -6,7 +6,7 @@ hostmakedepends="unzip"
 depends="gnome-shell glib"
 short_desc="Replaces the top-panel workspace indicator with an i3-like workspaces bar"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
-license="GPL-2.0"
+license="custom:source-not-found"
 homepage="https://extensions.gnome.org"
 distfiles="${homepage}/extension-data/space-barluchrioh.v${version}.shell-extension.zip"
 
