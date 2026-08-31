@@ -8,13 +8,17 @@ short_desc="Disable the screensaver and auto suspend"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0"
 homepage="https://extensions.gnome.org"
-distfiles="${homepage}/extension-data/caffeinepatapon.info.v${version}.shell-extension.zip"
+distfiles="${homepage}/extension-data/caffeinepatapon.info.v${version}.shell-extension.zip
+ https://raw.githubusercontent.com/eonpatapon/gnome-shell-extension-caffeine/refs/heads/master/COPYING"
 
-checksum="dd2b5962ebad4e957390522e5df539764828011032360743e77cc5940ebac955"
+checksum="dd2b5962ebad4e957390522e5df539764828011032360743e77cc5940ebac955
+ 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
 
 do_extract() {
 	# Unzip the official .zip archive into the temporary working directory of xbps-src
 	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/caffeinepatapon.info.v${version}.shell-extension.zip
+	# Copy LICENSE
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
 }
 
 do_install() {
@@ -22,12 +26,18 @@ do_install() {
 	local uuid="caffeine@patapon.info"
 	local extdir="usr/share/gnome-shell/extensions/${uuid}"
 
-	# 1. Create the global system extensions path inside the package
+	# 1. Install License
+	vlicense COPYING
+
+	# 2. Create the global system extensions path inside the package
 	vmkdir "${extdir}"
 	
-	# 2. Copy all files extracted from zip directly to system destination
+	# 3. Copy all files extracted from zip directly to system destination
 	vcopy "*" "${extdir}"
 
-	# 3. Ensure schemas directory exists (required for compilation)
+	# 4. Make clean
+	rm -f "${DESTDIR}/${extdir}/COPYING"
+
+	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
 }
