@@ -8,26 +8,36 @@ short_desc="Switches between the system proxy settings profiles defined in Netwo
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0-or-later"
 homepage="https://extensions.gnome.org"
-distfiles="${homepage}/extension-data/ProxySwitcherflannaghan.com.v${version}.shell-extension.zip"
+distfiles="${homepage}/extension-data/ProxySwitcherflannaghan.com.v${version}.shell-extension.zip
+ https://raw.githubusercontent.com/tomflannaghan/proxy-switcher/refs/heads/master/COPYING"
 
-checksum="bd5d0f7502097937933ba2b20ed93439ec32cce8566993c4ea74ed45186812cc"
+checksum="bd5d0f7502097937933ba2b20ed93439ec32cce8566993c4ea74ed45186812cc
+ 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
 
 do_extract() {
 	# Unzip the official .zip archive into the temporary working directory of xbps-src
 	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/ProxySwitcherflannaghan.com.v${version}.shell-extension.zip
+	# Copy LICENSE
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/COPYING ${wrksrc}/
 }
 
 do_install() {
-	# The exact UUID used in the BRGV-OS distribution
+	# Local variable
 	local uuid="ProxySwitcher@flannaghan.com"
 	local extdir="usr/share/gnome-shell/extensions/${uuid}"
 
-	# 1. Create the global system extensions path inside the package
+	# 1. Install License
+	vlicense COPYING
+
+	# 2. Create the global system extensions path inside the package
 	vmkdir "${extdir}"
 	
-	# 2. Copy all files extracted from zip directly to system destination
+	# 3. Copy all files extracted from zip directly to system destination
 	vcopy "*" "${extdir}"
 
-	# 3. Ensure schemas directory exists (required for compilation)
+	# 4. Make clean
+	rm -f "${DESTDIR}/${extdir}/COPYING"
+
+	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
 }
