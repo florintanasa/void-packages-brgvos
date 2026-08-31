@@ -1,6 +1,6 @@
 # Template file for 'FastFlowLM-git'
 pkgname=FastFlowLM-git
-version=2026.08.19.0
+version=2026.08.31.0
 revision=1
 build_style=cmake
 hostmakedepends="cmake pkg-config git cargo rust"
