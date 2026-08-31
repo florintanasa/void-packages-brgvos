@@ -8,26 +8,36 @@ short_desc="A highly configurable weather indicator"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-3.0"
 homepage="https://extensions.gnome.org"
-distfiles="${homepage}/extension-data/simple-weatherromanlefler.com.v${version}.shell-extension.zip"
+distfiles="${homepage}/extension-data/simple-weatherromanlefler.com.v${version}.shell-extension.zip
+ https://raw.githubusercontent.com/romanlefler/SimpleWeather/refs/heads/development/LICENSE"
 
-checksum="d12f2839e1f100191373cdc286f212544c59bdee92cf3834b6851714d1f8a5ed"
+checksum="d12f2839e1f100191373cdc286f212544c59bdee92cf3834b6851714d1f8a5ed
+ 3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
 
 do_extract() {
 	# Unzip the official .zip archive into the temporary working directory of xbps-src
 	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/simple-weatherromanlefler.com.v${version}.shell-extension.zip
+	# Copy LICENSE
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/LICENSE ${wrksrc}/
 }
 
 do_install() {
-	# The exact UUID used in the BRGV-OS distribution
+	# Local variables
 	local uuid="simple-weather@romanlefler.com"
 	local extdir="usr/share/gnome-shell/extensions/${uuid}"
 
-	# 1. Create the global system extensions path inside the package
+	# 1. Install License
+	vlicense LICENSE
+
+	# 2. Create the global system extensions path inside the package
 	vmkdir "${extdir}"
 	
-	# 2. Copy all files extracted from zip directly to system destination
+	# 3. Copy all files extracted from zip directly to system destination
 	vcopy "*" "${extdir}"
 
-	# 3. Ensure schemas directory exists (required for compilation)
+	# 4. Make clean
+	rm -f "${DESTDIR}/${extdir}/LICENSE"
+
+	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
 }
