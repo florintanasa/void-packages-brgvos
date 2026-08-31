@@ -6,28 +6,38 @@ hostmakedepends="unzip"
 depends="gnome-shell glib"
 short_desc="Makes GTK theme to follow system accent color and color scheme Light or Dark"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
-license="GPL-3.0-or-later"
+license="GPL-2.0"
 homepage="https://extensions.gnome.org"
-distfiles="${homepage}/extension-data/accent-gtk-themebrgvos.v${version}.shell-extension.zip"
+distfiles="${homepage}/extension-data/accent-gtk-themebrgvos.v${version}.shell-extension.zip
+ https://raw.githubusercontent.com/florintanasa/accent-gtk-theme/refs/heads/main/LICENSE.md"
 
-checksum="448460b61035b23d6f309133af3fd20dc805725c5867af4fe3b1e6ec7880204d"
+checksum="448460b61035b23d6f309133af3fd20dc805725c5867af4fe3b1e6ec7880204d
+ addb1c67a9dc2334f5d3f5ee416451266cf040d787070903cca6b9d99d6331a3"
 
 do_extract() {
 	# Unzip the official .zip archive into the temporary working directory of xbps-src
 	unzip -d ${wrksrc} ${XBPS_SRCDISTDIR}/${pkgname}-${version}/accent-gtk-themebrgvos.v${version}.shell-extension.zip
+	# Copy LICENSE.md
+	cp ${XBPS_SRCDISTDIR}/${pkgname}-${version}/LICENSE.md ${wrksrc}/
 }
 
 do_install() {
-	# The exact UUID used in the BRGV-OS distribution
+	# Local variables
 	local uuid="accent-gtk-theme@brgvos"
 	local extdir="usr/share/gnome-shell/extensions/${uuid}"
 
-	# 1. Create the global system extensions path inside the package
+	# 1. Install License
+	vlicense LICENSE.md
+
+	# 2. Create the global system extensions path inside the package
 	vmkdir "${extdir}"
 	
-	# 2. Copy all files extracted from zip directly to system destination
+	# 3. Copy all files extracted from zip directly to system destination
 	vcopy "*" "${extdir}"
 
-	# 3. Ensure schemas directory exists (required for compilation)
+	# 4. Make clean
+	rm -f "${DESTDIR}/${extdir}/LICENSE.md"
+
+	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
 }
