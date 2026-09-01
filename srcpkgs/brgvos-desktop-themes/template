@@ -1,0 +1,33 @@
+# Template file for 'brgvos-desktop-themes'
+pkgname=brgvos-desktop-themes
+version=1.0
+revision=1
+metapackage=yes
+depends="Fluent-cursors-theme
+ Fluent-gtk-theme
+ Fluent-icon-theme
+ MacTahoe-cursors-theme
+ MacTahoe-gtk-theme-blur
+ MacTahoe-icon-theme
+ MacTahoe-icon-theme-blue
+ MacTahoe-icon-theme-green
+ MacTahoe-icon-theme-grey
+ MacTahoe-icon-theme-nord
+ MacTahoe-icon-theme-orange
+ MacTahoe-icon-theme-purple
+ MacTahoe-icon-theme-red
+ MacTahoe-icon-theme-yellow
+ WhiteSur-gtk-theme
+ WhiteSur-icon-theme
+ WhiteSur-icon-theme-green
+ WhiteSur-icon-theme-grey
+ WhiteSur-icon-theme-nord
+ WhiteSur-icon-theme-orange
+ WhiteSur-icon-theme-pink
+ WhiteSur-icon-theme-purple
+ WhiteSur-icon-theme-red
+ WhiteSur-icon-theme-yellow"
+short_desc="BRGV-OS metapackage for system window styles, icons, and cursors"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com"
