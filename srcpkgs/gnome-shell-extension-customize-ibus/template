@@ -1,7 +1,7 @@
 # Template file for 'gnome-shell-extension-customize-ibus'
 pkgname=gnome-shell-extension-customize-ibus
 version=94
-revision=1
+revision=2
 hostmakedepends="unzip"
 depends="gnome-shell glib"
 short_desc="Full customization of appearance, behavior, system tray and input source indicator"
@@ -40,4 +40,8 @@ do_install() {
 
 	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
+
+	# 6. Fix the rights - eliminate the written right
+	find "${DESTDIR}/${extdir}" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/${extdir}" -type d -exec chmod 755 {} +
 }
