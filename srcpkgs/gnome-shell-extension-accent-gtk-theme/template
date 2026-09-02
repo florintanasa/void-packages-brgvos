@@ -1,7 +1,7 @@
 # Template file for 'gnome-shell-extension-accent-gtk-theme'
 pkgname=gnome-shell-extension-accent-gtk-theme
 version=8
-revision=1
+revision=2
 hostmakedepends="unzip"
 depends="gnome-shell glib"
 short_desc="Makes GTK theme to follow system accent color and color scheme Light or Dark"
@@ -40,4 +40,8 @@ do_install() {
 
 	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
+
+	# 6. Fix the rights - eliminate the written right
+	find "${DESTDIR}/${extdir}" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/${extdir}" -type d -exec chmod 755 {} +
 }
