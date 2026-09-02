@@ -41,7 +41,7 @@ do_install() {
 	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
 
-	# 6. Rezolvă avertizarea: Asigură persistența folderului gol styles
+	# 6. Resolve warning: Ensure persistence of empty styles folder
 	mkdir -p "${DESTDIR}/${extdir}/styles"
 	touch "${DESTDIR}/${extdir}/styles/.keep_tilingshell_0"
 
