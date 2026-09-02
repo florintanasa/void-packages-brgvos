@@ -1,0 +1,16 @@
+#!/bin/sh
+# Runtime execution trigger hook deployed on the target environment / ISO rootfs context
+
+case "$ACTION" in
+post)
+	# Diversion for os-release: Redirect the generic etc symlink safely to BRGV-OS path
+	if [ -L "etc/os-release" ] || [ -f "etc/os-release" ]; then
+		rm -f "etc/os-release"
+	fi
+	ln -sf /usr/share/brgvos/branding/os-release etc/os-release
+
+	# Shadow Diversion for lsb_release: Mount inside usr/local/bin to shadow the base-files binary
+	mkdir -p usr/local/bin
+	ln -sf /usr/share/brgvos/branding/lsb_release usr/local/bin/lsb_release
+	;;
+esac
