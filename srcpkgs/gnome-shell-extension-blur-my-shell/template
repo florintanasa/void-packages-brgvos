@@ -1,7 +1,7 @@
 # Template file for 'gnome-shell-extension-blur-my-shell'
 pkgname=gnome-shell-extension-blur-my-shell
 version=72
-revision=1
+revision=2
 hostmakedepends="unzip"
 depends="gnome-shell glib"
 short_desc="Adds a blur look to different parts of the GNOME Shell, including the top panel, dash and overview"
@@ -40,4 +40,8 @@ do_install() {
 
 	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
+
+	# 6. Fix the rights - eliminate the written right
+	find "${DESTDIR}/${extdir}" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/${extdir}" -type d -exec chmod 755 {} +
 }
