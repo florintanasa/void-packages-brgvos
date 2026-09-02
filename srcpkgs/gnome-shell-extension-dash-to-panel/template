@@ -1,7 +1,7 @@
 # Template file for 'gnome-shell-extension-dash-to-panel'
 pkgname=gnome-shell-extension-dash-to-panel
 version=73
-revision=1
+revision=2
 hostmakedepends="unzip"
 depends="gnome-shell glib"
 short_desc="An icon taskbar for the Gnome Shell"
@@ -40,4 +40,8 @@ do_install() {
 
 	# 3. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
+
+	# 4. Fix the rights - eliminate the written right
+	find "${DESTDIR}/${extdir}" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/${extdir}" -type d -exec chmod 755 {} +
 }
