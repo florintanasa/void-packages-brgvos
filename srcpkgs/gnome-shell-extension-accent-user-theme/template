@@ -1,9 +1,9 @@
 # Template file for 'gnome-shell-extension-accent-user-theme'
 pkgname=gnome-shell-extension-accent-user-theme
 version=3
-revision=1
+revision=3
 hostmakedepends="unzip"
-depends="gnome-shell glib gnome-shell-extension-user-theme"
+depends="gnome-shell glib gnome-shell-extensions"
 short_desc="Makes user themes to follow system accent color and color scheme Light or Dark"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-3.0-or-later"
@@ -40,4 +40,8 @@ do_install() {
 
 	# 5. Ensure schemas directory exists (required for compilation)
 	vmkdir "${extdir}/schemas"
+
+	# 6. Fix the rights - eliminate the written right
+	find "${DESTDIR}/${extdir}" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/${extdir}" -type d -exec chmod 755 {} +
 }
