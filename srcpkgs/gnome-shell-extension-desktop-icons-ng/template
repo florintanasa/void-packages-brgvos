@@ -1,7 +1,7 @@
 # Template file for 'gnome-shell-extension-desktop-icons-ng'
 pkgname=gnome-shell-extension-desktop-icons-ng
 version=85
-revision=2
+revision=3
 hostmakedepends="unzip"
 depends="gnome-shell glib"
 short_desc="Adds icons to the desktop. Fork of the original Desktop Icons extension, with several enhancements"
@@ -44,4 +44,11 @@ do_install() {
 	# 6. Fix the rights - eliminate the written right
 	find "${DESTDIR}/${extdir}" -type f -exec chmod 644 {} +
 	find "${DESTDIR}/${extdir}" -type d -exec chmod 755 {} +
+
+	if [ -f "${DESTDIR}/${extdir}/app/ding.js" ]; then
+		chmod 755 "${DESTDIR}/${extdir}/app/ding.js"
+	fi
+	if [ -f "${DESTDIR}/${extdir}/app/createThumbnail.js" ]; then
+		chmod 755 "${DESTDIR}/${extdir}/app/createThumbnail.js"
+	fi
 }
