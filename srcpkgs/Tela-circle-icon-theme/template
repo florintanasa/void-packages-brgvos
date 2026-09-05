@@ -1,0 +1,199 @@
+# Template file for 'Tela-circle-icon-theme'
+pkgname=Tela-circle-icon-theme
+version=0.1.0
+revision=1
+hostmakedepends="tar"
+depends=""
+short_desc="Tela circle icons suite for desktops - Base variations, fork from Vince(vinceliuice)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="custom:"
+homepage="https://github.com/florintanasa/Tela-circle-icon-theme"
+distfiles="${homepage}/releases/download/v${version}/Tela-circle-icons-all.tar.gz"
+
+checksum="71beb15a6343f355a4e65f96493a92ec430de359d1ce76ae8478937c6b40d918"
+
+nostrip=yes
+noverifyrdeps=yes
+
+do_extract() {
+	tar -xzf ${XBPS_SRCDISTDIR}/${pkgname}-${version}/Tela-circle-icons-all.tar.gz -C ${wrksrc}
+}
+
+do_install() {
+	local icondir="usr/share/icons"
+	vmkdir "${icondir}"
+
+	# Install primary base theme components into main payload
+	cp -a Tela-circle "${DESTDIR}/${icondir}/" 2>/dev/null || true
+	cp -a Tela-circle-dark "${DESTDIR}/${icondir}/" 2>/dev/null || true
+	cp -a Tela-circle-light "${DESTDIR}/${icondir}/" 2>/dev/null || true
+}
+
+Tela-circle-icon-theme-blue_package() {
+	short_desc="Tela circle icons suite - Blue variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-blue "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-blue-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-blue-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-brown_package() {
+	short_desc="Tela circle icons suite - Brown variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-brown "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-brown-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-brown-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-dracula_package() {
+	short_desc="Tela circle icons suite - Dracula variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-dracula "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-dracula-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-dracula-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-green_package() {
+	short_desc="Tela circle icons suite - Green variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-green "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-green-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-green-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-grey_package() {
+	short_desc="Tela circle icons suite - Grey variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-grey "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-grey-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-grey-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-manjaro_package() {
+	short_desc="Tela circle icons suite - Manjaro variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-manjaro "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-manjaro-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-manjaro-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-nord_package() {
+	short_desc="Tela circle icons suite - Nord variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-nord "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-nord-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-nord-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-orange_package() {
+	short_desc="Tela circle icons suite - Orange variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-orange "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-orange-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-orange-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-pink_package() {
+	short_desc="Tela circle icons suite - Pink variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-pink "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-pink-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-pink-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-purple_package() {
+	short_desc="Tela circle icons suite - Purple variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-purple "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-purple-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-purple-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-red_package() {
+	short_desc="Tela circle icons suite - Red variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-red "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-red-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-red-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-ubuntu_package() {
+	short_desc="Tela circle icons suite - Ubuntu variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-ubuntu "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-ubuntu-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-ubuntu-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
+
+Tela-circle-icon-theme-yellow_package() {
+	short_desc="Tela circle icons suite - Yellow variations"
+	nostrip=yes
+	noverifyrdeps=yes
+	pkg_install() {
+		local icondir="usr/share/icons"
+		vmkdir "${icondir}"
+		cp -a ${wrksrc}/Tela-circle-yellow "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-yellow-dark "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+		cp -a ${wrksrc}/Tela-circle-yellow-light "${PKGDESTDIR}/${icondir}/" 2>/dev/null || true
+	}
+}
