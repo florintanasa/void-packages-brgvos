@@ -1,0 +1,32 @@
+# Template file for 'Gruvbox-gtk-theme'
+pkgname=Gruvbox-gtk-theme
+version=0.1.0
+revision=1
+hostmakedepends="sassc glib-devel which"
+depends="gtk-engine-murrine gnome-themes-extra sassc"
+short_desc="Gruvbox design web-like theme for all GTK based desktops, fork from Fausto-Korpsvart(@korpsvart)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/florintanasa/Gruvbox-GTK-Theme"
+distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
+
+checksum="719f73b1da8d05c97b5c9303d4a99016b6311f554a252d0d6c91c9506f5fb65c"
+
+do_install() {
+	# Force absolute system paths so the scripts can resolve binaries via which
+	export PATH="/usr/bin:/usr/sbin:$PATH"
+	
+	# Global fallback override for the internal compilation script variables
+	export SASSC="/usr/bin/sassc"
+
+	# Executes the install script natively now that 'which' is available in chroot
+	./themes/install.sh -d "${DESTDIR}/usr/share/themes" -t all --tweaks medium outline float macos
+
+    # Install LICENSE
+    vlicense LICENSE
+	
+	# SECURITY HOOK COMPLIANCE (Explicitly fixes any hazardous 666 or 777 masks)
+	find "${DESTDIR}/usr/share/themes" -type f -exec chmod 644 {} +
+	find "${DESTDIR}/usr/share/themes" -type d -exec chmod 755 {} +
+}
+
