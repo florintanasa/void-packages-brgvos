@@ -1,6 +1,6 @@
 # Template file for 'ryzen-smu-dkms'
 pkgname=ryzen-smu-dkms
-version=2026.05.04 # Adjust based on latest tag
+version=2026.09.06 # Adjust based on latest tag
 revision=1
 # We only install sources, so no_target is appropriate
 no_target=yes
@@ -12,7 +12,7 @@ maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://github.com/amkillam/ryzen_smu"
 distfiles="${homepage}/archive/refs/heads/main.tar.gz>ryzen-smu-dkms-${version}.tar.gz"
-checksum="7cf28a045a09fd9f90f7766651473a8f7d4cc49e13dd4a757f4521c92fb42f57"
+checksum="4a5981d237277dc036f6bd94892b930122e6a0637d2c3d2501a8b0e78af098dd"
 
 wrksrc="ryzen-smu-main"
 
