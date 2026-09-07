@@ -1,6 +1,6 @@
-# Template file for 'brgvos-pymouth-theme'
+# Template file for 'brgvos-plymouth-theme'
 # Content is packaged from the brgvos-includedir category archives in the brgvos-void repo.
-pkgname=brgvos-pymouth-theme
+pkgname=brgvos-plymouth-theme
 version=1.0
 revision=1
 hostmakedepends="tar"
