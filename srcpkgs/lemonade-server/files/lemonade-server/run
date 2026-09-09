@@ -37,6 +37,14 @@ if [ -n "$LEMONADE_API_KEY" ]; then
 	export LEMONADE_API_KEY="$LEMONADE_API_KEY"
 fi
 
+if [ -n "$LEMONADE_ADMIN_API_KEY" ]; then
+	export LEMONADE_ADMIN_API_KEY="$LEMONADE_ADMIN_API_KEY"
+fi
+
+if [ -n "$HF_TOKEN" ]; then
+	export HF_TOKEN="$HF_TOKEN"
+fi
+
 # Default environment values if not overridden in drop-ins
 : ${HOST:="localhost"}
 : ${PORT:="13305"}

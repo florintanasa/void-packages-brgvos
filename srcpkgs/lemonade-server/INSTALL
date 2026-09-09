@@ -17,6 +17,12 @@ post)
         setfacl -d -m g:llm:rwX /var/lib/llms/huggingface
         setfacl -d -m g:llm:rwX /var/lib/llms/flm
     fi
+    # I apply for update lemonade-server only, it's necessary to exist hub directory
+    if [ -d "/var/lib/llms/huggingface/hub" ]; then
+        echo "Apply to /var/lib/llms/huggingface/hub Default ACLs"
+        setfacl -R -m g:llm:rwX  /var/lib/llms/huggingface/hub
+        setfacl -d -m g:llm:rwX  /var/lib/llms/huggingface/hub
+    fi
     echo ""
     ;;
 esac
