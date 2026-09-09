@@ -9,11 +9,17 @@ post)
     chmod 750 /etc/llamacpp
 
     echo "Setting the owner for Hugging Face directories..."
-    chown -R root:llm /var/lib/llms
-    chown -R root:llm /var/lib/llms/huggingface
+    chown root:llm /var/lib/llms
+    chown root:llm /var/lib/llms/huggingface
 
     echo "Setting strict permissions for Hugging Face directory..."
     chmod 2770 /var/lib/llms
     chmod 2770 /var/lib/llms/huggingface
+    # Apply the working Default ACL directly to LLM's home
+    if command -v setfacl >/dev/null 2>&1; then
+        echo "Applying production Default ACLs for dynamic model sharing..."
+        setfacl -d -m g:llm:rwX /var/lib/llms
+        setfacl -d -m g:llm:rwX /var/lib/llms/huggingface
+    fi
     ;;
 esac

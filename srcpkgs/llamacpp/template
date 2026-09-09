@@ -1,12 +1,12 @@
 # Template file for 'llamacpp'
 pkgname=llamacpp
-version=0.3.0
-revision=2
+version=0.4.0
+revision=1
 build_style=cmake
 configure_args="-DGGML_VULKAN=ON -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_BUILD_TYPE=Release -DLLAMA_BUILD_TESTS=OFF -DCMAKE_INSTALL_LIBDIR=lib"
 hostmakedepends="pkg-config cmake ninja git nodejs shaderc glslang"
 makedepends="vulkan-loader-devel openssl-devel libgomp-devel SPIRV-Headers openblas-devel"
-depends=""
+depends="acl-progs"
 
 # System accounts and isolation parameters
 system_groups="llm"
@@ -24,7 +24,7 @@ license="MIT"
 homepage="https://github.com/ggml-org/llama.cpp"
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz>llamacpp-${version}.tar.gz"
 
-checksum="d94c02d86db22d68692f6bb5b3854763d5091e52142868dc7251995517c666d1"
+checksum="9c2948aa9c79c92dd0e4c98e11ff5cf76dfdcaebdeb18e3e93409e9a98aefdab"
 
 post_install() {
 	# 1. Create service private storage directories and drop-in config path
