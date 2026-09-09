@@ -1,6 +1,6 @@
 # Template file for 'linux7.2-tkg-bore-lto'
 pkgname=linux7.2-tkg-bore-lto
-version=7.2.3
+version=7.2.4
 revision=1
 short_desc="Linux kernel and modules (${version%.*} series), with TKG patches, with the Burst-Oriented Response Enhancer (BORE) CPU scheduler and Full LTO with optimization -O3"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
@@ -18,7 +18,7 @@ rc*) distfiles="https://git.kernel.org/torvalds/t/linux-${version%.*}-${version#
 esac
 
 checksum="f9fef3d14c0df53819026f4be74459835c2a0b0dcbf5b5bbd9ea19f0829402b3
- aa8000af662ea5f2197db2b173f66a8bea2ccf72c60594415c4815fafa555ae7"
+ 0299fed2ede06d36315caab88aa1c932862d76606683f6be6a45ff717117bc79"
 
 python_version=3
 
@@ -128,6 +128,7 @@ do_configure() {
 		#./scripts/config --enable CONFIG_USB_MSI2500
 		#./scripts/config --enable CONFIG_USB_HACKRF
 		#./scripts/config --set-str CONFIG_DRM_PANIC_SCREEN "kmsg"
+		#./scripts/config --set-val CONFIG_USB_AUTOSUSPEND_DELAY 10
 
 		# Storage (NVMe):
         #./scripts/config --enable CONFIG_NVME_CORE
