@@ -1,14 +1,14 @@
 # Template file for 'lemonade-server'
 pkgname=lemonade-server
-version=11.7.0
-revision=3
+version=11.9.0
+revision=1
 _httplibver=0.53.1
 build_style=cmake
 configure_args="-G Ninja -D FETCHCONTENT_FULLY_DISCONNECTED=ON
  -D FETCHCONTENT_SOURCE_DIR_HTTPLIB=${XBPS_BUILDDIR}/${pkgname}-${version}/cpp-httplib-${_httplibver}"
 hostmakedepends="pkg-config cmake ninja git nodejs"
 makedepends="libwebsockets-devel openssl-devel libdrm-devel libzstd-devel json-c++ cli11 libcurl-devel mbedtls-devel"
-depends="zstd unzip libwebsockets mbedtls"
+depends="zstd unzip libwebsockets mbedtls acl-progs"
 
 # System accounts and isolation parameters
 system_groups="llm"
@@ -28,7 +28,7 @@ homepage="https://github.com/lemonade-sdk/lemonade"
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz>lemonade-${version}.tar.gz
  https://github.com/yhirose/cpp-httplib/archive/refs/tags/v${_httplibver}.tar.gz>cpp-httplib-${_httplibver}.tar.gz"
 
-checksum="395d688ba870afa5e71d3af4a6c3de9873632d2c2686663de7accc6435b6cbad
+checksum="2fc2d9dd5ea0dd22c8f0633e3fa3c34bf5839b7a75e64ed8813e953057fcf163
  185af9587e270de9a3bfee234c6740f02e82265da33c7a41f97e02ee42f979d2"
 
 build_wrksrc="lemonade-${version}"
