@@ -2,7 +2,7 @@
 # Content is packaged from the brgvos-includedir category archives in the brgvos-void repo.
 pkgname=brgvos-dconf-ro_RO
 version=1.0
-revision=1
+revision=2
 hostmakedepends="tar"
 short_desc="BRGVOS GNOME dconf default settings - Romanian language"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
