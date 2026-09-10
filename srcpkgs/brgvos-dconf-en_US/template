@@ -2,7 +2,7 @@
 # Content is packaged from the brgvos-includedir category archives in the brgvos-void repo.
 pkgname=brgvos-dconf-en_US
 version=1.0
-revision=1
+revision=2
 hostmakedepends="tar"
 short_desc="BRGVOS GNOME dconf default settings - English language"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
