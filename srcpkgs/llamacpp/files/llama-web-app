@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+LLAMA_USER="llamacpp"
+LLAMA_PORT="${LLAMA_PORT:-9931}"
+
+# Always open the oldest instance (smallest PID)
+DISCOVERED_PORT=$(ps -o pid=,args= -u "$LLAMA_USER" 2>/dev/null | grep llama-server | sort -n | head -1 | grep -oP '(?<=--port )\d+')
+if [ -n "$DISCOVERED_PORT" ]; then
+    LLAMA_PORT="$DISCOVERED_PORT"
+fi
+
+URL="http://localhost:${LLAMA_PORT}"
+
+# Prefer chromium based browsers otherwise xdg-open
+if [ "$(echo "${LLAMA_PREFER_CHROMIUM:-true}" | tr '[:upper:]' '[:lower:]')" = "true" ]; then
+    if command -v google-chrome &> /dev/null; then
+        google-chrome --app="$URL"
+    elif command -v microsoft-edge-stable &> /dev/null; then
+        microsoft-edge-stable --app="$URL"
+    elif command -v chromium &> /dev/null; then
+        chromium --app="$URL"
+    elif command -v chromium-browser &> /dev/null; then
+        chromium-browser --app="$URL"
+    else
+        xdg-open "$URL"
+    fi
+else
+    xdg-open "$URL"
+fi   

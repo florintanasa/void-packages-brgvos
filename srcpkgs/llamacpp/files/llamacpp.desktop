@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Llama Web App
+Comment=Local LLMs with CPU, GPU and Vulkan acceleration - Web Interface
+GenericName=AI Model Manager
+Exec=llama-web-app
+Icon=llama1-icon-transparent
+Terminal=false
+Categories=Development;Utility;
+Keywords=AI;LLM;CPU;GPU;Vulkan;BLAS;Machine Learning;
+StartupWMClass=chrome-localhost__llama-Default
