@@ -1,7 +1,7 @@
 # Template file for 'llamacpp'
 pkgname=llamacpp
 version=0.4.0
-revision=1
+revision=2
 build_style=cmake
 configure_args="-DGGML_VULKAN=ON -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_BUILD_TYPE=Release -DLLAMA_BUILD_TESTS=OFF -DCMAKE_INSTALL_LIBDIR=lib"
 hostmakedepends="pkg-config cmake ninja git nodejs shaderc glslang"
@@ -28,6 +28,7 @@ checksum="9c2948aa9c79c92dd0e4c98e11ff5cf76dfdcaebdeb18e3e93409e9a98aefdab"
 
 post_install() {
 	# 1. Create service private storage directories and drop-in config path
+	mkdir -p ${DESTDIR}/usr/share/icons/hicolor/scalable/apps
 	mkdir -p ${DESTDIR}/var/lib/llamacpp
 	mkdir -p ${DESTDIR}/etc/llamacpp/conf.d
 	touch ${DESTDIR}/var/lib/llamacpp/.keep_llamacpp-server_0
@@ -35,6 +36,10 @@ post_install() {
 	# 2. Install the configuration drop-ins directly (protected by conf_files)
 	vinstall ${FILESDIR}/zz-secrets.conf 640 etc/llamacpp/conf.d
 	vinstall ${FILESDIR}/llama.conf 644 etc/llamacpp/conf.d
+	# 2.1 Install files for menu launch
+	vinstall ${FILESDIR}/llamacpp.desktop 644 usr/share/applications
+	vinstall ${FILESDIR}/llama1-icon-transparent.svg 644 usr/share/icons/hicolor/scalable/apps
+	vinstall ${FILESDIR}/llama-web-app 755 usr/bin
 
 	# 3. Prepare the central shared LLM repository structure within destdir
 	mkdir -p ${DESTDIR}/var/lib/llms/huggingface
