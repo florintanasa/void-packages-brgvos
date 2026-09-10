@@ -1,0 +1,36 @@
+# Template file for 'OpenCADStudio-git'
+pkgname=OpenCADStudio-git
+version=2026.09.10.0
+revision=1
+build_style=cargo
+configure_args="--bin OpenCADStudio"
+hostmakedepends="pkg-config git"
+makedepends="fontconfig-devel freetype-devel libX11-devel libXcursor-devel
+ libXi-devel libXrandr-devel libxkbcommon-devel wayland-devel"
+short_desc="Open-source 2D drafting and 3D modeling CAD application built with Rust (Git version)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-only"
+homepage="https://github.com/HakanSeven12/OpenCADStudio"
+
+do_fetch() {
+	:
+}
+
+do_extract() {
+	cd ${XBPS_BUILDDIR}
+	git clone --recursive https://github.com/HakanSeven12/OpenCADStudio ${pkgname}-${version}
+}
+
+wrksrc="${pkgname}-${version}"
+
+post_install() {
+	# Install the license file into the standard licenses path
+	vlicense LICENSE
+
+	# Install application icon matching the desktop entry expectations
+	vinstall assets/logo.svg 644 usr/share/icons/hicolor/scalable/apps io.github.HakanSeven12.OpenCadStudio.svg
+
+	# Fix and install the desktop entry launcher
+	vinstall packaging/OpenCADStudio.desktop 644 usr/share/applications
+}
+
