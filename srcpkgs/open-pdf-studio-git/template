@@ -1,0 +1,65 @@
+# Template file for 'open-pdf-studio-git'
+pkgname=open-pdf-studio-git
+version=2026.09.11.0
+revision=1
+hostmakedepends="pkg-config git nodejs cmake clang cargo rust glib-devel"
+makedepends="libwebkit2gtk41-devel libayatana-appindicator-devel librsvg-devel openssl-devel"
+short_desc="Professional open-source PDF editor and annotator with CAD tools and MCP AI support"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="LGPL-3.0-only"
+homepage="https://github.com/OpenAEC-Foundation/open-pdf-studio"
+
+do_fetch() {
+	:
+}
+
+do_extract() {
+	cd ${XBPS_BUILDDIR}
+	git clone --recursive https://github.com/OpenAEC-Foundation/open-pdf-studio ${pkgname}-${version}
+}
+
+wrksrc="${pkgname}-${version}"
+
+do_build() {
+	# Navigate into the core application folder where package.json and Tauri are located
+	cd open-pdf-studio
+	
+	npm ci
+	npx tauri build --no-bundle
+}
+
+do_install() {
+	# 1. Install binaries into standard system path
+	vbin target/release/open-pdf-studio
+	vbin target/release/pdfium-worker
+
+	# 2. Fix the missing library issue: Find and install libpdfium.so globally
+	# Tauri usually drops it in target/release/ or deep in target/release/bundle/
+	# We search for it dynamically during build and install it to /usr/lib/
+	local pdfium_path=$(find target/release/ -name "libpdfium.so" | head -n 1)
+	if [ -n "$pdfium_path" ]; then
+		vinstall "$pdfium_path" 755 usr/lib
+	fi
+
+	# 3. Install required application assets/libraries folder into /usr/lib/
+	# According to the deb snapshot, it packages a folder with assets, templates, and libraries
+	# We look for the compiled source asset tree and place it in a safe global path
+	if [ -d "open-pdf-studio/src-tauri/target/release/Open PDF Studio" ]; then
+		vmkdir usr/lib/open-pdf-studio
+		cp -R "open-pdf-studio/src-tauri/target/release/Open PDF Studio"/* ${DESTDIR}/usr/lib/open-pdf-studio/
+	elif [ -d "target/release/Open PDF Studio" ]; then
+		vmkdir usr/lib/open-pdf-studio
+		cp -R "target/release/Open PDF Studio"/* ${DESTDIR}/usr/lib/open-pdf-studio/
+	fi
+
+	# 4. Install license, icons and desktop entry
+	vlicense LICENSE.md
+	vinstall snap/gui/open-pdf-studio.png 644 usr/share/icons/hicolor/256x256/apps
+	vinstall snap/gui/open-pdf-studio.desktop 644 usr/share/applications
+
+	# Adjust desktop launcher icon and categories for proper alignment
+	vsed -i 's|^Icon=.*|Icon=open-pdf-studio|g' ${DESTDIR}/usr/share/applications/open-pdf-studio.desktop
+	vsed -i 's|^Categories=.*|Categories=Graphics;Office;Engineering;Viewer;|g' ${DESTDIR}/usr/share/applications/open-pdf-studio.desktop
+	# Force disable DMABUF renderer for universal WebKit compatibility
+	vsed -i 's|^Exec=.*|Exec=env WEBKIT_DISABLE_DMABUF_RENDERER=1 open-pdf-studio %F|g' ${DESTDIR}/usr/share/applications/open-pdf-studio.desktop
+}
