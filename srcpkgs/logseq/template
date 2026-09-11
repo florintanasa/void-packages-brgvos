@@ -1,0 +1,68 @@
+# Template file for 'logseq'
+pkgname=logseq
+version=2.0.1
+revision=1
+hostmakedepends="tar wget clojure nodejs pnpm openjdk21 git opam ocaml dune python-setuptools"
+depends="electron35"
+short_desc="Privacy-first, open-source knowledge base and outliner built with Markdown"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="AGPL-3.0-only"
+homepage="https://logseq.com"
+distfiles="https://github.com/logseq/logseq/archive/refs/tags/${version}.tar.gz"
+
+checksum="f7aac27590b82db12762d9c3a7732ef0711b18ffcf8f0eac5a0970e83cf8f96d"
+
+do_build() {
+        # 1. Creăm un folder temporar de binare prioritare în PATH
+        mkdir -p "${XBPS_BUILDDIR}/.bin"
+        export PATH="${XBPS_BUILDDIR}/.bin:$PATH"
+
+        # 2. Construim un script shim inteligent numit 'opam'
+        # Acesta va intercepta apelul Logseq, eliminând 'opam exec --' și executând direct dune nativ
+        cat << 'EOF' > "${XBPS_BUILDDIR}/.bin/opam"
+#!/bin/sh
+if [ "$1" = "exec" ] && [ "$2" = "--" ]; then
+    shift 2
+    exec "$@"
+else
+    exec /usr/bin/opam "$@"
+fi
+EOF
+        chmod +x "${XBPS_BUILDDIR}/.bin/opam"
+
+        # 3. Instalează dependențele JavaScript în workspace
+        pnpm install --frozen-lockfile
+
+        # 4. Rulăm compilarea principală
+        pnpm release-electron
+}
+
+do_install() {
+	# Create required native system directories
+	vmkdir usr/lib/logseq
+	vmkdir usr/bin
+	vmkdir usr/share/applications
+	vmkdir usr/share/icons/hicolor/scalable/apps
+
+	# Install pre-compiled production binary files
+	cp -R * ${DESTDIR}/usr/lib/logseq/
+	
+	# Create execution symlink for terminal call alignment
+	ln -sf /usr/lib/logseq/Logseq ${DESTDIR}/usr/bin/logseq
+
+	# Install standard license metadata
+	vlicense LICENSE.md
+
+	# Generate a clean desktop file entry
+	cat << 'EOF' > ${DESTDIR}/usr/share/applications/logseq.desktop
+[Desktop Entry]
+Name=Logseq
+Exec=logseq %U
+Icon=logseq
+Terminal=false
+Type=Application
+MimeType=x-scheme-handler/logseq;
+Categories=Office;Utility;TextEditor;
+Comment=Privacy-first, open-source local AI knowledge space and Markdown planner
+EOF
+}
