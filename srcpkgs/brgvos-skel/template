@@ -2,7 +2,7 @@
 # Content is packaged from the brgvos-includedir category archives in the brgvos-void repo.
 pkgname=brgvos-skel
 version=1.1
-revision=1
+revision=2
 hostmakedepends="tar"
 short_desc="BRGVOS /etc/skel skeleton for new users"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
