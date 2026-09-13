@@ -1,0 +1,1 @@
+SUBSYSTEM=="accel", SUBSYSTEMS=="pci", ATTRS{vendor}=="0x1022", MODE="0660", GROUP="video"

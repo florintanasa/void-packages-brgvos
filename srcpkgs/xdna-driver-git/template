@@ -1,6 +1,6 @@
 # Template file for 'xdna-driver-git'
 pkgname=xdna-driver-git
-version=2026.09.09.0
+version=2026.09.13.0
 revision=1
 build_style=cmake
 configure_args="-DREG_BUILD=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCPACK_GENERATOR=TGZ -DXDNA_CPACK_LINUX_PKG_FLAVOR=arch"
@@ -39,7 +39,16 @@ do_install() {
 	vmkdir etc/security/limits.d
 	vinstall "${FILESDIR}/99-amdxdna.conf" 644 etc/security/limits.d
 
-	# 3. Future-proof Discovery Path symlinks tied to generic names
+	# 3. Install ude rule for group video
+	vinstall "${FILESDIR}/99-amd-xdna.rules" 644 usr/lib/udev/rules.d
+
+	# 4. Future-proof Discovery Path symlinks tied to generic names
 	ln -sf /usr/lib/xrt/modules/libxrt_driver_xdna.so ${DESTDIR}/usr/lib/libxrt_plugin_xdna.so
 	ln -sf /usr/lib/xrt/modules/libxrt_driver_xdna.so ${DESTDIR}/usr/lib/libxrt_amdxdna.so
+}
+
+post_install() {
+	# 5. FIX CACHE LINKER: Register library path in global ld.so
+	vmkdir etc/ld.so.conf.d
+	echo "/usr/lib/xrt/modules" > "${DESTDIR}/etc/ld.so.conf.d/brgvos-xdna-xrt.conf"
 }
