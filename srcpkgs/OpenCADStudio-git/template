@@ -1,6 +1,6 @@
 # Template file for 'OpenCADStudio-git'
 pkgname=OpenCADStudio-git
-version=2026.09.10.0
+version=2026.09.15.0
 revision=1
 build_style=cargo
 configure_args="--bin OpenCADStudio"
