@@ -113,12 +113,12 @@ do_configure() {
 		#./scripts/config --set-val CONFIG_X86_64_VERSION 3
 		
         # Set configs for CLANG and FullLTO
-		./scripts/config --disable CONFIG_LTO_CLANG_THIN
-		./scripts/config --enable CONFIG_LTO_CLANG_FULL
+		#./scripts/config --disable CONFIG_LTO_CLANG_THIN
+		#./scripts/config --enable CONFIG_LTO_CLANG_FULL
 		#./scripts/config --disable CONFIG_LTO_CLANG_FULL
 		#./scripts/config --enable CONFIG_LTO_CLANG_THIN
-		./scripts/config --module CONFIG_MLX5_CORE
-		./scripts/config --disable CONFIG_DRM_GUD
+		#./scripts/config --module CONFIG_MLX5_CORE
+		./scripts/config --disable CONFIG_DRM_GUD # disable because exist error on Clang 
         #./scripts/config --disable CONFIG_LTO_NONE
         #./scripts/config --disable CONFIG_LTO_CLANG_THIN
         #./scripts/config --enable CONFIG_LTO_CLANG_FULL
