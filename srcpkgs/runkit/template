@@ -1,0 +1,58 @@
+# Template file for 'runkit'
+pkgname=runkit
+version=1.4.0
+revision=1
+build_style=cargo
+hostmakedepends="pkg-config"
+makedepends="gtk4-devel libadwaita-devel glib-devel pango-devel"
+depends="dbus polkit"
+short_desc="Graphical manager for runit services"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/Letdown2491/runkit"
+changelog="https://raw.githubusercontent.com/Letdown2491/runkit/refs/heads/main/CHANGELOG.md"
+distfiles="https://github.com/Letdown2491/runkit/archive/refs/tags/v${version}.tar.gz"
+
+checksum=63c49259d086e1830baee12aa47e5f7ad7bdf1ded98e377d5b9b347bf73065cf
+
+pre_build() {
+	# Force Cargo to generate the missing Cargo.lock file before the strict build phase begins
+	cargo generate-lockfile
+}
+
+do_install() {
+	# 1. Install raster icons across standard dimensions
+	for size in 16x16 24x24 32x32 48x48 64x64 96x96 128x128 256x256 512x512; do
+		vinstall "assets/icons/hicolor/${size}/apps/runkit.png" 644 "usr/share/icons/hicolor/${size}/apps"
+	done
+
+	# 2. Install scalable vector icon
+	vinstall assets/icons/hicolor/scalable/apps/runkit.svg 644 usr/share/icons/hicolor/scalable/apps
+
+	# 3. Install desktop launcher file
+	vinstall assets/applications/tech.geektoshi.Runkit.desktop 644 usr/share/applications
+
+	# 4. Install DBus communication services and Polkit security actions
+	vinstall assets/dbus-1/services/tech.geektoshi.Runkit.service 644 usr/share/dbus-1/services
+	vinstall assets/dbus-1/system-services/tech.geektoshi.Runkit1.service 644 usr/share/dbus-1/system-services
+	vinstall assets/dbus-1/system.d/tech.geektoshi.Runkit1.conf 644 etc/dbus-1/system.d
+	vinstall assets/polkit-1/actions/tech.geektoshi.Runkit.policy 644 usr/share/polkit-1/actions
+
+	# 5. Install service description metrics configuration
+	vinstall assets/config/services.json 644 usr/share/runkit
+
+	# 6. Install compiled binaries into libexec using the exact Rust target architecture path
+	vmkdir usr/libexec
+	vinstall "target/${RUST_TARGET}/release/runkit" 755 usr/libexec
+	vinstall "target/${RUST_TARGET}/release/runkitd" 755 usr/libexec
+	vinstall "target/${RUST_TARGET}/release/services-merge" 755 usr/libexec
+
+	# 7. Console support helper: symlink the main GUI binary into global system PATH
+	vmkdir usr/bin
+	ln -sf /usr/libexec/runkit ${DESTDIR}/usr/bin/runkit
+
+	# 8. Install system documentation and upstream license file
+	vdoc README.md
+	vlicense LICENSE
+}
+
