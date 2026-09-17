@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86_64 7.2.4 Kernel Configuration
+# Linux/x86_64 7.2.6 Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="clang version 21.1.7"
 CONFIG_GCC_VERSION=0
@@ -7241,7 +7241,7 @@ CONFIG_DRM_I2C_NXP_TDA998X=m
 
 # CONFIG_DRM_ETNAVIV is not set
 CONFIG_DRM_GMA500=m
-CONFIG_DRM_GUD=m
+# CONFIG_DRM_GUD is not set
 CONFIG_DRM_HISI_HIBMC=m
 CONFIG_DRM_HYPERV=m
 CONFIG_DRM_I915=m
