@@ -4,8 +4,7 @@ version=0.1.0
 revision=1
 hostmakedepends="sassc glib-devel which"
 depends="gtk-engine-murrine gnome-themes-extra sassc"
-short_desc="Fluent design web-like theme for all GTK based desktops, fork from Vince
-(vinceliuice)"
+short_desc="Fluent design web-like theme for all GTK based desktops, fork from Vince(vinceliuice)"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/florintanasa/Fluent-gtk-theme"
