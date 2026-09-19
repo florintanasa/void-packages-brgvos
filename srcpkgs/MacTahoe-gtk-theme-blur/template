@@ -4,8 +4,7 @@ version=0.1.0
 revision=1
 hostmakedepends="tar"
 depends="gtk-engine-murrine gnome-themes-extra"
-short_desc="MacOS Tahoe theme suite for gtk desktops (all color variants), fork from Vince
-(vinceliuice)"
+short_desc="MacOS Tahoe theme suite for gtk desktops (all color variants), fork from Vince(vinceliuice)"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://github.com/florintanasa/MacTahoe-gtk-theme"
