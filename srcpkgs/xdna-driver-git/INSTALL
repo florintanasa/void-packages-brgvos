@@ -1,18 +1,18 @@
 #/bin/sh
-# Script INSTALL pentru xdna-driver-git
+# INSTALL script for xdna-driver-git - for later usage when I can build the driver 
 
 case "$ACTION" in
 pre-install)
-    # Executat înainte ca fișierele pachetului să fie scrise pe disc
-    echo "=== [NPU] Se descarcă driverul stoc 'amdxdna' din memorie... ==="
+    # Executed before the package files are written to disk
+    echo "=== [NPU] Unloading the stock 'amdxdna' driver from memory... ==="
     if lsmod | grep -q "^amdxdna"; then
-        rmmod amdxdna 2>/dev/null || echo "Avertisment: Nu s-a putut descărca driverul curent. Poate este în uz."
+        rmmod amdxdna 2>/dev/null || echo "Warning: Could not download the current driver. It may be in use."
     fi
     ;;
 post-install)
-    # Executat după ce fișierele s-au scris și DKMS a terminat compilarea
-    echo "=== [NPU] Reindexare module și încărcare driver DKMS... ==="
+    # Executed after the files were written and DKMS finished compiling
+    echo "=== [NPU] Reindexing modules and loading DKMS driver... ==="
     depmod -a
-    modprobe amdxdna 2>/dev/null && echo "=== [NPU] Driverul nou s-a încărcat cu succes! ==="
+    modprobe amdxdna 2>/dev/null && echo "=== [NPU] The new driver has loaded successfully! ==="
     ;;
 esac
