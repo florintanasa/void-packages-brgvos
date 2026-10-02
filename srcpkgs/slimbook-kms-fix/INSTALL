@@ -3,6 +3,17 @@
 
 case "$1" in
 post)
+    MAIN_CONF="/etc/dracut.conf"
+    # Set hostonly to no in the file /etc/dracut.conf   
+    if [ -f "$MAIN_CONF" ]; then
+        echo "[slimbook-kms-fix] Securing /etc/dracut.conf against kernel/DKMS updates..."
+        # Delete any line with hostonly
+        sed -i '/hostonly=/d' "$MAIN_CONF"
+        # Added at the end of file the line with hostonly="no"
+        echo 'hostonly="no"' >> "$MAIN_CONF"
+        echo "File /etc/dracut.conf has been updated with hostonly=\"no\"."
+    fi
+
     echo "Regenerating initramfs with Early KMS support for all kernels..."
 
     # Loop through all kernels found in /boot
