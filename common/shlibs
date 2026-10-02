@@ -358,7 +358,7 @@ libMagickCore-7.Q16HDRI.so.10 libmagick-7.1.0.10_1
 libMagickWand-7.Q16HDRI.so.10 libmagick-7.1.0.10_1
 libMagick++-7.Q16HDRI.so.5 libmagick-7.0.11.1_1
 libltdl.so.7 libltdl-2.2.6_1
-libpoppler.so.163 libpoppler-26.08.0_1
+libpoppler.so.164 libpoppler-26.08.0_1
 libpoppler-glib.so.8 poppler-glib-0.18.2_1
 libpoppler-cpp.so.3 poppler-cpp-26.04.0_1
 libpoppler-qt5.so.1 poppler-qt5-0.31.0_1
@@ -691,7 +691,7 @@ libtalloc.so.2 talloc-2.0.1_1
 libpytalloc-util.so.2 libpytalloc-util-2.3.1_2
 libmount.so.1 libmount-2.18_1
 libdconf.so.1 dconf-0.13.90_1
-libassuan.so.0 libassuan-2.0.1_1
+libassuan.so.9 libassuan-3.0.2_1
 libgpgme.so.45 libgpgme-2.0.0_1
 libgpgmepp.so.7 gpgmepp-2.0.0_1
 libqgpgme.so.15 gpgmeqt-1.18.0_1
@@ -3718,8 +3718,8 @@ libgaminggear.so.0 libgaminggear-0.15.1_1
 libgaminggearfx.so.0 libgaminggear-0.15.1_1
 libgaminggearwidget.so.0 libgaminggear-0.15.1_1
 libopkg.so.1 libopkg-0.4.4_2
-libpkgconf.so.4 libpkgconf-1.9.3_1
-libkodiplatform.so.19.0 kodi-platform-20180302_1
+libpkgconf.so.8 libpkgconf-3.0.7_1
+libkodiplatform.so.21 kodi-platform-20250416_1
 libQuotient.so.0.9 libQuotient-0.9.1_1
 libQuotientQt6.so.0.9 libQuotient-0.9.1_1
 libipset.so.13 libipset-7.9_1
@@ -3815,7 +3815,7 @@ librlottie.so.0 rlottie-0.0.20160709_1
 libdocopt.so.0 docopt.cpp-0.6.3_1
 libfstrm.so.0 fstrm-0.5.0_1
 libfreecell-solver.so.0 libfreecell-solver-5.10.0_1
-libknot.so.16 libknot-3.5.0_1
+libknot.so.17 libknot-3.6.0_1
 libdnssec.so.10 libknot-3.5.0_1
 libzscanner.so.5 libknot-3.5.0_1
 libkres.so.9 knot-resolver-4.0.0_1
@@ -4617,7 +4617,7 @@ libopenrazer.so.0 libopenrazer-0.2.0_1
 libstaroffice-0.0.so.0 libstaroffice-0.0.7_1
 libbox2d.so.3 box2d-3.1.1_1
 libhwy.so.1 highway-1.2.0_1
-libscenefx-0.4.so scenefx-0.4.1_1
+libscenefx-0.5.so scenefx-0.5_1
 libnng.so.1 nng-1.5.2_1
 libsentry.so sentry-native-0.7.7_1
 libjose.so.0 libjose-14_1
