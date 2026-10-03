@@ -1,11 +1,13 @@
 # Template file for 'linux6.18-tkg-bore-v2'
 pkgname=linux6.18-tkg-bore-v2
-version=6.18.53
+version=6.18.54
 revision=1
 short_desc="Linux kernel and modules (${version%.*} series) with TKG patches optimization v2"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
+
+export KCFLAGS="-march=x86-64-v2"
 
 case "${version##*.}" in
 rc*) distfiles="https://git.kernel.org/torvalds/t/linux-${version%.*}-${version##*.}.tar.gz" ;;
@@ -18,7 +20,7 @@ rc*) distfiles="https://git.kernel.org/torvalds/t/linux-${version%.*}-${version#
 esac
 
 checksum="9106a4605da9e31ff17659d958782b815f9591ab308d03b0ee21aad6c7dced4b
- 7301bb0765349dc8f26158d01209242db6ef7b6cee6ff76a93ab9b818ac5f434"
+ 625a4be5569a9e95e784ef6ca04ab36ff13379082fdf19e1d24d765f754fb58a"
 
 python_version=3
 
@@ -109,7 +111,12 @@ do_configure() {
 		msg_normal "Detected a .config file for your arch, using it.\n"
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig .config
 		
-		# Set some configs to set optimization for version 3 CPU
+		# Fix structural pentru deblocarea profilelor x86 în 6.18.54
+		./scripts/config --disable CONFIG_X86_NATIVE_CPU
+		./scripts/config --disable CONFIG_GENERIC_CPU
+		./scripts/config --set-val CONFIG_X86_64_VERSION 2
+
+		# Set some configs to set optimization for version 2 CPU
 		#./scripts/config --set-val CONFIG_X86_64_VERSION 2
 		
 		# You can more specific if you wish
