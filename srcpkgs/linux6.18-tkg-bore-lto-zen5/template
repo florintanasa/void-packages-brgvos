@@ -8,6 +8,7 @@ license="GPL-2.0-only"
 homepage="https://www.kernel.org"
 
 export KCFLAGS="-march=znver5"
+export KBUILD_RUSTFLAGS="-C target-cpu=znver5"
 
 case "${version##*.}" in
 rc*) distfiles="https://git.kernel.org/torvalds/t/linux-${version%.*}-${version##*.}.tar.gz" ;;
