@@ -1,11 +1,14 @@
 # Template file for 'linux6.18-tkg-bore-lto-v3'
 pkgname=linux6.18-tkg-bore-lto-v3
-version=6.18.53
+version=6.18.54
 revision=1
 short_desc="Linux kernel and modules (${version%.*} series) with TKG patches, FULL LTO with optimization v3"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
+
+export KCFLAGS="-march=x86-64-v3"
+export KBUILD_RUSTFLAGS="-C target-cpu=x86-64-v3"
 
 case "${version##*.}" in
 rc*) distfiles="https://git.kernel.org/torvalds/t/linux-${version%.*}-${version##*.}.tar.gz" ;;
@@ -18,7 +21,7 @@ rc*) distfiles="https://git.kernel.org/torvalds/t/linux-${version%.*}-${version#
 esac
 
 checksum="9106a4605da9e31ff17659d958782b815f9591ab308d03b0ee21aad6c7dced4b
- 7301bb0765349dc8f26158d01209242db6ef7b6cee6ff76a93ab9b818ac5f434"
+ 625a4be5569a9e95e784ef6ca04ab36ff13379082fdf19e1d24d765f754fb58a"
 
 python_version=3
 
