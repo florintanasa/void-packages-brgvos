@@ -112,9 +112,6 @@ do_configure() {
 		cp -f ${FILESDIR}/${subarch:-$arch}-dotconfig .config
 		
 		# Fix structural pentru deblocarea profilelor x86 în 6.18.54
-		./scripts/config --disable CONFIG_X86_NATIVE_CPU
-		./scripts/config --disable CONFIG_GENERIC_CPU
-		./scripts/config --set-val CONFIG_X86_64_VERSION 2
 
 		# Set some configs to set optimization for version 2 CPU
 		#./scripts/config --set-val CONFIG_X86_64_VERSION 2
