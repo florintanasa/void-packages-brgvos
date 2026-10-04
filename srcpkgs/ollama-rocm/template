@@ -1,7 +1,7 @@
 # Template file for 'ollama-rocm'
 pkgname=ollama-rocm
 version=7.2.70201
-revision=5
+revision=6
 archs="x86_64"
 hostmakedepends="zstd tar"
 depends="ollama>=0.24.0"
@@ -11,9 +11,9 @@ short_desc="AMD ROCm v7.2 acceleration runtime for Ollama"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://ollama.com"
-distfiles="https://github.com/ollama/ollama/releases/download/v0.33.3/ollama-linux-amd64-rocm.tar.zst"
+distfiles="https://github.com/ollama/ollama/releases/download/v0.35.1/ollama-linux-amd64-rocm.tar.zst"
 
-checksum="b28d49ba28c6d0bc87f7d77f194b4b03941844df02f3672d8273b659925a7834"
+checksum="786e1ba2ed7877b48aa948315ab704da2ea54a4b636e0ca18c3d328c84ff22cf"
 
 do_install() {
 	mkdir -p ${DESTDIR}/usr
