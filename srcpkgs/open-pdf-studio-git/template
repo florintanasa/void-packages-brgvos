@@ -1,9 +1,10 @@
 # Template file for 'open-pdf-studio-git'
 pkgname=open-pdf-studio-git
-version=2026.09.11.0
+version=2026.10.03.0
 revision=1
 hostmakedepends="pkg-config git nodejs cmake clang cargo rust glib-devel"
-makedepends="libwebkit2gtk41-devel libayatana-appindicator-devel librsvg-devel openssl-devel"
+makedepends="libwebkit2gtk41-devel libayatana-appindicator-devel librsvg-devel openssl-devel tesseract-ocr-devel"
+depends="tesseract-ocr tesseract-ocr-eng tesseract-ocr-ron"
 short_desc="Professional open-source PDF editor and annotator with CAD tools and MCP AI support"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="LGPL-3.0-only"
