@@ -1,0 +1,33 @@
+# Template file for 'palemoon'
+pkgname=palemoon
+version=35.0.2
+revision=1
+archs="x86_64"
+makedepends="xz"
+short_desc="The Private, Secure and Fully Customizable Open Source Web Browser"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MPL-2.0"
+homepage="https://www.palemoon.org/"
+changelog="https://www.palemoon.org/releasenotes.shtml"
+distfiles=https://rm-eu.palemoon.org/release/palemoon-${version}.linux-x86_64-gtk3.tar.xz
+
+checksum=3136ee8ecde1c1f865d45c3f5015f07e27e590ae0b43c22f1811f65633547adb
+
+nopie=yes
+
+do_install() {
+    # 1. Copy all files in opt/palemoon 
+    vmkdir opt/palemoon
+    vcopy * opt/palemoon
+
+    # 2. Create simbolic link to the binary 
+    vmkdir usr/bin
+    ln -s /opt/palemoon/palemoon "${DESTDIR}/usr/bin/palemoon"
+
+    # 3. Copy menu file
+    vmkdir usr/share/applications
+    vinstall "${FILESDIR}/palemoon.desktop" 644 usr/share/applications/
+
+    # 4. Include license
+    vlicense "${DESTDIR}/opt/palemoon/license.txt"
+}
