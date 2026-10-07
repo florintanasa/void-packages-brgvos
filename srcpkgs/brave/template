@@ -1,0 +1,38 @@
+# Template file for `brave`
+pkgname=brave
+version=1.97.54
+revision=2
+archs="x86_64"
+short_desc="The browser that puts you first"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="Mozilla Public License Version 2.0"
+homepage="https://brave.com"
+distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser-${version}-linux-amd64.zip"
+
+checksum=3786a2f7cf78f00ad7ec0321b48b988ce4ee7cfbc417129734ac87a624bef786
+
+nopie=yes
+
+do_install() {
+    vmkdir opt/brave
+    vcopy * opt/brave
+    vmkdir usr/bin
+    vmkdir etc/apparmor.d
+    mv ${DESTDIR}/opt/brave/apparmor.d/* ${DESTDIR}/etc/apparmor.d/
+
+    ln -s /opt/brave/brave-browser ${DESTDIR}/usr/bin/brave-browser
+
+    for size in 24 32 48 64 128 256; do
+        mkdir -p ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps
+
+        mv ${DESTDIR}/opt/brave/product_logo_${size}.png         ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/brave-browser.png
+    done
+    
+    vlicense ${DESTDIR}/opt/brave/LICENSE
+
+	vmkdir usr/share/applications
+	vinstall "${FILESDIR}/brave-browser.desktop" 644 usr/share/applications/
+
+    rm -rf ${DESTDIR}/opt/brave/cron
+    rm -f ${DESTDIR}/opt/brave/LICENSE
+}
