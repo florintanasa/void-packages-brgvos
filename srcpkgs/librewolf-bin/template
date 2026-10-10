@@ -1,0 +1,38 @@
+# Template file for 'librewolf-bin'
+pkgname=librewolf-bin
+version=157.0.1
+revision=1
+archs="x86_64"
+makedepends="xz"
+conflicts="librewolf"
+short_desc="Librewolf is a custom and independent version of Firefox, with the primary goals of privacy, security and user freedom."
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MPL-2.0"
+homepage="https://librewolf.net"
+changelog="https://librewolf.dev/librewolf/bsys6/releases"
+distfiles="https://dl.librewolf.net/librewolf/${version}-${revision}/librewolf-${version}-${revision}-linux-x86_64-package.tar.xz
+ https://librewolf.dev/librewolf/source/raw/branch/main/LICENSE>LICENSE"
+
+checksum="33281aa1fc8a2602cd6fc2f05c504865542d80be068885bfeec6c5cfcff967fa
+ 1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
+
+skip_extraction="LICENSE"
+
+nopie=yes
+
+do_install() {
+    # 1. Copy all files in opt/palemoon 
+    vmkdir opt/librewolf
+    vcopy * opt/librewolf
+
+    # 2. Create simbolic link to the binary 
+    vmkdir usr/bin
+    ln -s /opt/librewolf/librewolf "${DESTDIR}/usr/bin/librewolf"
+
+    # 3. Copy menu file
+    vmkdir usr/share/applications
+    vinstall "${FILESDIR}/librewolf.desktop" 644 usr/share/applications/
+
+    # 4. Include license
+    vlicense ${XBPS_SRCDISTDIR}/${pkgname}-${version}/LICENSE
+}
