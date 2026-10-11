@@ -1,0 +1,52 @@
+# Template for 'filmcraft'
+pkgname=filmcraft
+version=0.6.0
+revision=1
+build_style=cargo
+make_build_args="-p filmcraft -p filmcraft-cli"
+hostmakedepends="pkg-config"
+makedepends="alsa-lib-devel"
+short_desc="Open-source, clean-room reimplementation of Adobe Premiere in pure Rust"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="Apache-2.0, MIT"
+homepage="https://getartcraft.com/apps/filmcraft"
+distfiles="https://github.com/storytold/filmcraft/archive/refs/tags/v${version}.tar.gz"
+
+checksum="361974da27af2eb67c2feb8fc0b3812a336dd0511ec63e73f44dde0d26fdeaca"
+
+do_install() {
+	# 1. Install application for Desktop and command line (CLI) 
+	vbin target/${RUST_TARGET}/release/filmcraft
+	vbin target/${RUST_TARGET}/release/filmcraft-cli
+
+	# 2. Install shortcut in menu (.desktop) and mime types
+	vinstall packaging/linux/ai.storyteller.filmcraft.desktop 644 usr/share/applications
+	vinstall packaging/linux/ai.storyteller.filmcraft.mime.xml 644 usr/share/mime/packages
+	vinstall packaging/linux/ai.storyteller.filmcraft.metainfo.xml.in 644 usr/share/metainfo ai.storyteller.filmcraft.metainfo.xml
+
+	# 3. Iterate icons and install
+	local size
+	for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256 512x512; do
+		if [ -f "assets/app-icon/hicolor/${size}/apps/ai.storyteller.filmcraft.png" ]; then
+			vinstall "assets/app-icon/hicolor/${size}/apps/ai.storyteller.filmcraft.png" \
+				644 "usr/share/icons/hicolor/${size}/apps"
+		fi
+	done
+
+	if [ -f "assets/app-icon/hicolor/scalable/apps/ai.storyteller.filmcraft.svg" ]; then
+		vinstall "assets/app-icon/hicolor/scalable/apps/ai.storyteller.filmcraft.svg" \
+			644 "usr/share/icons/hicolor/scalable/apps"
+	fi
+
+	# 4. Install licenses
+	vlicense LICENSE-APACHE
+	vlicense LICENSE-MIT
+
+	# 5. Technical documentation in Markdown
+	local docfile
+	for docfile in docs/*.md; do
+		if [ -f "$docfile" ]; then
+			vdoc "$docfile"
+		fi
+	done
+}
