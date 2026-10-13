@@ -1,6 +1,6 @@
 # Template file for 'ollama'
 pkgname=ollama
-version=0.35.1
+version=0.40.3
 revision=1
 archs="x86_64"
 hostmakedepends="zstd tar"
@@ -27,7 +27,7 @@ license="MIT"
 homepage="https://ollama.com"
 distfiles="https://github.com/ollama/ollama/releases/download/v${version}/ollama-linux-amd64.tar.zst"
 
-checksum="9fcd79ac4575b2bd31b992eee18b1000c8ad126b451627c8f8cd091714cfbb10"
+checksum="ce6f8b671a699bf1ebafb28d60dbbabf4f37b30b499145fa308a8ba72de021d6"
 
 do_install() {
 	# 1. Extract precompiled assets straight into /usr
