@@ -1,0 +1,64 @@
+# Template for 'onlyoffice-desktopeditors'
+pkgname=onlyoffice-desktopeditors
+version=10.0.0
+revision=1
+create_wrksrc=yes
+hostmakedepends="unzip"
+# Required system shared libraries for CEF/Chromium and Qt5 interface at runtime
+depends="alsa-lib glib nss nspr libX11 libXcomposite libXcursor libXdamage
+ libXext libXfixes libXi libXrandr libXrender libXtst libXScrnSaver libxcb
+ libxshmfence gdk-pixbuf gtk+3 libdrm libgbm libxkbcommon"
+ # Skip the mandatory Position-Independent Executable verification for pre-built binaries
+nopie=yes
+short_desc="ONLYOFFICE Desktop Editors office suite"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="AGPL-3.0-only"
+homepage="https://www.onlyoffice.com/"
+
+# We fetch both the application environment base and the mandatory web-core addons
+_base_url="https://github.com/ONLYOFFICE/DesktopEditors/releases/download/v${version}"
+distfiles="${_base_url}/onlyoffice-desktopeditors-x64.tar.xz
+ ${_base_url}/addon-linux-x86_64.zip"
+
+# Sequential sha256 checksums matching the 2 archives fetched by XBPS-src
+checksum="b44158be6499c6fb3813b5904d000f72ef4d93c0e8f6ea6696501e575995da9a
+ c7cc08603d47bb4b44e3d8ee0cf712cc51e7788e9d54c33985af7dc057fbd525"
+
+# We instruct XBPS to skip auto-extracting the addon archive since we handle it manually
+skip_extraction="addon-linux-x86_64.zip"
+
+do_install() {
+	# 1. Unpack the auxiliary core addons directly into the application environment base
+	# This merges sdkjs, sdkjs-plugins, and desktop-sdk-plugins into the editor workspace
+	unzip -o ${XBPS_SRCDISTDIR}/${pkgname}-${version}/addon-linux-x86_64.zip \
+		-d opt/onlyoffice/desktopeditors/
+
+	# 2. Deploy the core runtime binary engine structure into the global storage directory /opt
+	vmkdir opt/onlyoffice
+	cp -R opt/onlyoffice/desktopeditors "${DESTDIR}/opt/onlyoffice/"
+
+	# 3. Synchronize standard launcher wrapper binaries to maintain path visibility
+	vmkdir usr/bin
+	cp -R usr/bin/* "${DESTDIR}/usr/bin/"
+
+	# 4. Inject menu entry shortcuts (.desktop) and associated shared assets
+	vmkdir usr/share
+	cp -R usr/share/applications "${DESTDIR}/usr/share/"
+	cp -R usr/share/icons "${DESTDIR}/usr/share/"
+	cp -R usr/share/doc "${DESTDIR}/usr/share/"
+
+	# 5. Fix executable permissions for compiled binaries and specialized system components
+	chmod 755 "${DESTDIR}/usr/bin/onlyoffice-desktopeditors"
+	chmod 755 "${DESTDIR}/opt/onlyoffice/desktopeditors/DesktopEditors"
+	chmod 755 "${DESTDIR}/opt/onlyoffice/desktopeditors/converter/xd2c" 2>/dev/null || true
+	chmod 755 "${DESTDIR}/opt/onlyoffice/desktopeditors/editors_helper"
+	
+	# Chromium sandbox requires 4755 permissions to execute correctly on standard environments
+	# (Fixed the accidental opt/opt path duplication from the previous iteration)
+	chmod 4755 "${DESTDIR}/opt/onlyoffice/desktopeditors/chrome-sandbox" 2>/dev/null || true
+
+	# 6. Isolate and register standalone legal software licenses
+	vlicense usr/share/licenses/onlyoffice-desktopeditors/LICENSE LICENSE
+	vlicense usr/share/licenses/onlyoffice-desktopeditors/3DPARTYLICENSE 3DPARTYLICENSE
+}
+
