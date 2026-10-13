@@ -1,6 +1,6 @@
 # Template file for 'FastFlowLM-git'
 pkgname=FastFlowLM-git
-version=2026.10.03.0
+version=2026.10.13.0
 revision=1
 build_style=cmake
 hostmakedepends="cmake pkg-config git cargo rust"
@@ -28,9 +28,11 @@ do_configure() {
 
 	export CFLAGS="-march=x86-64-v4 -O3 ${CFLAGS}"
 	export CXXFLAGS="-march=x86-64-v4 -O3 ${CXXFLAGS}"
+	export RUSTFLAGS="-C target-cpu=x86-64-v4 -C opt-level=3"
 
 	cmake --preset linux-default \
 		-DUSE_XDNA=ON \
+		-DFLM_BUILD_GEMMA4E=ON \
 		-DXRT_ROOT=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DCMAKE_INSTALL_PREFIX=/usr
