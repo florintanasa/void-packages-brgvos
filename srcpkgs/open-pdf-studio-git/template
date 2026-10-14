@@ -1,6 +1,6 @@
 # Template file for 'open-pdf-studio-git'
 pkgname=open-pdf-studio-git
-version=2026.10.03.0
+version=2026.10.14.0
 revision=1
 hostmakedepends="pkg-config git nodejs cmake clang cargo rust glib-devel"
 makedepends="libwebkit2gtk41-devel libayatana-appindicator-devel librsvg-devel openssl-devel tesseract-ocr-devel"
