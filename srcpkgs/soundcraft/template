@@ -1,18 +1,18 @@
 # Template for 'soundcraft'
 pkgname=soundcraft
-version=0.5.0
+version=0.7.0
 revision=1
 build_style=cargo
 make_build_args="-p soundcraft -p soundcraft-cli"
 hostmakedepends="pkg-config"
 makedepends="alsa-lib-devel"
-short_desc="Open-source digital audio workstation Pro Tools-style app in pure Rust"
+short_desc="Professional digital audio workstation for multitrack recording and mixing"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/soundcraft"
 distfiles="https://github.com/storytold/soundcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="7e97de09e850fa8ed616fea1be1d3a1b72780f5331f0e7c52d2bc71ea1479517"
+checksum="7e94df7bcf7f5c66be28a7b408e560dd45e28040dcc0f5959f0d3727725efc1a"
 
 do_install() {
 	# 1. Install optimized application binaries directly from target release (prevents double compilation)
