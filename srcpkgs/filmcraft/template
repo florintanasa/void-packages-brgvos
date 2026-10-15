@@ -1,18 +1,18 @@
 # Template for 'filmcraft'
 pkgname=filmcraft
-version=0.6.0
+version=0.8.0
 revision=1
 build_style=cargo
 make_build_args="-p filmcraft -p filmcraft-cli"
 hostmakedepends="pkg-config"
 makedepends="alsa-lib-devel"
-short_desc="Open-source, clean-room reimplementation of Adobe Premiere in pure Rust"
+short_desc="Professional, open-source video editing software built in pure Rust"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/filmcraft"
 distfiles="https://github.com/storytold/filmcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="361974da27af2eb67c2feb8fc0b3812a336dd0511ec63e73f44dde0d26fdeaca"
+checksum="4f4fe5572841baee1266c35a06fc6eea5583cb29f39aa21d03ec9655a206e081"
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI) 
