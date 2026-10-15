@@ -1,18 +1,18 @@
 # Template for 'cadcraft'
 pkgname=cadcraft
-version=0.5.0
+version=0.7.0
 revision=1
 build_style=cargo
 make_build_args="-p cadcraft -p cadcraft-cli"
 hostmakedepends="pkg-config"
 #makedepends="fontconfig-devel freetype-devel libX11-devel libXcursor-devel libXi-devel libXrandr-devel libxkbcommon-devel wayland-devel"
-short_desc="Open-source computer-aided design and drafting AutoCAD-style app in pure Rust"
+short_desc="Fast, open-source computer-aided design and drafting application"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/cadcraft"
 distfiles="https://github.com/storytold/cadcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="11ade2df9cc92f022af13fd93006d7fcfcdd12ebecfa3e7bfcdd5c8ce58e7647"
+checksum="14ec700df561738c23d88be08409523e55a890ef519009e92eff3a5c1f654a63"
 
 do_install() {
 	# 1. Install optimized application binaries
