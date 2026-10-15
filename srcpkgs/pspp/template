@@ -24,30 +24,14 @@ pre_configure() {
 }
 
 post_configure() {
-	# Sabotage all internal charting source definitions inside the doc/ hierarchy
-	# By emptying the input scripts, the compiled binary parses nothing and finishes instantly
+	# 1. Inject the real pre-compiled images into the source tree BEFORE make runs.
+	# This satisfies the build layout and guarantees the engine won't drop into loops.
+	mkdir -p doc/pspp-figures
+	cp -R ${FILESDIR}/pspp-figures/. doc/pspp-figures/
+
+	# 2. Clear the input scripts just in case, ensuring absolute isolation from the Cairo loop
 	find doc/ -type f -name "*.sps" -exec sh -c 'echo "" > "{}"' \;
 	find doc/ -type f -name "*.grab" -exec sh -c 'echo "" > "{}"' \;
-}
-
-pre_install() {
-	# Create dummy zero-byte placeholder images to satisfy the rigid 'make install' target loop
-	# This satisfies the installer file verification step without generating heavy binary blobs
-	mkdir -p doc/pspp-figures
-	local img
-	for img in aggregate autorecode chisquare compute count crosstabs descriptives flip \
-		frequencies matrix-print means one-sample-t independent-samples-t reliability \
-		select-if show-system sort-cases split temporary tutorial1 tutorial2 tutorial3 \
-		tutorial4 tutorial5 tutorial6 tutorial7 weight tutorial2a tutorial2b tutorial5a \
-		tutorial5b tutorial7a tutorial7b; do
-		touch "doc/pspp-figures/${img}.png"
-	done
-
-	# Generate the indexed sequence array matching the ctables targets listed by the installer
-	local i
-	for i in $(seq 1 36); do
-		touch "doc/pspp-figures/ctables${i}.png"
-	done
 }
 
 post_install() {
