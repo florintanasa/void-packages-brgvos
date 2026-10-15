@@ -1,18 +1,18 @@
 # Template for 'lightcraft'
 pkgname=lightcraft
-version=0.6.0
+version=0.8.0
 revision=1
 build_style=cargo
 make_build_args="-p lightcraft -p lightcraft-cli"
 hostmakedepends="pkg-config"
 # makedepends="fontconfig-devel freetype-devel libX11-devel libXcursor-devel libXi-devel libXrandr-devel libxkbcommon-devel wayland-devel"
-short_desc="Open-source, clean-room reimplementation of Adobe Lightroom in pure Rust"
+short_desc="Open-source photo library manager and RAW image developer"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/lightcraft"
 distfiles="https://github.com/storytold/lightcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="c346ce2e50cf50ce691925fc0fe57a07e316dc66195be6749755dec84546e6d9"
+checksum="456c2d41b3981f432909fb5f798044118a29a4ca72066adc490041d9730c7fea"
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI)
