@@ -1,6 +1,6 @@
 # Template for 'artcraft-suite'
 pkgname=artcraft-suite
-version=1.2.0
+version=1.3.0
 revision=1
 metapackage=yes
 short_desc="The complete ArtCraft creative studio suite"
@@ -8,7 +8,7 @@ maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps"
 
-# Define all 12 fully optimized applications as strict dependencies
+# Define all 13 fully optimized applications as strict dependencies
 depends="
  photocraft>=0.7.0
  vectorcraft>=0.9.0
@@ -21,4 +21,5 @@ depends="
  gridcraft>=0.5.0
  wordcraft>=0.5.0
  cadcraft>=0.5.0
- soundcraft>=0.5.0"
+ soundcraft>=0.5.0
+ figcraft>=0.6.0"
