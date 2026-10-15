@@ -1,18 +1,18 @@
 # Template for 'wordcraft'
 pkgname=wordcraft
-version=0.5.0
+version=0.7.0
 revision=1
 build_style=cargo
 make_build_args="-p wordcraft -p wordcraft-cli"
 hostmakedepends="pkg-config"
 # makedepends="fontconfig-devel freetype-devel libX11-devel libXcursor-devel libXi-devel libXrandr-devel libxkbcommon-devel wayland-devel"
-short_desc="An open-source, clean-room reimplementation of Microsoft Word in pure Rust"
+short_desc="Fast, open-source word processor built in pure Rust"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/wordcraft"
 distfiles="https://github.com/storytold/wordcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="c51e821775bf5e00e13f01e22fae3d8930adcbc1b0c559821d98fe80a44a8881"
+checksum="ee70e31d3b887c7e2c4b7d31de612ffddfb25a9359ed17d734b21a3b7f6891c0"
 
 do_install() {
 	# 1. Install application binaries directly from target release (prevents double compilation)
