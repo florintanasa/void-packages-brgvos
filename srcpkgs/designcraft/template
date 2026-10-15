@@ -1,18 +1,18 @@
 # Template for 'designcraft'
 pkgname=designcraft
-version=0.6.0
+version=0.8.0
 revision=1
 build_style=cargo
 make_build_args="-p designcraft -p designcraft-cli"
 hostmakedepends="pkg-config"
 #makedepends="fontconfig-devel freetype-devel libX11-devel libXcursor-devel libXi-devel libXrandr-devel libxkbcommon-devel wayland-devel"
-short_desc="Open-source page layout and desktop publishing software in pure Rust"
+short_desc="Open-source page layout and desktop publishing application built in pure Rust"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/designcraft"
 distfiles="https://github.com/storytold/designcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="9bbef8e8ec3cc3f4bd7c6412fecac7ff0e124e636d797697c6cfa62757c1eabe"
+checksum="e47b926827dd6c8db2dc7d2af7914fa270d5d5ef05896f80ecee442d9e391ea8"
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI)
