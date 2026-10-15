@@ -1,0 +1,36 @@
+# Template for 'pspp'
+pkgname=pspp
+version=2.1.2
+revision=1
+build_style=gnu-configure
+# Prevent libreadline prefix overrides and skip strict makeinfo parsing
+make_env="MAKEINFO=true"
+configure_args="--without-libreadline-prefix --without-perl-module MAKEINFO=true"
+hostmakedepends="pkg-config perl python3 gettext glib-devel texinfo"
+# Mathematics, graphical backends (GTK3/SourceView), and database import headers
+makedepends="gsl-devel gtk+3-devel gtksourceview4-devel cairo-devel pango-devel
+ zlib-devel libxml2-devel spread-sheet-widget spread-sheet-widget-devel postgresql-libs-devel"
+short_desc="Statistical analysis program and free replacement for SPSS"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://www.gnu.org/software/pspp/"
+distfiles="https://mirrors.nav.ro/gnu/pspp/pspp-${version}.tar.gz"
+
+checksum="042e08279679f4ab517d01d024115f7191eb4d0ade222c0ca296604406eeb3be"
+
+post_configure() {
+	# We intercept the image generation rule inside the Makefile and force it to return true.
+	# This bypasses the infinite rendering loop during both build and install phases.
+	sed -i 's/\$(AM_V_GEN)\$(PSPP_CONVERT)/@true/g' Makefile
+}
+
+post_install() {
+	# Install the built-in MIME data mapping file provided in the root directory
+	vinstall org.gnu.pspp.xml 644 usr/share/mime/packages
+
+	# Map and register baseline legal software licenses
+	vlicense COPYING LICENSE
+
+	# Clean up the redundant dir file created by the GNU info installation phase
+	rm -f "${DESTDIR}/usr/share/info/dir"
+}
