@@ -1,18 +1,18 @@
 # Template for 'deckcraft'
 pkgname=deckcraft
-version=0.5.0
+version=0.7.0
 revision=1
 build_style=cargo
 make_build_args="-p deckcraft -p deckcraft-cli"
 hostmakedepends="pkg-config"
 makedepends="alsa-lib-devel"
-short_desc="Presentations and slide shows: an open-source, clean-room reimplementation of Microsoft PowerPoint in pure Rust."
+short_desc="Dynamic, open-source slide presentation creator built in pure Rust"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT, OFL-1.1"
 homepage="https://getartcraft.com/apps/deckcraft"
 distfiles="https://github.com/storytold/deckcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="113b5d6e6c6ff3724b3adbf59f4146933d02fe6fc65b46612b13f2f4cc23d753"
+checksum="eb605c5a89d065c29f6839fdc336f08bf6ead924f6ce51295ed91b37a5a98390"
 
 do_install() {
 	# 1. Install optimized binary deliverables directly from the build target
