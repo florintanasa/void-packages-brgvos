@@ -1,0 +1,24 @@
+# Template for 'spread-sheet-widget'
+pkgname=spread-sheet-widget
+version=0.10
+revision=1
+build_style=gnu-configure
+hostmakedepends="pkg-config glib-devel texinfo"
+makedepends="gtk+3-devel"
+short_desc="GTK+ widget for viewing and editing 2D tabular data"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://www.gnu.org/software/ssw/"
+distfiles="https://alpha.gnu.org/gnu/ssw/spread-sheet-widget-${version}.tar.gz"
+
+checksum="80692ec350271995e147dc759929cdd79d3b645e6b5efaa6b57f4d2d05e847e5"
+
+spread-sheet-widget-devel_package() {
+	short_desc="${short_desc} - development files"
+	depends="${pkgname}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove "usr/lib/*.so"
+	}
+}
