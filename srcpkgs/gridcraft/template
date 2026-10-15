@@ -1,19 +1,19 @@
 # Template for 'gridcraft'
 pkgname=gridcraft
-version=0.5.0
+version=0.7.0
 revision=1
 build_style=cargo
 make_build_args="-p gridcraft -p gridcraft-cli"
 hostmakedepends="pkg-config"
 #makedepends="fontconfig-devel freetype-devel libX11-devel libXcursor-devel libXi-devel libXrandr-devel libxkbcommon-devel wayland-devel"
-short_desc="GridCraft: an open-source, clean-room spreadsheet (Microsoft Excel-style) in pure Rust. By ArtCraft."
+short_desc="Fast, open-source spreadsheet and data analysis app built in pure Rust"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/gridcraft"
 
 distfiles="https://github.com/storytold/gridcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="5b36f9f9117c5c9abf0ed12d6be734761802d623130c86b53a95df35a2fe0d35"
+checksum="e79b5df21e3044d0dab835f17c7a47497d477bfae642e591e03810b428e60123"
 
 do_install() {
 	# 1. Install application binaries directly from target release (prevents double compilation)
