@@ -1,0 +1,20 @@
+# Template for 'python3-ezdxf'
+pkgname=python3-ezdxf
+version=1.4.4
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-build python3-installer python3-setuptools python3-wheel python3-Cython python3-devel"
+# Added runtime dependencies detected by the metadata verification hook
+depends="python3 fonttools python3-numpy python3-parsing python3-typing_extensions"
+short_desc="Python package to create and modify DXF drawings"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://ezdxf.mozman.at/"
+distfiles="${PYPI_SITE}/e/ezdxf/ezdxf-${version}.tar.gz"
+
+checksum="da5a5e0e6bdbb6656f9c017b47edc7eafceb419d61a2b5de64ffb344c168e593"
+
+post_install() {
+	# Document the baseline MIT open-source license profile
+	vlicense LICENSE
+}
