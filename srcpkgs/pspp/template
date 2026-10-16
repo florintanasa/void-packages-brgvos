@@ -3,8 +3,8 @@ pkgname=pspp
 version=2.1.2
 revision=1
 build_style=gnu-configure
-# Prevent libreadline prefix overrides and skip strict makeinfo parsing
-make_env="MAKEINFO=true"
+# Force the build system to use 'true' if it ever attempts an internal automake loop
+make_env="AUTOMAKE=true AM_MAKEFLAGS=PSPP_CONVERT=true"
 configure_args="--without-libreadline-prefix --without-perl-module MAKEINFO=true"
 hostmakedepends="pkg-config perl python3 gettext glib-devel texinfo"
 # Mathematics, graphical backends (GTK3/SourceView), and database import headers
@@ -18,10 +18,20 @@ distfiles="https://mirrors.nav.ro/gnu/pspp/pspp-${version}.tar.gz"
 
 checksum="042e08279679f4ab517d01d024115f7191eb4d0ade222c0ca296604406eeb3be"
 
+pre_configure() {
+	# Inject POSIX-fallback definitions for O_BINARY and O_TEXT to bypass strict fcntl checks
+	export CFLAGS="${CFLAGS} -DO_BINARY=0 -DO_TEXT=0"
+}
+
 post_configure() {
-	# We intercept the image generation rule inside the Makefile and force it to return true.
-	# This bypasses the infinite rendering loop during both build and install phases.
-	sed -i 's/\$(AM_V_GEN)\$(PSPP_CONVERT)/@true/g' Makefile
+	# 1. Inject the real pre-compiled images into the source tree BEFORE make runs.
+	# This satisfies the build layout and guarantees the engine won't drop into loops.
+	mkdir -p doc/pspp-figures
+	cp -R ${FILESDIR}/pspp-figures/. doc/pspp-figures/
+
+	# 2. Clear the input scripts just in case, ensuring absolute isolation from the Cairo loop
+	find doc/ -type f -name "*.sps" -exec sh -c 'echo "" > "{}"' \;
+	find doc/ -type f -name "*.grab" -exec sh -c 'echo "" > "{}"' \;
 }
 
 post_install() {
@@ -30,7 +40,4 @@ post_install() {
 
 	# Map and register baseline legal software licenses
 	vlicense COPYING LICENSE
-
-	# Clean up the redundant dir file created by the GNU info installation phase
-	rm -f "${DESTDIR}/usr/share/info/dir"
 }
