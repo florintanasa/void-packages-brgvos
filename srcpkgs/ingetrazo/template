@@ -1,10 +1,10 @@
 # Template for 'ingetrazo'
 pkgname=ingetrazo
 version=0.5.8
-revision=1
+revision=2
 hostmakedepends="python3"
-depends="python3-pyside6 python3-pyside6-opengl-widgets python3-pyside6-network
- python3-pyside6-gui python3-pyside6-widgets python3-numpy python3-manifold3d python3-ezdxf python3-OpenSKP"
+depends="python3-pyside6 python3-pyside6-opengl-widgets python3-pyside6-network qt6-plugin-tls-openssl qt6-imageformats
+ python3-pyside6-gui python3-pyside6-widgets python3-numpy python3-manifold3d python3-ezdxf python3-openskp"
 short_desc="Free 3D CAD/BIM modeler for architecture and engineering"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-3.0-or-later"
@@ -29,36 +29,41 @@ do_install() {
 	done
 	vinstall main.py 644 usr/share/ingetrazo
 
-	# 3. Deploy the rich project examples and PDF sheets requested by the user
+	# 3. Deploy the rich project examples and PDF sheets
 	if [ -d "examples" ]; then
 		cp -R examples "${DESTDIR}/usr/share/doc/ingetrazo/"
 	fi
 
-	# 4. Securely isolate the bundled LibreDWG ELF converter into usr/libexec to satisfy pkglint
+	# 4. Deploy docs files
+	if [ -d "docs" ]; then
+		cp -R docs "${DESTDIR}/usr/share/doc/ingetrazo/"
+	fi
+
+	# 5. Securely isolate the bundled LibreDWG ELF converter into usr/libexec to satisfy pkglint
 	if [ -d "vendor/libredwg" ]; then
 		cp -R vendor/libredwg "${DESTDIR}/usr/libexec/ingetrazo/"
 		mkdir -p "${DESTDIR}/usr/share/ingetrazo/vendor"
 		ln -sf /usr/libexec/ingetrazo/libredwg "${DESTDIR}/usr/share/ingetrazo/vendor/libredwg"
 	fi
 
-	# 5. Create a clean system launch wrapper script targeting main.py
+	# 6. Create a clean system launch wrapper script targeting main.py
 	cat <<-EOF > "${DESTDIR}/usr/bin/ingetrazo"
 		#!/bin/sh
 		exec python3 /usr/share/ingetrazo/main.py "\$@"
 	EOF
 	chmod 755 "${DESTDIR}/usr/bin/ingetrazo"
 
-	# 6. Install the official desktop shortcut integration provided in the repository
+	# 7. Install the official desktop shortcut integration provided in the repository
 	if [ -f "packaging/ingetrazo.desktop" ]; then
 		vinstall packaging/ingetrazo.desktop 644 usr/share/applications
 	fi
 
-	# 7. Correctly deploy the MIME types XML definition from its real location inside resources/
+	# 8. Correctly deploy the MIME types XML definition from its real location inside resources/
 	if [ -f "resources/mime/ingetrazo.xml" ]; then
 		vinstall resources/mime/ingetrazo.xml 644 usr/share/mime/packages
 	fi
 
-	# 8. Deploy the official icon structures and file extensions mimetypes assets
+	# 9. Deploy the official icon structures and file extensions mimetypes assets
 	if [ -f "resources/icons/ingetrazo.svg" ]; then
 		vinstall resources/icons/ingetrazo.svg 644 usr/share/icons/hicolor/scalable/apps ingetrazo.svg
 	fi
@@ -71,6 +76,6 @@ do_install() {
 		cp -R resources/icons/mimetypes "${DESTDIR}/usr/share/icons/hicolor/"
 	fi
 
-	# 9. Document software copyleft license profiles
+	# 10. Document software copyleft license profiles
 	vlicense LICENSE
 }
