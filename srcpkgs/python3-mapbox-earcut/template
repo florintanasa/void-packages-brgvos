@@ -1,0 +1,21 @@
+# Template for 'python3-mapbox-earcut'
+pkgname=python3-mapbox-earcut
+version=2.1.0
+revision=1
+build_style=python3-pep517
+make_install_args="--no-compile-bytecode"
+hostmakedepends="python3-build python3-installer python3-setuptools python3-wheel
+ cmake pkg-config python3-devel python3-scikit-build-core ninja python3-nanobind"
+depends="python3  python3-numpy"
+short_desc="Python bindings for the Mapbox Earcut polygon triangulation library"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="ISC"
+homepage="https://github.com/skogler/mapbox_earcut_python"
+distfiles="${PYPI_SITE}/m/mapbox-earcut/mapbox_earcut-${version}.tar.gz"
+
+checksum="fb0c1e43581a635bbaabf4a5149009014d370c515816c4d5a7d8118477f28d48"
+
+post_install() {
+	# Document the baseline software ISC license profile
+	vlicense LICENSE.md
+}
