@@ -1,0 +1,30 @@
+# Template file for 'qelectrotech-git'
+pkgname=qelectrotech-git
+version=2026.10.17.0
+revision=1
+# Commit stabil verificat care compilează corect stiva Qt6/KF6
+_commit="f4dcbcc3666ca9c6e2b2cedd26f8709ff557d26f"
+build_style=cmake
+configure_args="-DBUILD_PYTHON_BINDINGS=OFF"
+hostmakedepends="extra-cmake-modules qt6-tools qt6-base pkg-config git python3-build git"
+makedepends="qt6-base-devel qt6-base-private-devel qt6-svg-devel qt6-declarative-devel kf6-kcoreaddons-devel kf6-kwidgetsaddons-devel sqlite-devel"
+depends="desktop-file-utils shared-mime-info hicolor-icon-theme"
+short_desc="Electric diagrams and schematics CAD/CAE editor (Git Verified Qt6/KF6)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-2.0-or-later"
+homepage="https://qelectrotech.org"
+distfiles="https://github.com/qelectrotech/qelectrotech-source-mirror"
+
+do_fetch() {
+	:
+}
+
+do_extract() {
+	cd ${XBPS_BUILDDIR}
+	git clone --recursive ${distfiles} ${pkgname}-${version}
+	cd ${pkgname}-${version}
+	git checkout ${_commit}
+	git submodule update --init --recursive
+}
+
+wrksrc="${pkgname}-${version}"
