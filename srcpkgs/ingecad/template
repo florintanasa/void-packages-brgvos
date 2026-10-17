@@ -1,0 +1,66 @@
+# Template for 'ingecad'
+pkgname=ingecad
+version=0.6.7
+revision=2
+hostmakedepends="python3"
+depends="python3-pyside6 python3-pyside6-opengl-widgets python3-pyside6-network
+ python3-pyside6-gui python3-pyside6-widgets python3-numpy python3-Pillow
+ python3-ezdxf python3-pyproj libredwg-tools-git"
+short_desc="Open-source 2D drafting architecture in the style of classic AutoCAD"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://ingecad.org/"
+distfiles="https://github.com/ingelibre/ingecad/archive/refs/tags/v${version}.tar.gz"
+
+checksum="2fed17fce2a4b764ed9fcaa679be4ee58f5e25c554f6d686287c7e53ffc0fbeb"
+
+do_install() {
+	# Create compliant target system installation structures
+	vmkdir usr/bin
+	vmkdir usr/share/ingecad
+	vmkdir usr/share/doc/ingecad
+	vmkdir usr/share/icons/hicolor
+
+	# Copy the absolute complete software components layout into the share location
+	local dir
+	for dir in core formats i18n plugins render resources tools views; do
+		if [ -d "$dir" ]; then
+			cp -R "$dir" "${DESTDIR}/usr/share/ingecad/"
+		fi
+	done
+	vinstall main.py 644 usr/share/ingecad
+
+	# Deploy docs files
+	if [ -d "docs" ]; then
+		cp -R docs "${DESTDIR}/usr/share/doc/ingecad/"
+	fi
+
+	# Create a clean system launch wrapper script targeting main.py
+	cat <<-EOF > "${DESTDIR}/usr/bin/ingecad"
+		#!/bin/sh
+		exec python3 /usr/share/ingecad/main.py "\$@"
+	EOF
+	chmod 755 "${DESTDIR}/usr/bin/ingecad"
+
+	# Install the official desktop shortcut integration and fix StartupWMClass case sensitivity
+	if [ -f "resources/ingecad.desktop" ]; then
+		vinstall resources/ingecad.desktop 644 usr/share/applications
+	fi
+
+	# Deploy the official icon structures into hicolor global context targeting apps identifier
+	if [ -f "resources/ingecad.svg" ]; then
+		vinstall resources/ingecad.svg 644 usr/share/icons/hicolor/scalable/apps ingecad.svg
+	fi
+
+	if [ -d "resources/icons/hicolor" ]; then
+		cp -R resources/icons/hicolor/* "${DESTDIR}/usr/share/icons/hicolor/"
+	fi
+
+	if [ -d "resources/icons/mimetypes" ]; then
+		cp -R resources/icons/mimetypes "${DESTDIR}/usr/share/icons/hicolor/"
+	fi
+
+    # Document software copyleft license profiles
+	vlicense LICENSE
+}
+
