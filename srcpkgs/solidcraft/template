@@ -1,0 +1,40 @@
+# Template file for 'solidcraft'
+pkgname=solidcraft
+version=0.15.0
+revision=1
+build_style=cargo
+make_build_args="-p solidcraft -p solidcraft-cli"
+hostmakedepends="pkg-config libzstd-devel"
+#makedepends="libgit2-devel openssl-devel gtk+3-devel"
+short_desc="Open-source parametric 3D CAD application written in Rust"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="Apache-2.0, MIT"
+homepage="https://github.com/tangency-labs/solidcraft"
+distfiles="https://github.com/tangency-labs/solidcraft/archive/refs/tags/v${version}.tar.gz"
+
+checksum=fa74fd8e8f2f28551203508da8e382850d5f6c68962ab9b22ffec9ca2e897cbf
+
+do_install() {
+	vbin target/${RUST_TARGET}/release/solidcraft
+	vbin target/${RUST_TARGET}/release/solidcraft-cli
+
+	if [ -d "assets/platforms/linux" ]; then
+		vinstall assets/platforms/linux/ai.storyteller.solidcraft.desktop 644 usr/share/applications
+		vinstall assets/platforms/linux/ai.storyteller.solidcraft.mime.xml 644 usr/share/mime/packages ai.storyteller.photocraft.xml
+		vinstall assets/platforms/linux/ai.storyteller.solidcraft.metainfo.xml.in 644 usr/share/metainfo ai.storyteller.photocraft.metainfo.xml
+	fi
+
+	local size
+	for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256 512x512; do
+		if [ -f "assets/icons/app/linux/exports/hicolor/${size}/apps/ai.storyteller.solidcraft.png" ]; then
+			vinstall "assets/icons/app/linux/exports/hicolor/${size}/apps/ai.storyteller.solidcraft.png" \
+				644 "usr/share/icons/hicolor/${size}/apps"
+		fi
+	done
+
+	vlicense LICENSE-APACHE
+	vlicense LICENSE-MIT
+	if [ -f "NOTICE" ]; then
+		vlicense NOTICE
+	fi
+}
