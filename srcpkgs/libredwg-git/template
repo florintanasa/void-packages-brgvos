@@ -1,0 +1,62 @@
+# Template for 'libredwg-git'
+pkgname=libredwg-git
+version=2026.10.17.0
+revision=1
+_commit=master
+build_style=gnu-configure
+make_build_args="-j$(nproc)"
+configure_args="--disable-werror --disable-bindings"
+hostmakedepends="pkg-config python3 gettext texinfo swig python3-setuptools
+ python3-packaging-bootstrap autoconf automake libtool git"
+makedepends="python3-devel"
+# Enforce system replacement rules to satisfy dependencies and prevent conflicts
+provides="libredwg-${version}_1 libredwg-devel-${version}_1"
+replaces="libredwg>=0"
+short_desc="GNU library for handling DWG files (Git cutting-edge development build)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://savannah.gnu.org/projects/libredwg/"
+distfiles="https://github.com/LibreDWG/libredwg"
+
+do_fetch() {
+	:
+}
+
+do_extract() {
+	cd ${XBPS_BUILDDIR}
+	git clone --recursive ${distfiles} -b ${_commit} ${pkgname}-${version}
+}
+
+wrksrc="${pkgname}-${version}"
+
+pre_configure() {
+	# Git trees require building the configure script via autogen before standard style kicks in
+	./autogen.sh
+}
+
+# Sub-package to cleanly replace the standard system libredwg-tools package
+libredwg-tools-git_package() {
+	short_desc="GNU library for handling DWG files - utilities (Git build)"
+	provides="libredwg-tools-${version}_1"
+	replaces="libredwg-tools>=0"
+	pkg_install() {
+		vmove usr/bin
+		vlicense COPYING LICENSE
+	}
+}
+
+libredwg-git-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	replaces="libredwg-devel>=0"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove "usr/lib/*.so"
+		vmove "usr/lib/*a"
+	}
+}
+
+post_install() {
+	vlicense COPYING LICENSE
+}
