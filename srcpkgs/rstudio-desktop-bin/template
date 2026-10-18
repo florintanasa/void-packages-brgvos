@@ -1,0 +1,34 @@
+# Template for 'rstudio-desktop-bin'
+pkgname=rstudio-desktop-bin
+version=2026.10.0
+_revision=233
+short_desc="Powerful integrated development environment (IDE) for R"
+revision=1
+archs="x86_64"
+hostmakedepends="tar"
+depends="R"
+homepage="https://posit.co"
+license="AGPL-3.0-only"
+distfiles="https://download1.rstudio.org/electron/jammy/amd64/rstudio-${version}-${_revision}-amd64-debian.tar.gz"
+
+checksum="7e52073d3849fa8c2e4e7cdf8a24ad12698fe54b3c4300e0d93a8aff83070e5c"
+
+nopie=yes
+nostrip=yes
+allow_unknown_shlibs=yes
+shlib_provides="!ld-linux-aarch64.so.1"
+shlib_requires="!ld-linux-aarch64.so.1"
+
+do_install() {
+	vmkdir opt/rstudio
+    vmkdir usr/share/pixmaps
+	vcopy * opt/rstudio
+
+	vmkdir usr/bin
+	ln -sf /opt/rstudio/rstudio "${DESTDIR}/usr/bin/rstudio"
+
+    vinstall ${FILESDIR}/rstudio.desktop 644 usr/share/applications
+	vinstall resources/app/rstudio.png 644 usr/share/pixmaps rstudio.png
+
+    vlicense resources/app/NOTICE
+}

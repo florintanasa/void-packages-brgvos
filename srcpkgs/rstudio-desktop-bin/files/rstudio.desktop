@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=RStudio Desktop
+Comment=Integrated development environment for R
+Exec=/usr/bin/rstudio %F
+Icon=rstudio
+Terminal=false
+StartupWMClass=rstudio
+Categories=Development;Science;IDE;Qt;
+MimeType=text/x-r;text/x-rmd;text/x-rnw;
