@@ -1,0 +1,35 @@
+# Template file for 'strata'
+pkgname=strata
+version=1.0.0
+revision=1
+build_style=cargo
+# Exclude non-free RAR extraction capabilities to respect strict open-source policy
+cargo_features="--no-default-features"
+hostmakedepends="pkg-config"
+makedepends="gtk4-devel gtksourceview5-devel poppler-glib-devel fontconfig-devel gstreamer1-devel gst-plugins-base1-devel glib-devel"
+# Core and optional dependencies mapping Arch to Void Linux layout
+# Includes SMB network shares, AppImage icon extraction, and camera RAW preview engines
+depends="bubblewrap gvfs gvfs-smb ffmpeg ffmpegthumbnailer fontconfig
+ gst-libav gst-plugins-base1 gst-plugins-good1 gtk4 gtksourceview5 poppler-glib
+ ImageMagick libraw dcraw squashfs-tools desktop-file-utils hicolor-icon-theme"
+short_desc="Fast, keyboard-first file manager for modern desktops written in Rust"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://stratafiles.io"
+distfiles="https://github.com/lgse/strata/archive/refs/tags/v${version}.tar.gz"
+
+checksum="2350de03420fc7412b8beb8bd97f89f40d3dccefce7a880f0a483fea6b47c7df"
+
+do_install() {
+	# Install the compiled binaries from the standard rust release target
+	vbin target/${RUST_TARGET}/release/strata
+
+	# Install system integration launcher and D-Bus services from the data folder
+	vinstall data/io.github.lgse.Strata.desktop 644 usr/share/applications
+	vinstall data/io.github.lgse.Strata.FileManager1.service 644 usr/share/dbus-1/services
+	
+	# Install application vector icon from its verified path inside data directory
+	vinstall data/icons/scalable/apps/io.github.lgse.Strata.svg 644 usr/share/icons/hicolor/scalable/apps
+
+	vlicense LICENSE
+}
