@@ -9,7 +9,7 @@ hostmakedepends="pkg-config libzstd-devel"
 short_desc="Open-source parametric 3D CAD application written in Rust"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
-homepage="https://github.com/tangency-labs/solidcraft"
+homepage="https://solidcraft.io"
 distfiles="https://github.com/tangency-labs/solidcraft/archive/refs/tags/v${version}.tar.gz"
 
 checksum=fa74fd8e8f2f28551203508da8e382850d5f6c68962ab9b22ffec9ca2e897cbf
