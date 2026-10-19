@@ -1,6 +1,8 @@
 # Template file for 'xdna-driver-git'
 pkgname=xdna-driver-git
-version=2026.10.13.0
+version=2026.10.16.0
+_branch=main
+_commit=0140477afa9d6bc41e53afc19810d1e0d71336d0
 revision=1
 build_style=cmake
 configure_args="-DREG_BUILD=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCPACK_GENERATOR=TGZ -DXDNA_CPACK_LINUX_PKG_FLAVOR=arch"
@@ -18,7 +20,9 @@ do_fetch() {
 
 do_extract() {
 	cd ${XBPS_BUILDDIR}
-	git clone --recursive https://github.com/amd/xdna-driver ${pkgname}-${version}
+	git clone --recursive https://github.com/amd/xdna-driver -b ${_branch} ${pkgname}-${version}
+	cd ${pkgname}-${version}
+	git switch --detach ${_commit}
 }
 
 wrksrc="${pkgname}-${version}"
