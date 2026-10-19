@@ -1,7 +1,9 @@
 # Template file for 'FastFlowLM-git'
 pkgname=FastFlowLM-git
-version=2026.10.13.0
+version=2026.10.16.0
 revision=1
+_branch=main
+_commit=85bb44ef330c0e0ea92889a3d4d4d72d1ec350e7
 build_style=cmake
 hostmakedepends="cmake pkg-config git cargo rust"
 makedepends="boost-devel xdna-driver-xrt-git libcurl-devel fftw-devel ffmpeg6-devel libuuid-devel libdrm-devel libgomp-devel readline-devel"
@@ -18,7 +20,9 @@ do_fetch() {
 do_extract() {
 	mkdir -p "${XBPS_BUILDDIR}"
 	cd "${XBPS_BUILDDIR}"
-	git clone --recursive https://github.com/FastFlowLM/FastFlowLM ${pkgname}-${version}
+	git clone --recursive https://github.com/FastFlowLM/FastFlowLM -b ${_branch} ${pkgname}-${version}
+	cd ${pkgname}-${version}
+	git switch --detach ${_commit}
 }
 
 wrksrc="${pkgname}-${version}"
