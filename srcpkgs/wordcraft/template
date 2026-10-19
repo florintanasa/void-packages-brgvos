@@ -1,6 +1,6 @@
 # Template for 'wordcraft'
 pkgname=wordcraft
-version=0.7.0
+version=0.8.0
 revision=1
 build_style=cargo
 make_build_args="-p wordcraft -p wordcraft-cli"
@@ -12,7 +12,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/wordcraft"
 distfiles="https://github.com/storytold/wordcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="ee70e31d3b887c7e2c4b7d31de612ffddfb25a9359ed17d734b21a3b7f6891c0"
+checksum="8a9f644cff41fafcd07f1fd50e85a688c6550373d4fefb3980e506ec2678435f"
 
 do_install() {
 	# 1. Install application binaries directly from target release (prevents double compilation)
