@@ -1,7 +1,9 @@
 # Template file for 'open-pdf-studio-git'
 pkgname=open-pdf-studio-git
-version=2026.10.14.0
+version=2026.10.19.0
 revision=1
+_branch=main
+_commit=e43821a4da2188081eb56dab95b1b5d54c857e76
 hostmakedepends="pkg-config git nodejs cmake clang cargo rust glib-devel"
 makedepends="libwebkit2gtk41-devel libayatana-appindicator-devel librsvg-devel openssl-devel tesseract-ocr-devel"
 depends="tesseract-ocr tesseract-ocr-eng tesseract-ocr-ron"
@@ -16,7 +18,9 @@ do_fetch() {
 
 do_extract() {
 	cd ${XBPS_BUILDDIR}
-	git clone --recursive https://github.com/OpenAEC-Foundation/open-pdf-studio ${pkgname}-${version}
+	git clone --recursive https://github.com/OpenAEC-Foundation/open-pdf-studio -b ${_branch} ${pkgname}-${version}
+	cd ${pkgname}-${version}
+	git switch --detach ${_commit}
 }
 
 wrksrc="${pkgname}-${version}"
