@@ -1,7 +1,7 @@
 # Template for 'ingetrazo'
 pkgname=ingetrazo
-version=0.5.8
-revision=2
+version=0.5.9
+revision=1
 hostmakedepends="python3"
 depends="python3-pyside6 python3-pyside6-opengl-widgets python3-pyside6-network qt6-plugin-tls-openssl qt6-imageformats
  python3-pyside6-gui python3-pyside6-widgets python3-numpy python3-manifold3d python3-ezdxf python3-openskp"
@@ -11,7 +11,7 @@ license="GPL-3.0-or-later"
 homepage="https://ingetrazo.com"
 distfiles="https://github.com/ingelibre/ingetrazo/archive/refs/tags/v${version}.tar.gz"
 
-checksum="3ef0ae405d00c71f2901c0797c1f4fb864b9b5354767856944ac681b3d25d5db"
+checksum="68adc0b232aec2827512c7304f1a46123a1dc01e9102f32b56decfc9c60a6a9a"
 
 do_install() {
 	# 1. Create compliant target system installation structures
