@@ -1,69 +1,89 @@
 # Template for 'ingetrazo'
 pkgname=ingetrazo
 version=0.5.9
-revision=1
-hostmakedepends="python3"
+revision=2
+hostmakedepends="python3 cargo python3-setuptools python3-wheel"
+makedepends="python3-devel"
 depends="python3-pyside6 python3-pyside6-opengl-widgets python3-pyside6-network qt6-plugin-tls-openssl qt6-imageformats
  python3-pyside6-gui python3-pyside6-widgets python3-numpy python3-manifold3d python3-ezdxf python3-openskp"
-short_desc="Free 3D CAD/BIM modeler for architecture and engineering"
+short_desc="Free 3D CAD/BIM modeler for architecture and engineering (with Rust core acceleration)"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://ingetrazo.com"
 distfiles="https://github.com/ingelibre/ingetrazo/archive/refs/tags/v${version}.tar.gz"
-
 checksum="68adc0b232aec2827512c7304f1a46123a1dc01e9102f32b56decfc9c60a6a9a"
+
+do_build() {
+	# 1. Access the newly added Rust engine source directory
+	if [ -d "rust/ingetrazo_core" ]; then
+		cd rust/ingetrazo_core
+		# 2. Compile the high-performance release shared library using all Slimbook cores
+		cargo build --release --jobs=$(nproc)
+		cd ../..
+	fi
+}
 
 do_install() {
 	# 1. Create compliant target system installation structures
 	vmkdir usr/bin
+	vmkdir usr/lib/ingetrazo
 	vmkdir usr/libexec/ingetrazo
 	vmkdir usr/share/ingetrazo
 	vmkdir usr/share/doc/ingetrazo
 
-	# 2. Copy the absolute complete software components layout into the share location
+	# 2. Deploy the compiled Rust native shared extension into the compliant /usr/lib area
+	if [ -f "rust/ingetrazo_core/target/release/libingetrazo_core.so" ]; then
+		vinstall rust/ingetrazo_core/target/release/libingetrazo_core.so 755 usr/lib/ingetrazo ingetrazo_core.so
+		# Create the isolated package folder structure inside share to replicate local launch context
+		mkdir -p "${DESTDIR}/usr/share/ingetrazo/ingetrazo_core"
+		# Create a compliant symlink pointing to the real ELF binary located safely in /usr/lib
+		ln -sf /usr/lib/ingetrazo/ingetrazo_core.so "${DESTDIR}/usr/share/ingetrazo/ingetrazo_core/ingetrazo_core.so"
+	fi
+
+	# 3. Copy the absolute complete software components layout into the share location
 	local dir
-	for dir in analysis core formats georef i18n materials plugins resources styles tools views; do
+	for dir in analysis core formats georef i18n materials plugins resources scripts styles tools views; do
 		if [ -d "$dir" ]; then
 			cp -R "$dir" "${DESTDIR}/usr/share/ingetrazo/"
 		fi
 	done
 	vinstall main.py 644 usr/share/ingetrazo
 
-	# 3. Deploy the rich project examples and PDF sheets
+	# 4. Deploy the rich project examples and PDF sheets
 	if [ -d "examples" ]; then
 		cp -R examples "${DESTDIR}/usr/share/doc/ingetrazo/"
 	fi
 
-	# 4. Deploy docs files
+	# 5. Deploy docs files
 	if [ -d "docs" ]; then
 		cp -R docs "${DESTDIR}/usr/share/doc/ingetrazo/"
 	fi
 
-	# 5. Securely isolate the bundled LibreDWG ELF converter into usr/libexec to satisfy pkglint
+	# 6. Securely isolate the bundled LibreDWG ELF converter into usr/libexec to satisfy pkglint
 	if [ -d "vendor/libredwg" ]; then
 		cp -R vendor/libredwg "${DESTDIR}/usr/libexec/ingetrazo/"
 		mkdir -p "${DESTDIR}/usr/share/ingetrazo/vendor"
 		ln -sf /usr/libexec/ingetrazo/libredwg "${DESTDIR}/usr/share/ingetrazo/vendor/libredwg"
 	fi
 
-	# 6. Create a clean system launch wrapper script targeting main.py
+	# 7. Create a clean system launch wrapper script targeting main.py
 	cat <<-EOF > "${DESTDIR}/usr/bin/ingetrazo"
 		#!/bin/sh
 		exec python3 /usr/share/ingetrazo/main.py "\$@"
 	EOF
 	chmod 755 "${DESTDIR}/usr/bin/ingetrazo"
 
-	# 7. Install the official desktop shortcut integration provided in the repository
+	# 8. Install the official desktop shortcut integration provided in the repository
 	if [ -f "packaging/ingetrazo.desktop" ]; then
 		vinstall packaging/ingetrazo.desktop 644 usr/share/applications
 	fi
 
-	# 8. Correctly deploy the MIME types XML definition from its real location inside resources/
+	# 9. Correctly deploy the MIME types XML definition from its real location inside resources/
 	if [ -f "resources/mime/ingetrazo.xml" ]; then
 		vinstall resources/mime/ingetrazo.xml 644 usr/share/mime/packages
 	fi
 
-	# 9. Deploy the official icon structures and file extensions mimetypes assets
+	# 10. Deploy the official icon structures and file extensions mimetypes assets
 	if [ -f "resources/icons/ingetrazo.svg" ]; then
 		vinstall resources/icons/ingetrazo.svg 644 usr/share/icons/hicolor/scalable/apps ingetrazo.svg
 	fi
@@ -76,6 +96,6 @@ do_install() {
 		cp -R resources/icons/mimetypes "${DESTDIR}/usr/share/icons/hicolor/"
 	fi
 
-	# 10. Document software copyleft license profiles
+	# 11. Document software copyleft license profiles
 	vlicense LICENSE
 }
