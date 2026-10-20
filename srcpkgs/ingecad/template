@@ -1,7 +1,7 @@
 # Template for 'ingecad'
 pkgname=ingecad
-version=0.6.7
-revision=2
+version=0.6.8.1
+revision=1
 hostmakedepends="python3"
 depends="python3-pyside6 python3-pyside6-opengl-widgets python3-pyside6-network
  python3-pyside6-gui python3-pyside6-widgets python3-numpy python3-Pillow
@@ -12,7 +12,7 @@ license="GPL-3.0-or-later"
 homepage="https://ingecad.org/"
 distfiles="https://github.com/ingelibre/ingecad/archive/refs/tags/v${version}.tar.gz"
 
-checksum="2fed17fce2a4b764ed9fcaa679be4ee58f5e25c554f6d686287c7e53ffc0fbeb"
+checksum="c9b5fdcea479259d070e2828892fb563bb64d316ffd6372a72035a43d86a70a6"
 
 do_install() {
 	# Create compliant target system installation structures
