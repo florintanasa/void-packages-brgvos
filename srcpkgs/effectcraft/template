@@ -1,6 +1,6 @@
 # Template for 'effectcraft'
 pkgname=effectcraft
-version=0.11.1
+version=0.14.0
 revision=1
 build_style=cargo
 make_build_args="-p effectcraft -p effectcraft-cli"
@@ -12,7 +12,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/effectcraft"
 distfiles="https://github.com/storytold/effectcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="fb70627d112825cd0412d37784b55ae8b87f128abfab30b26a7759a42518015a"
+checksum="804196c15f4e5edc337c4b6723c65d0f2c988913902ffc1f186709d22aa96c05"
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI)
