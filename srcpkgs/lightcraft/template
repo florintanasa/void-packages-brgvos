@@ -1,18 +1,17 @@
 # Template for 'lightcraft'
 pkgname=lightcraft
-version=0.9.1
+version=0.11.0
 revision=1
 build_style=cargo
 make_build_args="-p lightcraft -p lightcraft-cli"
 hostmakedepends="pkg-config"
-# makedepends="fontconfig-devel freetype-devel libX11-devel libXcursor-devel libXi-devel libXrandr-devel libxkbcommon-devel wayland-devel"
 short_desc="Open-source photo library manager and RAW image developer"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/lightcraft"
 distfiles="https://github.com/storytold/lightcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="5e689147e46ed78fe100d43db997e64e7266e2d02db898bedec1f9a30e80f474"
+checksum="a2b2850a8cfb192ce8cc08b2f5b014ef09606116c6bd1f011afd392fd663acea"
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI)
