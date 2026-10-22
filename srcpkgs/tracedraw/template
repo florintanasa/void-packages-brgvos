@@ -1,0 +1,41 @@
+# Template for 'tracedraw'
+pkgname=tracedraw
+version=0.11.0
+revision=1
+build_style=cargo
+make_build_args="-p tracedraw -p tracedraw-cli"
+hostmakedepends="pkg-config"
+short_desc="Vector illustration, page layout and print; an open-source, clean-room vector editor rebuilt from scratch in pure Rust."
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="Apache-2.0, MIT"
+homepage="https://github.com/igtoth/tracedraw"
+
+distfiles="https://github.com/igtoth/tracedraw/archive/refs/tags/v${version}.tar.gz"
+
+checksum="70b55c79bd897c9b718fc6010e1a4298a196d56d1bcc9ba8ecf87aa01cbd874d"
+
+do_install() {
+    # Install applications binaries directly from target release
+    vbin target/${RUST_TARGET}/release/tracedraw
+    vbin target/${RUST_TARGET}/release/tracedraw-cli
+    
+    # Install desktop shortcut, appstream metadata, and custom mime types from upstream packaging
+    vinstall packaging/linux/tracedraw.desktop 644 usr/share/applications
+
+    # Iterate over the standard hicolor icon paths and install them with the proper app ID name
+	local size
+	for size in 16 32 64 128 256 512; do
+		if [ -f "assets/icon/tracedraw-${size}.png" ]; then
+			vinstall "assets/icon/tracedraw-${size}.png" \
+				644 "usr/share/icons/hicolor/${size}x${size}/apps" tracedraw.png
+		fi
+	done
+
+    # Install standard software licenses and the legal NOTICE file if exist
+	vlicense LICENSE-APACHE
+	vlicense LICENSE-MIT
+	if [ -f "NOTICE" ]; then
+		vlicense NOTICE
+	fi
+
+}
