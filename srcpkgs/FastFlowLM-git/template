@@ -1,12 +1,12 @@
 # Template file for 'FastFlowLM-git'
 pkgname=FastFlowLM-git
-version=2026.10.16.0
+version=2026.10.23.0
 revision=1
 _branch=main
-_commit=85bb44ef330c0e0ea92889a3d4d4d72d1ec350e7
+_commit=e2d0144fb868018f9777ae661daa0d6163932974
 build_style=cmake
 hostmakedepends="cmake pkg-config git cargo rust"
-makedepends="boost-devel xdna-driver-xrt-git libcurl-devel fftw-devel ffmpeg6-devel libuuid-devel libdrm-devel libgomp-devel readline-devel"
+makedepends="boost-devel xdna-driver-xrt-git libcurl-devel fftw-devel ffmpeg6-devel libuuid-devel libdrm-devel libgomp-devel readline-devel libedit-devel"
 depends="xdna-driver-git xdna-driver-xrt-git"
 short_desc="Fast LLM inference engine optimized for AMD XDNA NPU from git"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
@@ -35,6 +35,7 @@ do_configure() {
 	export RUSTFLAGS="-C target-cpu=x86-64-v4 -C opt-level=3"
 
 	cmake --preset linux-default \
+		-DCMAKE_BUILD_TYPE=Release \
 		-DUSE_XDNA=ON \
 		-DFLM_BUILD_GEMMA4E=ON \
 		-DXRT_ROOT=/usr \
@@ -49,10 +50,11 @@ do_build() {
 
 do_install() {
 	cd src
-	local target_build_dir=$(find . -name "CMakeCache.txt" -exec dirname {} \;)
-
-	DESTDIR="${DESTDIR}" cmake --install "${target_build_dir}"
+	
+	# Preset-ul linux-default on src/build
+	DESTDIR="${DESTDIR}" cmake --install build
 
 	vlicense "../assets/superseded/LICENSE_BINARY.txt"
 	vlicense "../LICENSE_RUNTIME.txt"
 }
+
