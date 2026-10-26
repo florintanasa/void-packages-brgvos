@@ -1,0 +1,22 @@
+# Template for 'pgdbf'
+pkgname=pgdbf
+version=0.6.2
+revision=1
+build_style="gnu-configure"
+hostmakedepends="automake autoconf"
+short_desc="Convert XBase / FoxPro databases to PostgreSQL"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/kstrauser/pgdbf"
+distfiles="https://github.com/kstrauser/pgdbf/archive/refs/tags/v${version}.tar.gz"
+
+checksum="5ae767e7f3f78faccc036d90278a34b463905a8bc95bf1ab5c39bc2c796fd73e"
+
+pre_configure() {
+	# Generate ./configure
+	autoreconf -fi
+}
+
+post_install() {
+	vlicense COPYING
+}
