@@ -1,0 +1,33 @@
+# Template file for 'godbf2pg'
+pkgname=godbf2pg
+version=1.0.0
+revision=1
+#build_style=go
+hostmakedepends="go"
+short_desc="Blazing fast pure Go CLI to convert dBase/FoxPro DBF files to PostgreSQL"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://brgv-os.ro"
+
+do_build() {
+	# Copy the source file to the current working directory for analysis
+	cp "${FILESDIR}/main.go" .
+
+	# Initialize a local Go module space
+	go mod init godbf2pg
+	
+	# Fetch the latest upstream dBase library
+	go get github.com/valentin-kaiser/go-dbase@latest
+
+	# Parse dependencies and automatically generate a valid go.sum
+	go mod tidy
+
+	# Compile the local binary with optimization flags (stripped symbols)
+	GOOS=linux go build -ldflags="-s -w" -o godbf2pg main.go
+}
+
+do_install() {
+	# Instalează binarul rezultat în /usr/bin/ în interiorul pachetului final XBPS
+	vbin godbf2pg
+}
+
