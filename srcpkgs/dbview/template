@@ -1,0 +1,24 @@
+# Template file for 'dbview'
+pkgname=dbview
+version=1.0.4
+revision=1
+build_style=gnu-makefile
+short_desc="View dBase III and IV files directly in the terminal"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-2.0-or-later"
+homepage="https://debian.org"
+distfiles="http://deb.debian.org/debian/pool/main/d/dbview/dbview_${version}.orig.tar.gz"
+
+checksum="bca41716e1ec0ce8833bcacfa17063f338b25f249f92ddb954c7d935e008cee7"
+
+#do_build() {
+	# Compile directly using the native host C compiler and optimization flags
+#	${CC} ${CFLAGS} dbview.c -o dbview ${LDFLAGS}
+#}
+
+do_install() {
+	# Install the compiled binary to /usr/bin/
+	vbin dbview
+	# Install the classic man page
+	vman dbview.1
+}
