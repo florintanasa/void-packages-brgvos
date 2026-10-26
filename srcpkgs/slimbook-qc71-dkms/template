@@ -1,8 +1,7 @@
 # Template file for 'slimbook-qc71-dkms'
 pkgname=slimbook-qc71-dkms
-version=1.3.2 # Adjust based on latest tag
-revision=5
-# We only install sources, so no_target is appropriate
+version=1.3.3
+revision=1
 no_target=yes
 # DKMS is required to build the module on the target system
 depends="dkms"
@@ -13,17 +12,11 @@ license="GPL-2.0-only"
 homepage="https://github.com/Slimbook-Team/qc71_laptop"
 distfiles="https://github.com/Slimbook-Team/qc71_laptop/archive/refs/tags/${version}.tar.gz>slimbook-qc71-dkms-${version}.tar.gz"
 
-checksum="b4382172a672e012815b380b75318fa1d4a1668377dbe05b075ce9ad71bf16c6"
+checksum="443e53539ad7914874fe1d0cb8d4ca1529686b8d94a41c2b1ffafca23a223535"
 
 wrksrc="qc71_laptop-${version}"
 
 do_install() {
-    # Fix compatibility with battery API names across all kernels (6.18 / 7.2 / 7.3+)
-    # This maps acpi_battery_hook_* safely to battery_hook_* if the macros are missing,
-    # ensuring complete safety and zero side effects for all BIOS versions.
-    sed -i '/#include <acpi\/battery.h>/a \
-#ifndef battery_hook_register\n#define acpi_battery_hook_register battery_hook_register\n#define acpi_battery_hook_unregister battery_hook_unregister\n#endif' battery.c
-
     # Target directory in /usr/src/
     local dkms_dir="usr/src/slimbook-qc71-${version}"
     vmkdir "${dkms_dir}"
