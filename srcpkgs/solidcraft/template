@@ -1,6 +1,6 @@
 # Template file for 'solidcraft'
 pkgname=solidcraft
-version=0.15.0
+version=0.21.0
 revision=1
 build_style=cargo
 make_build_args="-p solidcraft -p solidcraft-cli"
@@ -12,7 +12,7 @@ license="Apache-2.0, MIT"
 homepage="https://solidcraft.io"
 distfiles="https://github.com/tangency-labs/solidcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=fa74fd8e8f2f28551203508da8e382850d5f6c68962ab9b22ffec9ca2e897cbf
+checksum="b80471a1ee2270365dc8a8d3257499d41c998db9cbbc4c4a092eb083d66aee69"
 
 do_install() {
 	vbin target/${RUST_TARGET}/release/solidcraft
@@ -20,8 +20,8 @@ do_install() {
 
 	if [ -d "assets/platforms/linux" ]; then
 		vinstall assets/platforms/linux/ai.storyteller.solidcraft.desktop 644 usr/share/applications
-		vinstall assets/platforms/linux/ai.storyteller.solidcraft.mime.xml 644 usr/share/mime/packages ai.storyteller.photocraft.xml
-		vinstall assets/platforms/linux/ai.storyteller.solidcraft.metainfo.xml.in 644 usr/share/metainfo ai.storyteller.photocraft.metainfo.xml
+		vinstall assets/platforms/linux/ai.storyteller.solidcraft.mime.xml 644 usr/share/mime/packages ai.storyteller.solidcraft.xml
+		vinstall assets/platforms/linux/ai.storyteller.solidcraft.metainfo.xml.in 644 usr/share/metainfo ai.storyteller.solidcraft.metainfo.xml
 	fi
 
 	local size

@@ -1,9 +1,9 @@
 # Template file for 'xdna-driver-xrt-git'
 pkgname=xdna-driver-xrt-git
-version=2026.10.16.0
+version=2026.10.23.0
 revision=1
 _branch=main
-_commit=0140477afa9d6bc41e53afc19810d1e0d71336d0
+_commit=0c9c70e54a512027975639942a6c871d5988cab4
 build_style=cmake
 configure_args="-DXRT_NPU_BUILD=ON -DXRT_BUILD_TOOLS=ON -DXRT_ENABLE_ACCEL=ON -DCMAKE_INSTALL_LIBDIR=lib"
 hostmakedepends="cmake pkg-config git tar protobuf wget python3-yaml python3-Markdown python3-Jinja2"
