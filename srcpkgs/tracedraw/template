@@ -1,6 +1,6 @@
 # Template for 'tracedraw'
 pkgname=tracedraw
-version=0.11.0
+version=0.19.4
 revision=1
 build_style=cargo
 make_build_args="-p tracedraw -p tracedraw-cli"
@@ -12,7 +12,7 @@ homepage="https://github.com/igtoth/tracedraw"
 
 distfiles="https://github.com/igtoth/tracedraw/archive/refs/tags/v${version}.tar.gz"
 
-checksum="70b55c79bd897c9b718fc6010e1a4298a196d56d1bcc9ba8ecf87aa01cbd874d"
+checksum="a6748903c6a81f9583a2e118f4da33e4d94a6eea3bbfcf38748cdcb979bb5dc7"
 
 do_install() {
     # Install applications binaries directly from target release
