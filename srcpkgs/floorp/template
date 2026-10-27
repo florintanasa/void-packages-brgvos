@@ -1,6 +1,6 @@
 # Template file for 'floorp'
 pkgname=floorp
-version=12.20.1
+version=12.20.2
 revision=1
 archs="x86_64"
 makedepends="xz"
@@ -12,7 +12,7 @@ changelog="https://blog.floorp.app/en/release/${version}/"
 distfiles="https://github.com/Floorp-Projects/Floorp/releases/download/v${version}/floorp-linux-x86_64.tar.xz
  https://raw.githubusercontent.com/Floorp-Projects/Floorp/refs/heads/main/LICENSE>LICENSE"
 
-checksum="9edbf80d4ced1f29b1910048d75b8f23f3905576e11b859f22b38001042060b0
+checksum="059a85f0e40c9f3649ae61fe716ecbdde85f06971a600aeec5c3e8f3a0af6004
  1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
 
 skip_extraction="LICENSE"
