@@ -1,7 +1,7 @@
 # Template file for 'librewolf-bin'
 pkgname=librewolf-bin
-version=158.0
-revision=1
+version=158.0.1
+revision=2
 archs="x86_64"
 makedepends="xz"
 conflicts="librewolf"
@@ -13,7 +13,7 @@ changelog="https://librewolf.dev/librewolf/bsys6/releases"
 distfiles="https://dl.librewolf.net/librewolf/${version}-${revision}/librewolf-${version}-${revision}-linux-x86_64-package.tar.xz
  https://librewolf.dev/librewolf/source/raw/branch/main/LICENSE>LICENSE"
 
-checksum="34bb7296feec0c6823abdfaf4fd50e47e9eada9cb4a5ed16e111a951dc9eb16c
+checksum="de1522759855e849ba09839749e3871aa06820a2ce1418be4099ce388a93ef02
  1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
 
 skip_extraction="LICENSE"
