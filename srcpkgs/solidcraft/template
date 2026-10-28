@@ -1,33 +1,32 @@
 # Template file for 'solidcraft'
 pkgname=solidcraft
-version=0.21.0
+version=0.25.1
 revision=1
 build_style=cargo
 make_build_args="-p solidcraft -p solidcraft-cli"
 hostmakedepends="pkg-config libzstd-devel"
-#makedepends="libgit2-devel openssl-devel gtk+3-devel"
 short_desc="Open-source parametric 3D CAD application written in Rust"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
 homepage="https://solidcraft.io"
 distfiles="https://github.com/tangency-labs/solidcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="b80471a1ee2270365dc8a8d3257499d41c998db9cbbc4c4a092eb083d66aee69"
+checksum="a488096db6cf6160e1f8b253dc2c97a45bfb37f6cd53eee14fbe3a2aac5b6ee0"
 
 do_install() {
 	vbin target/${RUST_TARGET}/release/solidcraft
 	vbin target/${RUST_TARGET}/release/solidcraft-cli
 
 	if [ -d "assets/platforms/linux" ]; then
-		vinstall assets/platforms/linux/ai.storyteller.solidcraft.desktop 644 usr/share/applications
-		vinstall assets/platforms/linux/ai.storyteller.solidcraft.mime.xml 644 usr/share/mime/packages ai.storyteller.solidcraft.xml
-		vinstall assets/platforms/linux/ai.storyteller.solidcraft.metainfo.xml.in 644 usr/share/metainfo ai.storyteller.solidcraft.metainfo.xml
+		vinstall assets/platforms/linux/io.tangencylabs.solidcraft.desktop 644 usr/share/applications
+		vinstall assets/platforms/linux/io.tangencylabs.solidcraft.mime.xml 644 usr/share/mime/packages io.tangencylabs.solidcraft.xml
+		vinstall assets/platforms/linux/io.tangencylabs.solidcraft.metainfo.xml.in 644 usr/share/metainfo io.tangencylabs.solidcraft.metainfo.xml
 	fi
 
 	local size
 	for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256 512x512; do
-		if [ -f "assets/icons/app/linux/exports/hicolor/${size}/apps/ai.storyteller.solidcraft.png" ]; then
-			vinstall "assets/icons/app/linux/exports/hicolor/${size}/apps/ai.storyteller.solidcraft.png" \
+		if [ -f "assets/icons/app/linux/exports/hicolor/${size}/apps/io.tangencylabs.solidcraft.png" ]; then
+			vinstall "assets/icons/app/linux/exports/hicolor/${size}/apps/io.tangencylabs.solidcraft.png" \
 				644 "usr/share/icons/hicolor/${size}/apps"
 		fi
 	done
