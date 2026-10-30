@@ -1,0 +1,10 @@
+# Template for 'euro-office-desktopeditors'
+pkgname=euro-office-desktopeditors
+version=9.3.6
+revision=1
+create_wrksrc=yes
+hostmakedepends="xz"
+depends="euro-office-desktopeditors"
+# Required system shared libraries
+depends="euro-office-desktopeditors"
+nopie=yes
