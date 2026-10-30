@@ -1,6 +1,6 @@
 # Template for 'vectorcraft'
 pkgname=vectorcraft
-version=0.16.0
+version=0.18.0
 revision=1
 build_style=cargo
 make_build_args="-p vectorcraft -p vectorcraft-cli"
@@ -11,7 +11,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/vectorcraft"
 distfiles="https://github.com/storytold/vectorcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="e8761831ceaa9681eb3348cad33ecf1349d62111b3bba8a2b7d408011ec06152"
+checksum="d065963faeed700cda1ee0b82738f91186672413a55977232be2e0d4fd65df41"
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI) 
