@@ -1,6 +1,6 @@
 # Template for 'gridcraft'
 pkgname=gridcraft
-version=0.11.1
+version=0.13.0
 revision=1
 build_style=cargo
 make_build_args="-p gridcraft -p gridcraft-cli"
@@ -12,7 +12,7 @@ homepage="https://getartcraft.com/apps/gridcraft"
 
 distfiles="https://github.com/storytold/gridcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="18a7c49bfefc9a585243f1f8a5fcf6e055bf314c4b31fb938ebd9c3b02f4e5bd"
+checksum="b33b6ab1f9032b0ccf6fbbe281affa618a325bf54030fa0d017a7fc1bf2f8251"
 
 do_install() {
 	# 1. Install application binaries directly from target release (prevents double compilation)
