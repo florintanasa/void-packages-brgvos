@@ -1,9 +1,9 @@
 # Template file for 'FastFlowLM-git'
 pkgname=FastFlowLM-git
-version=2026.10.23.0
+version=2026.10.29.0
 revision=1
 _branch=main
-_commit=e2d0144fb868018f9777ae661daa0d6163932974
+_commit=f37cdd29edc777cf3db1e385da8e7bfadc57d0b3
 build_style=cmake
 hostmakedepends="cmake pkg-config git cargo rust"
 makedepends="boost-devel xdna-driver-xrt-git libcurl-devel fftw-devel ffmpeg6-devel libuuid-devel libdrm-devel libgomp-devel readline-devel libedit-devel"
