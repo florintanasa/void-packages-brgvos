@@ -1,6 +1,6 @@
 # Template for 'filmcraft'
 pkgname=filmcraft
-version=0.12.0
+version=0.14.0
 revision=1
 build_style=cargo
 make_build_args="-p filmcraft -p filmcraft-cli"
@@ -12,7 +12,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/filmcraft"
 distfiles="https://github.com/storytold/filmcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="83022ffecdc03adc113d8aaa54e5cab999047a92d0d531821a4681a4751d7dd2"
+checksum="6b5ed01cbb1328bfb7c702baf58c7e68af156085a6ded4998ba95b4ebefcde5b"
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI) 
