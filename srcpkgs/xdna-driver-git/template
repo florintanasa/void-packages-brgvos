@@ -1,8 +1,8 @@
 # Template file for 'xdna-driver-git'
 pkgname=xdna-driver-git
-version=2026.10.23.0
+version=2026.10.26.0
 _branch=main
-_commit=0c9c70e54a512027975639942a6c871d5988cab4
+_commit=943a30028d3fc9ff8b9a54faf84dcdcd9860c17a
 revision=1
 build_style=cmake
 configure_args="-DREG_BUILD=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCPACK_GENERATOR=TGZ -DXDNA_CPACK_LINUX_PKG_FLAVOR=arch"
