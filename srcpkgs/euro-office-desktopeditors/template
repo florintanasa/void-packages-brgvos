@@ -4,7 +4,51 @@ version=9.3.6
 revision=1
 create_wrksrc=yes
 hostmakedepends="xz"
-depends="euro-office-desktopeditors"
 # Required system shared libraries
-depends="euro-office-desktopeditors"
+depends="alsa-lib glib nss nspr libX11 libXcomposite libXcursor libXdamage
+ libXext libXfixes libXi libXrandr libXrender libXtst libXScrnSaver libxcb
+ libxshmfence gdk-pixbuf gtk+3 libdrm libgbm libxkbcommon qt6-quicktimeline
+ libqt6shadertools qt6-quick3d libodbc"
+ # Skip the mandatory Position-Independent Executable verification for pre-built binaries
 nopie=yes
+allow_unknown_shlibs=yes
+noshlibdeps=yes
+short_desc="Euro-Office Desktop Editors office suite"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="AGPL-3.0-only"
+homepage="https://github.com/Euro-Office/DesktopEditors/"
+
+# We fetch only the application environment base
+_base_url="https://github.com/Euro-Office/DesktopEditors/releases/download/v${version}"
+distfiles="${_base_url}/euro-office-euro-office-${version}-0-x86_64.tar.xz"
+
+# sha256 checksums matching the archive fetched by XBPS-src
+checksum="d8d7083f0d49201e3606341a9caca5ff6ddbe9ff7c92fa17cd30fb6797146afd"
+
+archs="x86_64"
+
+do_install() {
+	# 1. Deploy the core runtime binary engine structure into the global storage directory /opt
+	vmkdir opt/euro-office
+	cp -R opt/euro-office/euro-office "${DESTDIR}/opt/euro-office/"
+
+	# 2. Synchronize standard launcher wrapper binaries to maintain path visibility
+	vmkdir usr/bin
+	cp -R usr/bin/* "${DESTDIR}/usr/bin/"
+
+	# 3. Inject menu entry shortcuts (.desktop) and associated shared assets
+	vmkdir usr/share
+	cp -R usr/share/applications "${DESTDIR}/usr/share/"
+	cp -R usr/share/icons "${DESTDIR}/usr/share/"
+	cp -R usr/share/doc "${DESTDIR}/usr/share/"
+
+	# 4. Fix executable permissions for compiled binaries and specialized system components
+	chmod 755 "${DESTDIR}/usr/bin/euro-office-euro-office"
+	chmod 755 "${DESTDIR}/opt/euro-office/euro-office/DesktopEditors"
+	chmod 755 "${DESTDIR}/opt/euro-office/euro-office/converter/x2t" 2>/dev/null || true
+	chmod 755 "${DESTDIR}/opt/euro-office/euro-office/editors_helper"
+
+	# 5. Isolate and register standalone legal software licenses
+	vlicense usr/share/licenses/euro-office-euro-office/LICENSE LICENSE
+	vlicense usr/share/licenses/euro-office-euro-office/3DPARTYLICENSE 3DPARTYLICENSE
+}
