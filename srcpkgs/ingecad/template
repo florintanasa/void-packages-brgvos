@@ -1,6 +1,6 @@
 # Template for 'ingecad'
 pkgname=ingecad
-version=0.6.8.1
+version=0.7.0
 revision=1
 hostmakedepends="python3"
 depends="python3-pyside6 python3-pyside6-opengl-widgets python3-pyside6-network
