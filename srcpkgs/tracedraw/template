@@ -12,7 +12,7 @@ homepage="https://github.com/igtoth/tracedraw"
 
 distfiles="https://github.com/igtoth/tracedraw/archive/refs/tags/v${version}.tar.gz"
 
-checksum="a6748903c6a81f9583a2e118f4da33e4d94a6eea3bbfcf38748cdcb979bb5dc7"
+checksum="8b967e53128a71549eb91f6045290bdaccfab158b20427389b77d0924b10882f"
 
 do_install() {
     # Install applications binaries directly from target release
