@@ -1,6 +1,6 @@
 # Template file for 'llamacpp'
 pkgname=llamacpp
-version=0.7.0
+version=0.8.0
 revision=1
 build_style=cmake
 configure_args="-DGGML_VULKAN=ON -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DCMAKE_BUILD_TYPE=Release -DLLAMA_BUILD_TESTS=OFF -DCMAKE_INSTALL_LIBDIR=lib"
@@ -24,7 +24,7 @@ license="MIT"
 homepage="https://github.com/ggml-org/llama.cpp"
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz>llamacpp-${version}.tar.gz"
 
-checksum="55d67acf3ad2ad747a9bbeb75f9f0e173dbcc0d1753a471038a90c819421c5e1"
+checksum="51b1e025d7b12e83fa55736e65bc254acd9d23e49f546be7531368fef82210ee"
 
 post_install() {
 	# 1. Create service private storage directories and drop-in config path
