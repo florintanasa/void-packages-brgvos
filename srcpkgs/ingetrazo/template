@@ -12,7 +12,8 @@ maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://ingetrazo.com"
 distfiles="https://github.com/ingelibre/ingetrazo/archive/refs/tags/v${version}.tar.gz"
-checksum="68adc0b232aec2827512c7304f1a46123a1dc01e9102f32b56decfc9c60a6a9a"
+
+checksum="2bc519f345308643cd641b2d5120b7d167b5331afbde59a80e8f2da96e496230"
 
 do_build() {
 	# 1. Access the newly added Rust engine source directory
