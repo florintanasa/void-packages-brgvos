@@ -12,7 +12,7 @@ license="GPL-3.0-or-later"
 homepage="https://ingecad.org/"
 distfiles="https://github.com/ingelibre/ingecad/archive/refs/tags/v${version}.tar.gz"
 
-checksum="c9b5fdcea479259d070e2828892fb563bb64d316ffd6372a72035a43d86a70a6"
+checksum="556441724aeb5ac7853e9c0c77c7c081734fa341ca59f7eab73cac6957e06075"
 
 do_install() {
 	# Create compliant target system installation structures
