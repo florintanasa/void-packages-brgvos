@@ -1,6 +1,7 @@
 # Template for 'ingetrazo'
 pkgname=ingetrazo
-version=0.5.9
+version=0.5.11
+revision=1
 revision=2
 hostmakedepends="python3 cargo python3-setuptools python3-wheel"
 makedepends="python3-devel"
