@@ -2,7 +2,6 @@
 pkgname=ingetrazo
 version=0.5.11
 revision=1
-revision=2
 hostmakedepends="python3 cargo python3-setuptools python3-wheel"
 makedepends="python3-devel"
 depends="python3-pyside6 python3-pyside6-opengl-widgets python3-pyside6-network qt6-plugin-tls-openssl qt6-imageformats
