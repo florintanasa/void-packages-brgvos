@@ -1,12 +1,12 @@
 # Template file for 'open-pdf-studio-git'
 pkgname=open-pdf-studio-git
-version=2026.10.19.0
+version=2026.10.31.0
 revision=1
 _branch=main
-_commit=e43821a4da2188081eb56dab95b1b5d54c857e76
-hostmakedepends="pkg-config git nodejs cmake clang cargo rust glib-devel"
-makedepends="libwebkit2gtk41-devel libayatana-appindicator-devel librsvg-devel openssl-devel tesseract-ocr-devel"
-depends="tesseract-ocr tesseract-ocr-eng tesseract-ocr-ron"
+_commit=f76da9402ed7f04fbf0ef71c72bb88bb1aaed455
+hostmakedepends="pkg-config git nodejs cmake clang cargo rust glib-devel libcxx-devel"
+makedepends="libwebkit2gtk41-devel libayatana-appindicator-devel librsvg-devel openssl-devel"
+#depends="tesseract-ocr tesseract-ocr-eng tesseract-ocr-ron leptonica"
 short_desc="Professional open-source PDF editor and annotator with CAD tools and MCP AI support"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="LGPL-3.0-only"
@@ -30,6 +30,29 @@ do_build() {
 	cd open-pdf-studio
 	
 	npm ci
+
+	# Force position-independent code (-fPIC) globally for all static compilation loops
+	export CFLAGS="${CFLAGS} -fPIC"
+	export CXXFLAGS="${CXXFLAGS} -fPIC"
+	export AM_CFLAGS="-fPIC"
+	export AM_CXXFLAGS="-fPIC"
+	export CFLAGS_x86_64_unknown_linux_gnu="-fPIC"
+	export CXXFLAGS_x86_64_unknown_linux_gnu="-fPIC"
+
+	# Override native compilers to strictly enforce position independence
+	export CC="clang -fPIC"
+	export CXX="clang++ -fPIC"
+
+	# Hard-fix the rigid tesseract-rs search paths inside the temporary chroot tree.
+	# We create the exact 'lib' folders and populate them with flat file symlinks.
+	local tesseract_tmp_base="/tmp/.tesseract-rs/x86_64-unknown-linux-gnu"
+	mkdir -p "${tesseract_tmp_base}/leptonica/lib" "${tesseract_tmp_base}/tesseract/lib"
+	
+	# Flat-link the static objects directly where the build script expects them
+	ln -sf ../lib64/libleptonica.a "${tesseract_tmp_base}/leptonica/lib/libleptonica.a"
+	ln -sf ../lib64/libtesseract.a "${tesseract_tmp_base}/tesseract/lib/libtesseract.a"
+
+	# Compile the standalone app bundle using local static objects
 	npx tauri build --no-bundle
 }
 
