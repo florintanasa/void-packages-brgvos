@@ -1,9 +1,9 @@
 # Template file for 'open-pdf-studio-git'
 pkgname=open-pdf-studio-git
 version=2026.10.31.0
-revision=1
+revision=2
 _branch=main
-_commit=f76da9402ed7f04fbf0ef71c72bb88bb1aaed455
+_commit=07a5bbaac7b930bf64f58cdb856cd3815ddd4a8a
 hostmakedepends="pkg-config git nodejs cmake clang cargo rust glib-devel libcxx-devel"
 makedepends="libwebkit2gtk41-devel libayatana-appindicator-devel librsvg-devel openssl-devel"
 #depends="tesseract-ocr tesseract-ocr-eng tesseract-ocr-ron leptonica"
@@ -88,6 +88,7 @@ do_install() {
 	# Adjust desktop launcher icon and categories for proper alignment
 	vsed -i 's|^Icon=.*|Icon=open-pdf-studio|g' ${DESTDIR}/usr/share/applications/open-pdf-studio.desktop
 	vsed -i 's|^Categories=.*|Categories=Graphics;Office;Engineering;Viewer;|g' ${DESTDIR}/usr/share/applications/open-pdf-studio.desktop
-	# Force disable DMABUF renderer for universal WebKit compatibility
-	vsed -i 's|^Exec=.*|Exec=env WEBKIT_DISABLE_DMABUF_RENDERER=1 open-pdf-studio %F|g' ${DESTDIR}/usr/share/applications/open-pdf-studio.desktop
+	# Force Accelerated Compositing mode to be always off for NVIDIA
+	vinstall ${FILESDIR}/launch-open-pdf-studio 755 /usr/bin
+	vsed -i 's|^Exec=.*|Exec=launch-open-pdf-studio %F|g' ${DESTDIR}/usr/share/applications/open-pdf-studio.desktop
 }

@@ -1,0 +1,9 @@
+#!/bin/env bash
+
+# Detect if driver nvidia was loaded
+if lsmod | grep -q "nvidia"; then
+    export WEBKIT_DISABLE_COMPOSITING_MODE=1
+fi
+
+# Start application with all parameters was send
+exec open-pdf-studio "$@"
