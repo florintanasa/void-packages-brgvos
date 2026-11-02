@@ -1,6 +1,6 @@
 # Template for 'pspp'
 pkgname=pspp
-version=2.1.2
+version=2.1.3
 revision=1
 build_style=gnu-configure
 # Force the build system to use 'true' if it ever attempts an internal automake loop
@@ -16,7 +16,7 @@ license="GPL-3.0-or-later"
 homepage="https://www.gnu.org/software/pspp/"
 distfiles="https://mirrors.nav.ro/gnu/pspp/pspp-${version}.tar.gz"
 
-checksum="042e08279679f4ab517d01d024115f7191eb4d0ade222c0ca296604406eeb3be"
+checksum=5095bc01f20f285032fb41fe757c7674e8c45dac95252663ea04670577df2727
 
 pre_configure() {
 	# Inject POSIX-fallback definitions for O_BINARY and O_TEXT to bypass strict fcntl checks
