@@ -1,6 +1,6 @@
 # Template file for 'linux7.2-tkg-bore-lto'
 pkgname=linux7.2-tkg-bore-lto
-version=7.2.14
+version=7.2.15
 revision=1
 short_desc="Linux kernel and modules (${version%.*} series), with TKG patches, with the Burst-Oriented Response Enhancer (BORE) CPU scheduler and Full LTO with optimization -O3"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
@@ -18,7 +18,7 @@ rc*) distfiles="https://git.kernel.org/torvalds/t/linux-${version%.*}-${version#
 esac
 
 checksum="f9fef3d14c0df53819026f4be74459835c2a0b0dcbf5b5bbd9ea19f0829402b3
- de23840e02788ea04702b534ac32723c57ca4bb7800d35de0e561b19b5770e03"
+ 2d89124e7adfe0e806bd4ae2c67da530ec4e7b45f466ccae77464dbcc878c7ac"
 
 python_version=3
 
