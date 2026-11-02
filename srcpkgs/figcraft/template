@@ -1,6 +1,6 @@
 # Template for 'figcraft'
 pkgname=figcraft
-version=0.12.1
+version=0.14.0
 revision=1
 build_style=cargo
 make_build_args="-p figcraft -p figcraft-cli"
@@ -12,7 +12,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com"
 distfiles="https://github.com/storytold/figcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum="4c5be9276839a905e579211834c16f5646828136231fc8407c35009f971a17f9"
+checksum="8f5fd2338195692adb168a0a7f2a96f59822751a3ac286e7aceedc87309ffc24"
 
 do_install() {
 	# 1. Install optimized application binaries directly from target release (prevents double compilation)
