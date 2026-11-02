@@ -1,0 +1,59 @@
+# Template for 'craft-anything'
+pkgname=craft-anything
+version=0.2.0
+revision=1
+build_style=cargo
+make_build_args="-p craft-anything -p craft-anything-cli"
+hostmakedepends="pkg-config"
+short_desc="Understand how any software works, and craft your own, app built in pure Rust"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="Apache-2.0, MIT"
+homepage="https://getartcraft.com/apps/craft-anything"
+
+distfiles="https://github.com/storytold/craft-anything/archive/refs/tags/v${version}.tar.gz"
+
+checksum=d20a3c32a19b7605e8c3a7909e85a83a985b953fa068b0f4c2eed592a5c165b2
+
+do_install() {
+	# 1. Install application binaries directly from target release (prevents double compilation)
+	vbin target/${RUST_TARGET}/release/craft-anything
+	vbin target/${RUST_TARGET}/release/craft-anything-cli
+
+	# 2. Install desktop shortcut, appstream metadata, and custom mime types from upstream packaging
+	if [ -d "packaging/linux" ]; then
+		vinstall packaging/linux/ai.storyteller.craft-anything.desktop 644 usr/share/applications
+		#vinstall packaging/linux/ai.storyteller.craft-anything.mime.xml 644 usr/share/mime/packages ai.storyteller.craft-anything.xml
+		vinstall packaging/linux/ai.storyteller.craft-anything.metainfo.xml.in 644 usr/share/metainfo ai.storyteller.craft-anything.metainfo.xml
+	fi
+
+	# 3. Iterate over the standard hicolor icon paths and install them with the proper app ID name
+	local size
+	for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256 512x512; do
+		if [ -f "assets/app-icon/hicolor/${size}/apps/ai.storyteller.craft-anything.png" ]; then
+			vinstall "assets/app-icon/hicolor/${size}/apps/ai.storyteller.craft-anything.png" \
+				644 "usr/share/icons/hicolor/${size}/apps"
+		fi
+	done
+
+	if [ -f "assets/app-icon/hicolor/scalable/apps/ai.storyteller.craft-anything.svg" ]; then
+		vinstall "assets/app-icon/hicolor/scalable/apps/ai.storyteller.craft-anything.svg" \
+			644 "usr/share/icons/hicolor/scalable/apps"
+	fi
+
+	# 4. Install standard software licenses and the legal NOTICE file
+	vlicense LICENSE-APACHE
+	vlicense LICENSE-MIT
+	if [ -f "NOTICE" ]; then
+		vlicense NOTICE
+	fi
+
+	# 5. Extract and bundle technical Markdown documentation
+	if [ -d "docs" ]; then
+		local docfile
+		for docfile in docs/*.md; do
+			if [ -f "$docfile" ]; then
+				vdoc "$docfile"
+			fi
+		done
+	fi
+}
