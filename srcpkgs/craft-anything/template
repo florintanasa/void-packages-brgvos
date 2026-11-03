@@ -1,6 +1,6 @@
 # Template for 'craft-anything'
 pkgname=craft-anything
-version=0.2.0
+version=0.3.0
 revision=1
 build_style=cargo
 make_build_args="-p craft-anything -p craft-anything-cli"
@@ -12,7 +12,7 @@ homepage="https://getartcraft.com/apps/craft-anything"
 
 distfiles="https://github.com/storytold/craft-anything/archive/refs/tags/v${version}.tar.gz"
 
-checksum=d20a3c32a19b7605e8c3a7909e85a83a985b953fa068b0f4c2eed592a5c165b2
+checksum=8b1c41e5462c0e496d04f4802da8d866aced763d700e402d27025302ee3db66d
 
 do_install() {
 	# 1. Install application binaries directly from target release (prevents double compilation)
