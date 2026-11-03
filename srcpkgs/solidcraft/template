@@ -1,6 +1,6 @@
 # Template file for 'solidcraft'
 pkgname=solidcraft
-version=0.30.0
+version=0.30.1
 revision=1
 build_style=cargo
 make_build_args="-p solidcraft -p solidcraft-cli"
@@ -11,7 +11,7 @@ license="Apache-2.0, MIT"
 homepage="https://solidcraft.io"
 distfiles="https://github.com/tangency-labs/solidcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=ccfbd1de7732c67cd836107589bef4e6d73e064cd0cec5ac08b2c0420da0b415
+checksum=@6627514c87c52d617593c4a8bc6aa7d7c265caa422a3fd9db6fa31233cbbb74c
 
 do_install() {
 	vbin target/${RUST_TARGET}/release/solidcraft
