@@ -1,10 +1,9 @@
 # Template file for 'lemonade-desktop'
 pkgname=lemonade-desktop
-version=2026.44.1
+version=2026.45.3
 revision=1
-build_style=cargo
-make_build_target="src/app"
-hostmakedepends="pkg-config nodejs libwebkit2gtk41-devel libnotify-devel libayatana-appindicator-devel"
+build_style=gnu-makefile
+hostmakedepends="pkg-config nodejs rust cargo git libwebkit2gtk41-devel libnotify-devel libayatana-appindicator-devel"
 makedepends="libwebkit2gtk41-devel libnotify-devel libayatana-appindicator-devel"
 depends="libwebkit2gtk41 libnotify libayatana-appindicator lemonade-server"
 short_desc="AI-powered omni-modal platform featuring LMX-Omni models (Desktop Client)"
@@ -14,21 +13,21 @@ homepage="https://github.com/lemonade-sdk/lemonade"
 
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz>lemonade-${version}.tar.gz"
 
-checksum="52802c7946f2b153fea8aa737f12f8dc4f62fb80b298ead3d9c90a3b8ea30c99"
-
-export TAURI_SKIP_NPM_INSTALL=1
-
-pre_build() {
-	cd ${wrksrc}/src/app
-	npm install --offline || npm install
-	npm run build
-}
+checksum=f6ad565c4955ec64a1e9473d352fe15f12ab35a0db1b8741fc3b4b644e2419b7
 
 do_build() {
-	:
+	cd ${wrksrc}/src/app
+	
+	# Instalăm dependințele Node.js local (inclusiv @tauri-apps/cli)
+	npm install
+	
+	# Invocăm binarul Tauri local pentru a gestiona atât compilarea frontend-ului (Vite/React),
+	# cât și descărcarea crate-urilor de Rust și generarea binarului final în release mode.
+	npx tauri build
 }
 
 do_install() {
+	# Folosim calea relativă exactă către rădăcina wrksrc de unde xbps-src caută fișierele
 	vbin src/app/src-tauri/target/release/lemonade-app lemonade-desktop
 
 	vinstall data/lemonade-app.desktop 644 usr/share/applications lemonade-desktop.desktop
