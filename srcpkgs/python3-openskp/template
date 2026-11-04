@@ -1,6 +1,6 @@
 # Template for 'python3-openskp'
 pkgname=python3-openskp
-version=1.4.0
+version=1.5.0
 revision=1
 build_style=python3-pep517
 hostmakedepends="python3-setuptools python3-wheel"
@@ -12,5 +12,5 @@ homepage="https://github.com/iamahsanmehmood/openskp"
 
 distfiles="${PYPI_SITE}/o/openskp/openskp-${version}.tar.gz"
 
-checksum=ddb1650bcd0a8f6c462d8df47460fe60ee2432235fa9ce11f00069ccaddf900e
+checksum=9b68905003c4da04c0678ebe597357481feb6725d98723ee3e92a8ea4faa163d
 
