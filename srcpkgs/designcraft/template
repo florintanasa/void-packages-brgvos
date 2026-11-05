@@ -1,6 +1,6 @@
 # Template for 'designcraft'
 pkgname=designcraft
-version=0.17.0
+version=0.17.2
 revision=1
 build_style=cargo
 make_build_args="-p designcraft -p designcraft-cli"
@@ -12,7 +12,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/designcraft"
 distfiles="https://github.com/storytold/designcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=d88af51773f33d1b66b8bb4858a959e99cd1ad9a39d7b7e0728b873fff21262b
+checksum=73fde84d7142ab05d9069bdbf9929aaa4747b1ce3c6a820c3317c79f5d0653fe
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI)
