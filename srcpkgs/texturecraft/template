@@ -1,6 +1,6 @@
 # Template for 'texturecraft'
 pkgname=texturecraft
-version=0.3.0
+version=0.3.2
 revision=1
 build_style=cargo
 make_build_args="-p texturecraft -p texturecraft-cli"
@@ -12,7 +12,7 @@ homepage="https://getartcraft.com/apps/texturecraft"
 
 distfiles="https://github.com/storytold/texturecraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=9a96daf045b172fb42273a5526772afc8cde37cf126017514f24763bbc885108
+checksum=f59652000e45a6dc6fd665e159bff0bbf335b709158eac702d2914d3a491875d
 
 do_install() {
 	# 1. Install application binaries directly from target release (prevents double compilation)
