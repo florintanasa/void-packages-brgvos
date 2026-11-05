@@ -1,0 +1,71 @@
+# Template for 'rustgis'
+pkgname=rustgis
+version=0.5.0
+revision=2
+build_style=cargo
+make_build_args="-p rustgis -p rustgis-cli"
+hostmakedepends="pkg-config"
+makedepends="libzstd-devel sqlite-devel"
+short_desc="Fast, open-source GIS app built in pure Rust"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="Apache-2.0"
+homepage="https://rustgis.app/"
+
+distfiles="https://github.com/opengeos/RustGIS/archive/refs/tags/v${version}.tar.gz
+ https://assets.rustgis.app/data/countries.geojson>countries.geojson
+ https://assets.rustgis.app/data/countries_chn.geojson>countries_chn.geojson
+ https://assets.rustgis.app/data/cities.geojson>cities.geojson
+ https://assets.rustgis.app/data/rivers.geojson>rivers.geojson
+ https://assets.rustgis.app/data/lakes.geojson>lakes.geojson"
+
+checksum="d84431c7576a16319df5c0e8b96a7b5fa82b0c6be9bd95b941e17dd5384d3c18
+ bef8ee61e46685049d47b577b86fb76e9f67af41a3d4c38acb67f0021bf31b36
+ 5248ed3c99667a348a8f14f86c272508d18473fe188d8ac3a4e780ec913fc2ea
+ 28c87845799741b198122a3e9ab2b1a14a1504eb74187aaf1db0d3af8a758b1e
+ 897111f4b3f2bddc98c78993b848d1ad18ceb90bbb3ec9d703888c90edf70e73
+ 11f49ab1f71a3ff95fae07f81c9051db6c0d88e51ebd665e28c10c2f11b8dd24"
+
+skip_extraction="countries.geojson countries_chn.geojson cities.geojson rivers.geojson lakes.geojson"
+
+pre_build() {
+	export RUSTGIS_DATA_DIR="${XBPS_SRCDISTDIR}/${pkgname}-${version}"
+}
+
+do_install() {
+	# 1. Install application binaries directly from target release (prevents double compilation)
+	vbin target/${RUST_TARGET}/release/rustgis
+	vbin target/${RUST_TARGET}/release/rustgis-cli
+
+	# 2. Install desktop shortcut, appstream metadata, and custom mime types from upstream packaging
+	if [ -d "packaging/linux" ]; then
+		vinstall packaging/linux/rustgis.desktop 644 usr/share/applications
+		vinstall packaging/linux/rustgis-mime.xml 644 usr/share/mime/packages rustgis.xml
+	fi
+
+	# 3. Install standard software licenses and the legal NOTICE file if exist
+	vlicense LICENSE
+	vlicense THIRD-PARTY-LICENSES.txt
+	if [ -f "NOTICE" ]; then
+		vlicense NOTICE
+	fi
+
+	# 4. Extract and bundle technical Markdown documentation
+	if [ -d "docs" ]; then
+		local docfile
+		for docfile in docs/*.md; do
+			if [ -f "$docfile" ]; then
+				vdoc "$docfile"
+			fi
+		done
+	fi
+}
+
+post_install() {
+	# Build thne icons and then install
+	local rustgis_cli="target/${RUST_TARGET}/release/rustgis-cli"
+
+	for s in 32 64 128 256 512; do
+		vmkdir "usr/share/icons/hicolor/${s}x${s}/apps"
+		${rustgis_cli} logo "${DESTDIR}/usr/share/icons/hicolor/${s}x${s}/apps/rustgis.png" --size "$s"
+	done
+}
