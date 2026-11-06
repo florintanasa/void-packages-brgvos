@@ -1,0 +1,22 @@
+# Template file for 'ollama-rocm-bin'
+pkgname=ollama-rocm-bin
+version=0.40.15
+revision=1
+archs="x86_64"
+hostmakedepends="zstd tar"
+depends="ollama>=0.24.0"
+replaces="ollama-rocm<=7.2.70201_9"
+nostrip=yes
+allow_unknown_shlibs=yes
+short_desc="AMD ROCm v7.2 acceleration runtime for Ollama"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://ollama.com"
+distfiles="https://github.com/ollama/ollama/releases/download/v${version}/ollama-linux-amd64-rocm.tar.zst"
+
+checksum=e41b4e45e5f83f65aa70ae01da3f9afdb1954bf4e1dd36f51d512e02082fac26
+
+do_install() {
+	mkdir -p ${DESTDIR}/usr
+	tar -x --zstd -f ${XBPS_SRCDISTDIR}/${pkgname}-${version}/ollama-linux-amd64-rocm.tar.zst -C ${DESTDIR}/usr
+}
