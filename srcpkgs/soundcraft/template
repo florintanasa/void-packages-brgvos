@@ -1,6 +1,6 @@
 # Template for 'soundcraft'
 pkgname=soundcraft
-version=0.17.1
+version=0.18.0
 revision=1
 build_style=cargo
 make_build_args="-p soundcraft -p soundcraft-cli"
@@ -12,7 +12,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/soundcraft"
 distfiles="https://github.com/storytold/soundcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=2b0e75e02cb3036ab885336ea8b53bd9642bbd4001cc67f1725a80fba83b817b
+checksum=f40cf2d16be3d707e80042748acbfed770854bdefef48840c11e82fa1e93228f
 
 do_install() {
 	# 1. Install optimized application binaries directly from target release (prevents double compilation)
