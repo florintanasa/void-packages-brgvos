@@ -1,6 +1,6 @@
 # Template for 'cadcraft'
 pkgname=cadcraft
-version=0.17.1
+version=0.18.0
 revision=1
 build_style=cargo
 make_build_args="-p cadcraft -p cadcraft-cli"
@@ -11,7 +11,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/cadcraft"
 distfiles="https://github.com/storytold/cadcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=c81f84ada82aee7d55d09fbf3a69c35862e89df92666bdb69a9b8b9e1df7ee46
+checksum=e795a6e1879ddf756fc34141539fafb5a74e654057db6492f44b8e5aa91e5dc3
 
 do_install() {
 	# 1. Install optimized application binaries
