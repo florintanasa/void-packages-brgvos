@@ -1,0 +1,35 @@
+# Template file for 'xsd-bin'
+pkgname=xsd-bin
+version=4.2.0
+revision=1
+makedepends="libxsd"
+depends="libxerces-c-devel libxsd"
+short_desc="CodeSynthesis XSD - XML Schema to C++ compiler (standalone binary)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-2.0-only"
+homepage="https://codesynthesis.com"
+distfiles="https://www.codesynthesis.com/download/xsd/4.2/linux/linux-glibc2.31/x86_64/xsd-${version}-x86_64-linux-glibc2.31.tar.xz"
+
+checksum=1fc140e943bbcd8e9de4bf32f4632194d202430d584701656bea98c50eabee7d
+
+wrksrc="xsd-${version}-x86_64-linux-glibc2.31"
+
+do_install() {
+	# Install the standalone compiler binary
+	vinstall usr/local/bin/xsd 755 usr/bin
+
+	# Install the accompanying manual pages
+	vman usr/local/share/man/man1/xsd.1
+
+	# Install documentation files into the system tree
+	vmkdir usr/share/doc/xsd
+	vcopy "usr/local/share/doc/xsd/*" usr/share/doc/xsd/
+
+	# Install LICENSE
+	vlicense usr/local/share/doc/xsd/LICENSE
+	vlicense usr/local/share/doc/xsd/GPLv2
+	vlicense usr/local/share/doc/xsd/FLOSSE
+}
+
+
+
