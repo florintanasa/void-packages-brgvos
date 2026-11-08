@@ -1,0 +1,96 @@
+# Template file for 'mumps-seq'
+pkgname=mumps-seq
+version=5.9.1
+revision=1
+_pkgname=MUMPS
+build_style=gnu-makefile
+hostmakedepends="pkg-config gcc-fortran"
+makedepends="blas-devel lapack-devel"
+short_desc="Sparse solver library using Gaussian elimination (sequential version)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="CeCILL-C"
+homepage="https://mumps-solver.org"
+distfiles="https://mumps-solver.org/${_pkgname}_${version}.tar.gz"
+
+checksum=659c9b57646b5a003ac618baa1faf9dd2044e46c732b3daaccbc7158003e1b46
+
+wrksrc="${_pkgname}_${version}"
+
+do_configure() {
+	# Preluăm fișierul generic nativ din arhivă
+	cp Make.inc/Makefile.inc.generic Makefile.inc
+
+	# Forțăm compilatoarele GNU în configurație
+	vsed -i 's|^CC\s*=.*|CC = gcc|' Makefile.inc
+	vsed -i 's|^FC\s*=.*|FC = gfortran|' Makefile.inc
+	vsed -i 's|^FL\s*=.*|FL = gfortran|' Makefile.inc
+	vsed -i 's|^LBLAS\s*=.*|LBLAS = -lblas|' Makefile.inc
+	vsed -i 's|^LAPACK\s*=.*|LAPACK = -llapack|' Makefile.inc
+
+	# Activăm libseq și ordonarea PORD (corect pentru Makefile)
+	vsed -i 's|^#LMPI.*/libseq|LMPI = -L$(topdir)/libseq -lmpiseq|' Makefile.inc
+	vsed -i 's|^#IMPI.*include|IMPI = -I$(topdir)/libseq|' Makefile.inc
+	vsed -i 's|^#ORDERINGSF.*PORD|ORDERINGSF = -Dpord|' Makefile.inc
+	vsed -i 's|^#LORDERINGS.*pord|LORDERINGS = $(LORDERINGS_PORD)|' Makefile.inc
+	vsed -i 's|^#IORDERINGS.*pord|IORDERINGS = $(IORDERINGS_PORD)|' Makefile.inc
+
+	# Adăugăm incluziunile macro necesare pentru procesul make internal
+	vsed -i 's|^OPTF\s*=.*|OPTF = -O3 -fPIC -fallow-argument-mismatch -w -I$(topdir)/libseq|' Makefile.inc
+	vsed -i 's|^OPTC\s*=.*|OPTC = -O3 -fPIC -I$(topdir)/libseq|' Makefile.inc
+	vsed -i 's|^OPTL\s*=.*|OPTL = -O3 -fPIC|' Makefile.inc
+}
+
+do_build() {
+	# Forțăm flag-urile de mediu folosind căile absolute de build din Void Linux
+	export FFLAGS="${FFLAGS} -fPIC -fallow-argument-mismatch -w -I${XBPS_BUILDDIR}/${wrksrc}/libseq"
+	export FCFLAGS="${FCFLAGS} -fPIC -fallow-argument-mismatch -w -I${XBPS_BUILDDIR}/${wrksrc}/libseq"
+	export CFLAGS="${CFLAGS} -fPIC -I${XBPS_BUILDDIR}/${wrksrc}/libseq"
+
+	# 1. Compilăm mai întâi biblioteca secvențială de emulare MPI
+	make ${makejobs} libseqneeded
+
+	# 2. Intrăm direct în directorul src/ și compilăm doar librăriile matematice nucleu (mumps_lib)
+	# Folosim -j1 la nivel superior pentru a preveni condițiile de cursă (race conditions) pe fișierele .mod
+	cd src
+	make -j1 libcommon
+	make -j1 s d c z
+	cd ..
+
+	# 3. Re-ambalăm toate obiectele statice într-o singură librărie dinamică unificată (.so)
+	mkdir -p shared_build && cd shared_build
+	
+	# Extragem obiectele .o din arhivele generate în directoarele lib/ și libseq/
+	[ -f ../lib/libdmumps.a ] && ar x ../lib/libdmumps.a
+	[ -f ../lib/libsmumps.a ] && ar x ../lib/libsmumps.a
+	[ -f ../lib/libcmumps.a ] && ar x ../lib/libcmumps.a
+	[ -f ../lib/libzmumps.a ] && ar x ../lib/libzmumps.a
+	[ -f ../lib/libmumps_common.a ] && ar x ../lib/libmumps_common.a
+	[ -f ../libseq/libmpiseq.a ] && ar x ../libseq/libmpiseq.a
+	[ -f ../PORD/lib/libpord.a ] && ar x ../PORD/lib/libpord.a
+	
+	# Îmbinăm toate obiectele într-un singur binar dinamic legat de BLAS/LAPACK din sistem
+	gfortran -shared -o ../libmumps_seq.so *.o -Wl,-soname,libmumps_seq.so.5 -lblas -llapack -lpthread
+	cd ..
+}
+
+do_install() {
+	# Instalăm binarul .so în pachetul de bază
+	vinstall libmumps_seq.so 755 usr/lib libmumps_seq.so.5.9.1
+	ln -sf libmumps_seq.so.5.9.1 ${DESTDIR}/usr/lib/libmumps_seq.so.5
+	ln -sf libmumps_seq.so.5.9.1 ${DESTDIR}/usr/lib/libmumps_seq.so
+
+	# Copiem headerele
+	vmkdir usr/include/mumps
+	vcopy "include/*.h" usr/include/mumps/
+	vcopy "libseq/*.h" usr/include/mumps/
+	vlicense LICENSE
+}
+
+mumps-seq-devel_package() {
+	short_desc="${short_desc} - development files"
+	depends="${sourcepkg}>=${version}_${revision} blas-devel lapack-devel"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/libmumps_seq.so
+	}
+}
