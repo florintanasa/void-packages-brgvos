@@ -1,0 +1,31 @@
+# Template file for 'libxsd'
+pkgname=libxsd
+version=4.2.0
+revision=1
+short_desc="CodeSynthesis XSD runtime library with pkgconfig support - from binary"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-2.0-only"
+homepage="https://codesynthesis.com"
+distfiles="https://www.codesynthesis.com/download/xsd/4.2/linux/linux-glibc2.31/x86_64/${pkgname}-${version}-linux.tar.xz"
+
+checksum="597aa191343697b384fa7f3b4c623502b81dcc6701fd9aedd51d7c1f3205fef1"
+
+#wrksrc="libxsd-${version}-x86_64-linux-glibc2.31"
+
+do_install() {
+	# Install the header files correctly into the system include path
+	vmkdir usr/include/xsd
+	vcopy "usr/local/include/xsd/*" usr/include/xsd/
+
+	# Install pkgconfig files so that CMake/pkg-config can resolve dependencies natively
+	vmkdir usr/lib/pkgconfig
+	vcopy "usr/local/lib/pkgconfig/*.pc" usr/lib/pkgconfig/
+
+	# Install accompanying documentation files
+	vmkdir usr/share/doc/libxsd
+	vcopy "usr/local/share/doc/libxsd/*" usr/share/doc/libxsd/
+
+	vlicense usr/local/share/doc/libxsd/LICENSE
+	vlicense usr/local/share/doc/libxsd/GPLv2
+	vlicense usr/local/share/doc/libxsd/FLOSSE
+}
