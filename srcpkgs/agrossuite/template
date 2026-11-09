@@ -4,13 +4,7 @@ version=2025.03.03.0
 revision=1
 _commit="13a7f69617c7831fd5e300943e6a6578df294ed7"
 build_style=cmake
-# Disable tree vectorization to protect loops from memory corruption in modern GCC
-CFLAGS="-O2 -fno-strict-aliasing -fno-tree-vectorize"
-CXXFLAGS="-O2 -fno-strict-aliasing -fno-tree-vectorize"
-# Prevent xbps-src from completely stripping symbols during build so we get clear logs if needed
-nodebug=yes
-configure_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
- -DCMAKE_EXE_LINKER_FLAGS=-Wl,--export-dynamic"
+configure_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr"
 hostmakedepends="cmake pkg-config git qt6-tools-devel xsd-bin libxsd python3-Cython python3-scikit-build"
 makedepends="qt6-base-devel qt6-qt5compat-devel qt6-svg-devel qt6-charts-devel
  libcurl-devel python3-devel python3-numpy libxerces-c-devel mumps-seq-devel xsd-bin libxsd SuiteSparse-devel"
@@ -68,12 +62,13 @@ pre_configure() {
 
 
 post_build() {
-	# 5. Execute compiled generator binary to build physics fields structure
-	cd ${wrksrc}/build
-	./usr/bin/agros_generator
+	# 5. Execute compiled generator binary inside its native folder context
+	# This ensures hardcoded relative paths "../../plugins" resolve perfectly
+	cd ${wrksrc}/build/usr/bin
+	./agros_generator
 
-	# 6. Compile solver plugins now that fields are generated
-	cd plugins
+	# 6. Compile solver plugins now that physics fields are successfully written
+	cd ${wrksrc}/build/plugins
 	cmake -DCMAKE_BUILD_TYPE="Release" \
 	      -DCMAKE_CXX_FLAGS="-I/usr/include/suitesparse" .
 	make ${makejobs}
@@ -101,6 +96,7 @@ post_build() {
 	python3 setup.py build
 }
 
+
 pre_install() {
 	# Neutralize the rigid third-party install scripts to bypass faulty file installations
 	_nlopt_install="${wrksrc}/build/3rdparty/nlopt2/cmake_install.cmake"
@@ -118,28 +114,15 @@ pre_install() {
 }
 
 post_install() {
-	# 11. HARVESTING STAGE: Copy ALL compiled dynamic (.so) and static (.a) libraries from build/usr/lib
-	# This guarantees that libagros_3rdparty_pagmo2.a and all other objects are securely captured
+	# 11. Install bundled dealii shared objects properly using vinstall
 	vmkdir usr/lib
-	for lib in ${wrksrc}/build/usr/lib/libagros_*; do
+	for lib in ${wrksrc}/dealii/build/lib/libdeal_II.so*; do
 		if [ -f "$lib" ]; then
 			vinstall "$lib" 755 usr/lib
 		fi
 	done
 
-	# Manually install the massive dealii library with correct permissions
-	for lib in ${wrksrc}/build/usr/lib/libdeal_II.so*; do
-		if [ -f "$lib" ]; then
-			vinstall "$lib" 755 usr/lib
-		fi
-	done
-
-	# 12. Fix potential resource location mismatch by linking share/agros to share/agrossuite
-	if [ -d "${DESTDIR}/usr/share/agros" ] && [ ! -d "${DESTDIR}/usr/share/agrossuite" ]; then
-		ln -sf agros ${DESTDIR}/usr/share/agrossuite
-	fi
-
-	# 13. Install Python module package extensions natively from the subdirectory
+	# 12. Install Python module package extensions natively from the subdirectory
 	cd ${wrksrc}/agros-python/agrossuite
 	_bundled_flags="-I${wrksrc}/dealii/bundled/kokkos-3.7.00/core/src -I${wrksrc}/dealii/bundled/kokkos-3.7.00/tpls/desul/include -I${wrksrc}/dealii/bundled/boost-1.70.0/include -I${wrksrc}/dealii/bundled/tbb-2018_U2/include"
 	_3rdparty_flags="-I${wrksrc}/3rdparty/bayesopt/include -I${wrksrc}/3rdparty/nlopt2/src/api -I${wrksrc}/3rdparty/poly2tri -I${wrksrc}/3rdparty/quazip -I${wrksrc}/3rdparty/libdxfrw"
@@ -149,9 +132,9 @@ post_install() {
 	CFLAGS="${CFLAGS} -I${wrksrc} -I${wrksrc}/agros-library -I${wrksrc}/3rdparty ${_3rdparty_flags} -I${wrksrc}/dealii/include -I${wrksrc}/dealii/build/include ${_bundled_flags} ${_system_flags}" \
 	python3 setup.py install --root=${DESTDIR} --optimize=1
 
-	# 14. Install the desktop launcher menu shortcut natively into the target tree
+	# 13. Install the desktop launcher menu shortcut natively into the target tree
 	vinstall ${FILESDIR}/agrossuite.desktop 644 usr/share/applications
 
-	# 15. Clean up any leaked asynchronous builddir ghosts from DESTDIR
-	rm -rf "${DESTDIR}/builddir"
+	# 14. Clean up any leaked asynchronous builddir ghosts from DESTDIR
+	#rm -rf "${DESTDIR}/builddir"
 }
