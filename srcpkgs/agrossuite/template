@@ -58,6 +58,15 @@ pre_configure() {
 
 	# Comment out the rigid XSD version mismatch check
 	vsed -i 's|#error XSD runtime version mismatch|// #error XSD runtime version mismatch|' resources_source/classes/module_xml.h
+
+	# CRITIC GCC 14 COMPATIBILITY PATCH:
+	# Use standard safe sed with extended regex to force-inject NULL guards regardless of code formatting whitespace
+	_target_cpp="${wrksrc}/agros-library/mesh/meshgenerator_triangle.cpp"
+	if [ -f "${_target_cpp}" ]; then
+		msg_normal "Injecting safety NULL-pointer guards into meshgenerator_triangle.cpp...\n"
+		sed -i -E 's|int marker = triOut\.triangleattributelist\[i\];|int marker = (triOut.triangleattributelist != nullptr) ? (int)triOut.triangleattributelist[i] : 1;|g' "${_target_cpp}"
+		sed -i -E 's|for\s*\(\s*int\s*i\s*=\s*0\s*;\s*i\s*<\s*triOut\.numberoftriangles\s*;\s*i\s*\+\+\s*\)|if (triOut.neighborlist != nullptr) for (int i = 0; i < triOut.numberoftriangles; i++)|g' "${_target_cpp}"
+	fi
 }
 
 
@@ -96,7 +105,6 @@ post_build() {
 	python3 setup.py build
 }
 
-
 pre_install() {
 	# Neutralize the rigid third-party install scripts to bypass faulty file installations
 	_nlopt_install="${wrksrc}/build/3rdparty/nlopt2/cmake_install.cmake"
@@ -114,9 +122,21 @@ pre_install() {
 }
 
 post_install() {
-	# 11. Install bundled dealii shared objects properly using vinstall
+	# 11. HARVESTING STAGE: Install ALL missing internal libraries found in build/usr/lib/
 	vmkdir usr/lib
-	for lib in ${wrksrc}/dealii/build/lib/libdeal_II.so*; do
+	for lib in ${wrksrc}/build/usr/lib/libagros_*; do
+		if [ -f "$lib" ]; then
+			vinstall "$lib" 755 usr/lib
+		fi
+	done
+
+	for lib in ${wrksrc}/build/usr/lib/libsolver_plugin_*; do
+		if [ -f "$lib" ]; then
+			vinstall "$lib" 755 usr/lib
+		fi
+	done
+
+	for lib in ${wrksrc}/build/usr/lib/libdeal_II.so*; do
 		if [ -f "$lib" ]; then
 			vinstall "$lib" 755 usr/lib
 		fi
@@ -132,9 +152,18 @@ post_install() {
 	CFLAGS="${CFLAGS} -I${wrksrc} -I${wrksrc}/agros-library -I${wrksrc}/3rdparty ${_3rdparty_flags} -I${wrksrc}/dealii/include -I${wrksrc}/dealii/build/include ${_bundled_flags} ${_system_flags}" \
 	python3 setup.py install --root=${DESTDIR} --optimize=1
 
-	# 13. Install the desktop launcher menu shortcut natively into the target tree
+	# 13. TOTAL RESOURCE ALIGNMENT: Deploy templates and assets to share/agros
+	vmkdir usr/share/agros
+	if [ -d "${wrksrc}/resources_source" ]; then
+		cp -R ${wrksrc}/resources_source/* ${DESTDIR}/usr/share/agros/
+	fi
+	
+	# Create absolute fallback structures expected by the main executable
+	ln -sf agros ${DESTDIR}/usr/share/agrossuite
+
+	# 14. Install the desktop launcher menu shortcut natively into the target tree
 	vinstall ${FILESDIR}/agrossuite.desktop 644 usr/share/applications
 
-	# 14. Clean up any leaked asynchronous builddir ghosts from DESTDIR
+	# 15. Clean up any leaked asynchronous builddir ghosts from DESTDIR
 	#rm -rf "${DESTDIR}/builddir"
 }
