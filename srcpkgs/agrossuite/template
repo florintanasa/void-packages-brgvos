@@ -4,7 +4,13 @@ version=2025.03.03.0
 revision=1
 _commit="13a7f69617c7831fd5e300943e6a6578df294ed7"
 build_style=cmake
-configure_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr"
+# Disable tree vectorization to protect loops from memory corruption in modern GCC
+CFLAGS="-O2 -fno-strict-aliasing -fno-tree-vectorize"
+CXXFLAGS="-O2 -fno-strict-aliasing -fno-tree-vectorize"
+# Prevent xbps-src from completely stripping symbols during build so we get clear logs if needed
+nodebug=yes
+configure_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+ -DCMAKE_EXE_LINKER_FLAGS=-Wl,--export-dynamic"
 hostmakedepends="cmake pkg-config git qt6-tools-devel xsd-bin libxsd python3-Cython python3-scikit-build"
 makedepends="qt6-base-devel qt6-qt5compat-devel qt6-svg-devel qt6-charts-devel
  libcurl-devel python3-devel python3-numpy libxerces-c-devel mumps-seq-devel xsd-bin libxsd SuiteSparse-devel"
@@ -58,11 +64,8 @@ pre_configure() {
 
 	# Comment out the rigid XSD version mismatch check
 	vsed -i 's|#error XSD runtime version mismatch|// #error XSD runtime version mismatch|' resources_source/classes/module_xml.h
-
-	# CRITIC COMPATIBILITY FIXES FOR SCIKIT-BUILD:
-	# Inject the agros-library directory path directly into the standalone python CMake configuration
-	vsed -i "s|INCLUDE_DIRECTORIES(\"\${CMAKE_SOURCE_DIR}/../../../agros-library\")|INCLUDE_DIRECTORIES(\"\${CMAKE_SOURCE_DIR}/../../../agros-library\")\nINCLUDE_DIRECTORIES(\"${wrksrc}/agros-library\")|" agros-python/agrossuite/CMakeLists.txt
 }
+
 
 post_build() {
 	# 5. Execute compiled generator binary to build physics fields structure
@@ -75,29 +78,19 @@ post_build() {
 	      -DCMAKE_CXX_FLAGS="-I/usr/include/suitesparse" .
 	make ${makejobs}
 
-	# 7. CRITIC HARVESTING: Gather all compiled 3rdparty libraries BEFORE installation masks them
-	# We stash them safely inside an independent folder within wrksrc
-	msg_normal "Stashing all internal 3rdparty libraries...\n"
-	mkdir -p ${wrksrc}/stashed_libs
-	find ${wrksrc}/build/3rdparty -type f \( -name "*.so*" -o -name "*.a" \) | while read -r lib; do
-		if [ -f "$lib" ]; then
-			cp -f "$lib" ${wrksrc}/stashed_libs/
-		fi
-	done
-
-	# 8. Expose the compiled library to the python setup environment
+	# 7. Expose the compiled library to the python setup environment
 	mkdir -p ${wrksrc}/usr/lib
 	cp -f ${wrksrc}/build/usr/lib/libagros_python.so ${wrksrc}/usr/lib/
 
-	# 9. Clean up old build cache to force the new flags rewrite
+	# 8. Clean up old build cache to force the new flags rewrite
 	cd ${wrksrc}/agros-python/agrossuite
 	rm -rf _skbuild
 
-	# 10. Create the absolute paths fallback for pygeometry.h coordination
+	# 9. Create the absolute paths fallback for pygeometry.h coordination
 	mkdir -p _skbuild/linux-x86_64-3.14/cmake-build/src/agros-python
 	ln -sf ${wrksrc}/agros-python/pythonlab _skbuild/linux-x86_64-3.14/cmake-build/src/agros-python/pythonlab
 
-	# 11. Finalize compilation with all core header topologies explicitly injected
+	# 10. Finalize compilation with all core header topologies explicitly injected
 	msg_normal "Building Python extensions with enforced paths...\n"
 	_bundled_flags="-I${wrksrc}/dealii/bundled/kokkos-3.7.00/core/src -I${wrksrc}/dealii/bundled/kokkos-3.7.00/tpls/desul/include -I${wrksrc}/dealii/bundled/boost-1.70.0/include -I${wrksrc}/dealii/bundled/tbb-2018_U2/include"
 	_3rdparty_flags="-I${wrksrc}/3rdparty/bayesopt/include -I${wrksrc}/3rdparty/nlopt2/src/api -I${wrksrc}/3rdparty/poly2tri -I${wrksrc}/3rdparty/quazip -I${wrksrc}/3rdparty/libdxfrw"
@@ -110,7 +103,6 @@ post_build() {
 
 pre_install() {
 	# Neutralize the rigid third-party install scripts to bypass faulty file installations
-	# All core application binaries are already linked, making these side rules redundant
 	_nlopt_install="${wrksrc}/build/3rdparty/nlopt2/cmake_install.cmake"
 	_pagmo_install="${wrksrc}/build/3rdparty/pagmo2/cmake_install.cmake"
 
@@ -126,25 +118,28 @@ pre_install() {
 }
 
 post_install() {
-	# 12. Install bundled dealii shared objects properly using vinstall
+	# 11. HARVESTING STAGE: Copy ALL compiled dynamic (.so) and static (.a) libraries from build/usr/lib
+	# This guarantees that libagros_3rdparty_pagmo2.a and all other objects are securely captured
 	vmkdir usr/lib
-	for lib in ${wrksrc}/dealii/build/lib/libdeal_II.so*; do
+	for lib in ${wrksrc}/build/usr/lib/libagros_*; do
 		if [ -f "$lib" ]; then
 			vinstall "$lib" 755 usr/lib
 		fi
 	done
 
-	# 13. CRITIC DEPLOY: Install the stashed 3rdparty libraries directly from our safe vault
-	msg_normal "Deploying stashed internal 3rdparty libraries to /usr/lib...\n"
-	if [ -d "${wrksrc}/stashed_libs" ]; then
-		for lib in ${wrksrc}/stashed_libs/*; do
-			if [ -f "$lib" ]; then
-				vinstall "$lib" 755 usr/lib
-			fi
-		done
+	# Manually install the massive dealii library with correct permissions
+	for lib in ${wrksrc}/build/usr/lib/libdeal_II.so*; do
+		if [ -f "$lib" ]; then
+			vinstall "$lib" 755 usr/lib
+		fi
+	done
+
+	# 12. Fix potential resource location mismatch by linking share/agros to share/agrossuite
+	if [ -d "${DESTDIR}/usr/share/agros" ] && [ ! -d "${DESTDIR}/usr/share/agrossuite" ]; then
+		ln -sf agros ${DESTDIR}/usr/share/agrossuite
 	fi
 
-	# 14. Install Python module package extensions natively from the subdirectory
+	# 13. Install Python module package extensions natively from the subdirectory
 	cd ${wrksrc}/agros-python/agrossuite
 	_bundled_flags="-I${wrksrc}/dealii/bundled/kokkos-3.7.00/core/src -I${wrksrc}/dealii/bundled/kokkos-3.7.00/tpls/desul/include -I${wrksrc}/dealii/bundled/boost-1.70.0/include -I${wrksrc}/dealii/bundled/tbb-2018_U2/include"
 	_3rdparty_flags="-I${wrksrc}/3rdparty/bayesopt/include -I${wrksrc}/3rdparty/nlopt2/src/api -I${wrksrc}/3rdparty/poly2tri -I${wrksrc}/3rdparty/quazip -I${wrksrc}/3rdparty/libdxfrw"
@@ -154,17 +149,9 @@ post_install() {
 	CFLAGS="${CFLAGS} -I${wrksrc} -I${wrksrc}/agros-library -I${wrksrc}/3rdparty ${_3rdparty_flags} -I${wrksrc}/dealii/include -I${wrksrc}/dealii/build/include ${_bundled_flags} ${_system_flags}" \
 	python3 setup.py install --root=${DESTDIR} --optimize=1
 
-	# 15. Install the desktop launcher menu shortcut natively into the target tree
+	# 14. Install the desktop launcher menu shortcut natively into the target tree
 	vinstall ${FILESDIR}/agrossuite.desktop 644 usr/share/applications
 
-	# 16. Clean up any leaked asynchronous builddir ghosts from DESTDIR
+	# 15. Clean up any leaked asynchronous builddir ghosts from DESTDIR
 	rm -rf "${DESTDIR}/builddir"
-}
-
-pre_pkg() {
-	# FORCE PURGE 2: Safety net hook to guarantee 99-pkglint passes perfectly
-	if [ -d "${DESTDIR}/builddir" ]; then
-		msg_normal "Executing final emergency purge of pagmo2 leaked builddir...\n"
-		rm -rf "${DESTDIR}/builddir"
-	fi
 }
