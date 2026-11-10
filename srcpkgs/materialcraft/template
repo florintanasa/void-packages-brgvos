@@ -1,6 +1,6 @@
 # Template for 'materialcraft'
 pkgname=materialcraft
-version=0.2.0
+version=0.3.0
 revision=1
 build_style=cargo
 make_build_args="-p materialcraft -p materialcraft-cli"
@@ -12,7 +12,7 @@ homepage="https://getartcraft.com/apps/materialcraft"
 
 distfiles="https://github.com/storytold/materialcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=e1802aba87a131ffa05d1f8e9bf183880e723a0858db52ec4401e7ab29711609
+checksum=4a6775625d1933fb34297a8b3c89ff6451e92cea8dc6ee3e1afc021bf106438e
 
 do_install() {
 	# 1. Install application binaries directly from target release (prevents double compilation)
