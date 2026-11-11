@@ -1,6 +1,6 @@
 # Template for 'ingetrazo'
 pkgname=ingetrazo
-version=0.6.0
+version=0.6.1
 revision=1
 hostmakedepends="python3 cargo python3-setuptools python3-wheel"
 makedepends="python3-devel"
@@ -12,7 +12,7 @@ license="GPL-3.0-or-later"
 homepage="https://ingetrazo.com"
 distfiles="https://github.com/ingelibre/ingetrazo/archive/refs/tags/v${version}.tar.gz"
 
-checksum="d82f3000bf6f24ac41a9a3616f1767750f64f8d464257406315a6fefbbaa9565"
+checksum=daf2ea4cab394875e814152a2ab5201f3c27f2aa877f5cb0a8327977536d0948
 
 do_build() {
 	# 1. Access the newly added Rust engine source directory
