@@ -1,0 +1,23 @@
+# Template file for 'agrossuite-bin'
+# Built using Ubuntu inside Distrobox due to GCC 14 compatibility regressions (retains strict compatibility with GCC 13)
+
+pkgname=agrossuite-bin
+version=2026.11.11
+revision=1
+archs="x86_64"
+depends="qt6-base qt6-qt5compat qt6-svg qt6-charts libxerces-c libcurl SuiteSparse"
+short_desc="Multiphysics Finite Element Application (Pre-built with GCC 13, uses deal.II matrix solver only)"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-2.0-or-later"
+homepage="http://agros2d.org"
+
+do_install() {
+	# Make directory
+	vmkdir usr
+	
+	# Copy the clean pre-compiled layout from the synchronized files directory
+	vcopy ${FILESDIR}/usr/* usr/
+
+	# Install the desktop launcher menu shortcut natively into the target tree
+	vinstall ${FILESDIR}/agrossuite.desktop 644 usr/share/applications
+}

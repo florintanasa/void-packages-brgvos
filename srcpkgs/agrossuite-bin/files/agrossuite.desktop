@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=AgrosSuite
+GenericName=FEM Multiphysics Solver
+Comment=Professional Finite Element Method application suite for physical fields
+Exec=env QT_QPA_PLATFORM=xcb agros
+Icon=/usr/share/agrossuite/resources/images/agros.png
+Terminal=false
+Categories=Science;Engineering;Education;Qt;
+Keywords=fem;simulation;physics;electrostatics;magnetic;
+StartupNotify=true
+StartupWMClass=agros
