@@ -1,10 +1,12 @@
 # Template file for 'agrossuite-bin'
 # Built using Ubuntu inside Distrobox due to GCC 14 compatibility regressions (retains strict compatibility with GCC 13)
+# Without plugin libsolver_plugin_MUMPS.so
 
 pkgname=agrossuite-bin
 version=2026.11.11
-revision=1
+revision=2
 archs="x86_64"
+hostmakedepends="patchelf"
 depends="qt6-base qt6-qt5compat qt6-svg qt6-charts libxerces-c libcurl SuiteSparse"
 short_desc="Multiphysics Finite Element Application (Pre-built with GCC 13, uses deal.II matrix solver only)"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
@@ -17,6 +19,18 @@ do_install() {
 	
 	# Copy the clean pre-compiled layout from the synchronized files directory
 	vcopy ${FILESDIR}/usr/* usr/
+
+	# FIX RPATH for the main executable binaries
+	patchelf --set-rpath '/usr/lib' ${DESTDIR}/usr/bin/agros
+	patchelf --set-rpath '/usr/lib' ${DESTDIR}/usr/bin/agros_generator
+
+	# AUTOMATIC RPATH FIX for all shared libraries (.so) inside the tree
+	for lib in ${DESTDIR}/usr/lib/*.so*; do
+		# Ensure it is a regular file and not a broken link, then strip RPATH
+		if [ -f "$lib" ] && [ ! -L "$lib" ]; then
+			patchelf --set-rpath '/usr/lib' "$lib"
+		fi
+	done
 
 	# Install the desktop launcher menu shortcut natively into the target tree
 	vinstall ${FILESDIR}/agrossuite.desktop 644 usr/share/applications
