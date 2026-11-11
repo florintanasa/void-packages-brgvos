@@ -1,6 +1,6 @@
 # Template file for 'strata'
 pkgname=strata
-version=1.1.1
+version=1.2.1
 revision=1
 build_style=cargo
 # Exclude non-free RAR extraction capabilities to respect strict open-source policy
@@ -18,7 +18,7 @@ license="MIT"
 homepage="https://stratafiles.io"
 distfiles="https://github.com/lgse/strata/archive/refs/tags/v${version}.tar.gz"
 
-checksum="1a65e931a53cc83182d7b7138b8fd5f5697387f31e5f104f6671e245107a9665"
+checksum=007dfa3e8185206a2da45b509626ec9205fce9629c93c243485a383c54c36b19
 
 do_install() {
 	# Install the compiled binaries from the standard rust release target
