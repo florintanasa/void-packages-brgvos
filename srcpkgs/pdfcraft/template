@@ -1,6 +1,6 @@
 # Template for 'pdfcraft'
 pkgname=pdfcraft
-version=0.20.0
+version=0.21.1
 revision=1
 build_style=cargo
 make_build_args="-p pdfcraft -p pdfcraft-cli"
@@ -14,7 +14,7 @@ distfiles="https://github.com/storytold/pdfcraft/archive/refs/tags/v${version}.t
  https://ocrs-models.s3-accelerate.amazonaws.com/text-recognition.rten>text-recognition.rten
  https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt>LICENSE-OCRS-MODELS"
 
-checksum="5d5461e3b35f54d0e7b4f265d8cfb7d59910401f4ff8880aadf5f8c2b4c44747
+checksum="d6cb5a437aa531fe3ae91250e2b6aa52cf4208cc521c17fc30aeccc917c0e9f5
  f15cfb56bd02c4bf478a20343986504a1f01e1665c2b3a0ad66340f054b1b5ca
  e484866d4cce403175bd8d00b128feb08ab42e208de30e42cd9889d8f1735a6e
  28a9529c7d0bb4dc51f4bf5c116a3d16ef247a052f7591466768ddf563fd1cf5"
