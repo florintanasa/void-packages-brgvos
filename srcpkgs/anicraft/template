@@ -1,0 +1,55 @@
+# Template for 'anicraft'
+pkgname=anicraft
+version=0.2.1
+revision=1
+build_style=cargo
+make_build_args="-p anicraft -p anicraft-cli"
+hostmakedepends="pkg-config"
+makedepends="alsa-lib-devel"
+short_desc="An open-source 2D animation editor written from scratch in pure Rust"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="Apache-2.0, MIT"
+homepage="https://getartcraft.com/apps/anicraft"
+distfiles="https://github.com/storytold/anicraft/archive/refs/tags/v${version}.tar.gz"
+
+checksum=af9a49e30bfae2c2dbdb04472b29a0acd2854eb043936bc7bbc1fbee08ac2f59
+
+do_install() {
+	# 1. Install application for Desktop and command line (CLI) 
+	vbin target/${RUST_TARGET}/release/anicraft
+	vbin target/${RUST_TARGET}/release/anicraft-cli
+
+	# 2. Install shortcut in menu (.desktop) and mime types
+	vinstall packaging/linux/ai.storyteller.anicraft.desktop 644 usr/share/applications
+	vinstall packaging/linux/ai.storyteller.anicraft.mime.xml 644 usr/share/mime/packages
+	vinstall packaging/linux/ai.storyteller.anicraft.metainfo.xml.in 644 usr/share/metainfo ai.storyteller.anicraft.metainfo.xml
+
+	# 3. Iterate icons and install
+	local size
+	for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256 512x512; do
+		if [ -f "assets/app-icon/hicolor/${size}/apps/ai.storyteller.anicraft.png" ]; then
+			vinstall "assets/app-icon/hicolor/${size}/apps/ai.storyteller.anicraft.png" \
+				644 "usr/share/icons/hicolor/${size}/apps"
+		fi
+	done
+
+	if [ -f "assets/app-icon/hicolor/scalable/apps/ai.storyteller.anicraft.svg" ]; then
+		vinstall "assets/app-icon/hicolor/scalable/apps/ai.storyteller.anicraft.svg" \
+			644 "usr/share/icons/hicolor/scalable/apps"
+	fi
+
+	# 4. Install licenses
+	vlicense LICENSE-APACHE
+	vlicense LICENSE-MIT
+	if [ -f "NOTICE" ]; then
+		vlicense NOTICE
+	fi
+	
+	# 5. Technical documentation in Markdown
+	local docfile
+	for docfile in docs/*.md; do
+		if [ -f "$docfile" ]; then
+			vdoc "$docfile"
+		fi
+	done
+}
