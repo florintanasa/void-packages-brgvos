@@ -1,0 +1,55 @@
+# Template for 'mailcraft'
+pkgname=mailcraft
+version=0.12.0
+revision=1
+build_style=cargo
+make_build_args="-p mailcraft -p mailcraft-cli"
+hostmakedepends="pkg-config"
+#makedepends="alsa-lib-devel"
+short_desc="An open-source, clean-room mail, calendar and contacts program built in pure Rust"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="Apache-2.0, MIT"
+homepage="https://getartcraft.com/apps/mailcraft"
+distfiles="https://github.com/UCS-Care-Group/mailcraft/archive/refs/tags/v${version}.tar.gz"
+
+checksum=616e103d92bfcaa091205bd392c9e723ba59f8e28e462b2bc8dbabc2ca7665c9
+
+do_install() {
+	# 1. Install application for Desktop and command line (CLI) 
+	vbin target/${RUST_TARGET}/release/mailcraft
+	vbin target/${RUST_TARGET}/release/mailcraft-cli
+
+	# 2. Install shortcut in menu (.desktop) and mime types
+	vinstall packaging/linux/io.github.billsecond.mailcraft.desktop 644 usr/share/applications
+	vinstall packaging/linux/io.github.billsecond.mailcraft.mime.xml 644 usr/share/mime/packages
+	vinstall packaging/linux/io.github.billsecond.mailcraft.metainfo.xml.in 644 usr/share/metainfo io.github.billsecond.mailcraft.metainfo.xml
+
+	# 3. Iterate icons and install
+	local size
+	for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256 512x512; do
+		if [ -f "assets/app-icon/hicolor/${size}/apps/io.github.billsecond.mailcraft.png" ]; then
+			vinstall "assets/app-icon/hicolor/${size}/apps/io.github.billsecond.mailcraft.png" \
+				644 "usr/share/icons/hicolor/${size}/apps"
+		fi
+	done
+
+	if [ -f "assets/app-icon/hicolor/scalable/apps/io.github.billsecond.mailcraft.svg" ]; then
+		vinstall "assets/app-icon/hicolor/scalable/apps/io.github.billsecond.mailcraft.svg" \
+			644 "usr/share/icons/hicolor/scalable/apps"
+	fi
+
+	# 4. Install licenses
+	vlicense LICENSE-APACHE
+	vlicense LICENSE-MIT
+	if [ -f "NOTICE" ]; then
+		vlicense NOTICE
+	fi
+
+	# 5. Technical documentation in Markdown
+	local docfile
+	for docfile in docs/*.md; do
+		if [ -f "$docfile" ]; then
+			vdoc "$docfile"
+		fi
+	done
+}
