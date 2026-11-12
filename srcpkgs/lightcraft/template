@@ -1,6 +1,6 @@
 # Template for 'lightcraft'
 pkgname=lightcraft
-version=0.20.0
+version=0.21.1
 revision=1
 build_style=cargo
 make_build_args="-p lightcraft -p lightcraft-cli"
@@ -11,7 +11,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/lightcraft"
 distfiles="https://github.com/storytold/lightcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=a528687d7a3431e1a20018cb1c9f75222fbddaf72c703275c1acca79b0f87a2c
+checksum=d635ea3de98b299686511b5663f6bd978353e0f491dcdbfe4b6f34267366e5e1
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI)
