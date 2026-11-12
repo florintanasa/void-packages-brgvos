@@ -1,6 +1,6 @@
 # Template for 'photocraft'
 pkgname=photocraft
-version=0.22.0
+version=0.23.1
 revision=1
 build_style=cargo
 make_build_args="-p photocraft -p photocraft-cli"
@@ -12,7 +12,7 @@ license="Apache-2.0, MIT"
 homepage="https://getartcraft.com/apps/photocraft"
 distfiles="https://github.com/storytold/photocraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=6632913f47e6ddace490c63311b3d26c7cdad941c46deaa74ac3e7764d758810
+checksum=66786e5b1e88bff0a1f04ab5073be50faa7e65b3cdebcbd679e1837ff52a82c6
 
 do_install() {
 	# 1. Install application binaries directly from target release (prevents double compilation)
