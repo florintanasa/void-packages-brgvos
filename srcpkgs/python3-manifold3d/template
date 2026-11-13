@@ -1,6 +1,6 @@
 # Template for 'python3-manifold3d'
 pkgname=python3-manifold3d
-version=3.5.4
+version=3.5.5
 revision=1
 build_style=python3-pep517
 hostmakedepends="python3-build python3-installer python3-setuptools python3-wheel
@@ -13,7 +13,7 @@ license="Apache-2.0"
 homepage="https://github.com/elalish/manifold"
 distfiles="${PYPI_SITE}/m/manifold3d/manifold3d-${version}.tar.gz"
 
-checksum=5bd88c482c6fd7fc01aa7b715b3e31c2585ee98343d5559d286ba30db0d0b6f0
+checksum=c506df413e749c80d323998c3ec7e2cb6e29e1a97b7d73e8740ddfb3490aa64f
 
 post_patch() {
 	# Forcefully drop the strict upper-bound constraint on nanobind from pyproject.toml
