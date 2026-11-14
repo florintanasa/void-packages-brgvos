@@ -1,7 +1,7 @@
 # Template file for 'gmic'
 pkgname=gmic
 version=3.5.3
-revision=2
+revision=3
 _zart_hash=d014169343f835381ad232ee11e077326561c9eb
 build_wrksrc="src"
 build_style=gnu-makefile
@@ -22,6 +22,8 @@ checksum="e91a7cac4d0dc7c0ca2620f03bb14af82aa738c85a11b4f82fcc738654606442
  baebe339566993194f98a71895bff09520b08f38e66eae215758aaa260557bcf"
 disable_parallel_build=yes
 skip_extraction="zart-${_zart_hash}.tar.gz"
+
+broken="this version depends on gimp-2.0"
 
 post_extract() {
 	vsrcextract -C zart zart-${_zart_hash}.tar.gz
