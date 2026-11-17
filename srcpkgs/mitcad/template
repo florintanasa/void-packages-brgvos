@@ -1,0 +1,155 @@
+# Template file for 'mitcad'
+pkgname=mitcad
+version=0.65.0
+revision=1
+build_style=cmake
+configure_args="-GNinja -DCMAKE_BUILD_TYPE=Release
+ -DBUILD_TESTING=OFF
+ -DMITCAD_RUST_COMPILER_CACHE=OFF
+ -DCMAKE_EXE_LINKER_FLAGS=-Wl,--exclude-libs,ALL"
+hostmakedepends="pkg-config ninja cmake rust cargo clang git python3
+ autoconf autoconf-archive automake libtool qt6-base qt6-tools curl zip unzip tar patchelf"
+makedepends="qt6-base-devel qt6-tools-devel qt6-translations qt6-svg-devel
+ libsecret-devel MesaLib-devel libglvnd-devel
+ libX11-devel libXext-devel libXi-devel libXrandr-devel
+ libXcursor-devel libXinerama-devel libxkbcommon-devel
+ libxcb-devel xcb-util-keysyms-devel xcb-util-image-devel
+ xcb-util-wm-devel xcb-util-renderutil-devel xcb-util-cursor-devel
+ fontconfig-devel freetype-devel dbus-devel
+ nss-devel nspr-devel at-spi2-atk-devel cups-devel
+ libgbm-devel libdrm-devel pango-devel cairo-devel alsa-lib-devel"
+short_desc="Open-source parametric 3D CAD. Imports many formats"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://mitcad.org/"
+
+_vcpkg_commit=3aea538b2bb21a586502c67b00eb474fdd2e3098
+_corrosion_ver=0.6.1
+_qtkeychain_ver=0.17.0
+_cycles_ver=5.2.0
+_oidn_ver=2.5.1
+_ispc_ver=1.31.0
+
+distfiles="https://github.com/mitcad/Mitcad/archive/refs/tags/v${version}.tar.gz
+  https://github.com/microsoft/vcpkg/archive/${_vcpkg_commit}.tar.gz>vcpkg-${_vcpkg_commit}.tar.gz
+  https://github.com/corrosion-rs/corrosion/archive/refs/tags/v${_corrosion_ver}.tar.gz>corrosion-${_corrosion_ver}.tar.gz
+  https://github.com/frankosterfeld/qtkeychain/archive/refs/tags/${_qtkeychain_ver}.tar.gz>qtkeychain-${_qtkeychain_ver}.tar.gz
+  https://github.com/blender/cycles/archive/refs/tags/v${_cycles_ver}.tar.gz>cycles-${_cycles_ver}.tar.gz
+  https://github.com/RenderKit/oidn/releases/download/v${_oidn_ver}/oidn-${_oidn_ver}.src.tar.gz
+  https://github.com/ispc/ispc/releases/download/v${_ispc_ver}/ispc-v${_ispc_ver}-linux.tar.gz"
+
+checksum="605d6f72a85e44e66122021dc2991dcfa3ef283fecc91d424d8e43fb6ee246d8
+ 7a0eb0bbd01c4fd49573b27adf3cbf625a66c33b9ae7ce60907e72efd990da87
+ e9e95b1ee2bad52681f347993fb1a5af5cce458c5ce8a2636c9e476e4babf8e3
+ 3b85c3929034b0a99da777130c34d99f006fcd3a9d56564159399a33fee0e504
+ a63756e042e819c0492440306869ea5a29d669b789c0a89f7d170a1741378551
+ e71fd043a70f1cc80e301d1b90df6c1f536098c4dd94baa612742f6db3369c36
+ d74089c835e10fd7e2c4b9225ced38b87d1fb53d35c7ceabd48cdf035da11b11"
+
+build_wrksrc="Mitcad-${version}"
+
+post_extract() {
+	# Mutăm arhivele extrase de xbps-src în subdirectoare ordonate
+	mkdir -p "${wrksrc}/_deps"
+	mv "${wrksrc}/vcpkg-${_vcpkg_commit}" "${wrksrc}/_deps/vcpkg"
+	mv "${wrksrc}/corrosion-${_corrosion_ver}" "${wrksrc}/_deps/corrosion"
+	mv "${wrksrc}/qtkeychain-${_qtkeychain_ver}" "${wrksrc}/_deps/qtkeychain"
+	mv "${wrksrc}/cycles-${_cycles_ver}" "${wrksrc}/_deps/cycles"
+	mv "${wrksrc}/oidn-${_oidn_ver}" "${wrksrc}/_deps/oidn"
+	mv "${wrksrc}/ispc-v${_ispc_ver}-linux" "${wrksrc}/_deps/ispc"
+}
+
+pre_configure() {
+	cd "${wrksrc}/Mitcad-${version}"
+
+	export VCPKG_ROOT="${wrksrc}/_deps/vcpkg"
+	export MITCAD_RENDER_DEPS="${wrksrc}/_deps/render-deps"
+	export MITCAD_RENDER_JOBS="${XBPS_MAKEJOBS}"
+
+	# 1. Inițializăm un repo git în vcpkg doar dacă nu există deja
+	if [ ! -d "${VCPKG_ROOT}/.git" ]; then
+		git -C "${VCPKG_ROOT}" init -q
+		git -C "${VCPKG_ROOT}" config user.email "build@brgvos.local"
+		git -C "${VCPKG_ROOT}" config user.name "BRGV-OS Builder"
+		git -C "${VCPKG_ROOT}" add -A
+		git -C "${VCPKG_ROOT}" commit -q -m "vcpkg baseline"
+	fi
+	local _local_vcpkg_commit
+	_local_vcpkg_commit=$(git -C "${VCPKG_ROOT}" rev-parse HEAD)
+	sed -i "s/${_vcpkg_commit}/${_local_vcpkg_commit}/" vcpkg.json
+	"${VCPKG_ROOT}/bootstrap-vcpkg.sh" -disableMetrics
+
+	# 2. Pre-populăm directorul build-cycles.sh (src și downloads)
+	mkdir -p "${MITCAD_RENDER_DEPS}/src" "${MITCAD_RENDER_DEPS}/downloads"
+	ln -sfn "${wrksrc}/_deps/cycles" "${MITCAD_RENDER_DEPS}/src/cycles-${_cycles_ver}"
+	ln -sfn "${wrksrc}/_deps/oidn" "${MITCAD_RENDER_DEPS}/src/oidn-${_oidn_ver}"
+	ln -sfn "${wrksrc}/_deps/ispc" "${MITCAD_RENDER_DEPS}/src/ispc-v${_ispc_ver}-linux"
+
+	# Copiem arhivele din XBPS_SRCDISTDIR în downloads/ ca fetch() din build-cycles.sh să le vadă gata descărcate
+	cp "${XBPS_SRCDISTDIR}/${pkgname}-${version}/oidn-${_oidn_ver}.src.tar.gz" "${MITCAD_RENDER_DEPS}/downloads/"
+	cp "${XBPS_SRCDISTDIR}/${pkgname}-${version}/ispc-v${_ispc_ver}-linux.tar.gz" "${MITCAD_RENDER_DEPS}/downloads/"
+
+	# Eliminăm blocul git clone/checkout pentru cycles (folosim arhiva din distfiles)
+    sed -i '/if \[ ! -d "\$CYCLES_SRC\/.git" \]/,+3d' tools/dev-env/build-cycles.sh
+
+	# 3. Construim Cycles (CPU) + OpenImageDenoise + dependențele vcpkg
+	bash tools/dev-env/build-cycles.sh "${MITCAD_RENDER_DEPS}"
+
+	# 4. Adăugăm căile locale către CMake
+	configure_args+=" -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+	configure_args+=" -DMITCAD_RENDER_DEPS=${MITCAD_RENDER_DEPS}"
+	configure_args+=" -DFETCHCONTENT_SOURCE_DIR_CORROSION=${wrksrc}/_deps/corrosion"
+	configure_args+=" -DFETCHCONTENT_SOURCE_DIR_QTKEYCHAIN=${wrksrc}/_deps/qtkeychain"
+}
+
+skiprdeps="/usr/lib/mitcad/.*"
+
+do_install() {
+	local _oidn_lib="${wrksrc}/_deps/render-deps/install/oidn/lib64"
+
+	# 1. Instalăm binarele și resursele în /usr/lib/mitcad
+	vmkdir usr/lib/mitcad
+	vinstall build/app/mitcad 755 usr/lib/mitcad
+	vinstall build/app/mitcad-render 755 usr/lib/mitcad
+	vinstall build/app/mitcad-mcp-launcher 755 usr/lib/mitcad
+	vinstall build/tools/cli/mitcad-cli 755 usr/lib/mitcad
+	vinstall build/core/mitcad-thumbnailer 755 usr/lib/mitcad
+
+	# Copiem subdirectoarele de resurse (fonts, translations, webbrowser)
+	for d in fonts translations webbrowser; do
+		if [ -d "build/app/${d}" ]; then
+			vcopy "build/app/${d}" usr/lib/mitcad
+		fi
+	done
+
+	# Copiem și în /usr/share/mitcad (în caz că aplicația caută în ../share/mitcad)
+	vmkdir usr/share/mitcad
+	for d in fonts translations webbrowser; do
+		if [ -d "build/app/${d}" ]; then
+			vcopy "build/app/${d}" usr/share/mitcad
+		fi
+	done
+
+	# 2. Copiem bibliotecile dinamice OpenImageDenoise în /usr/lib/mitcad și setăm RPATH
+	cp -a "${_oidn_lib}"/libOpenImageDenoise*.so* "${DESTDIR}/usr/lib/mitcad/"
+	patchelf --set-rpath '$ORIGIN' "${DESTDIR}/usr/lib/mitcad/mitcad-render"
+	patchelf --set-rpath '$ORIGIN' "${DESTDIR}/usr/lib/mitcad/mitcad"
+
+	# 3. Creăm comenzile din /usr/bin
+	vmkdir usr/bin
+	ln -sfr "${DESTDIR}/usr/lib/mitcad/mitcad" "${DESTDIR}/usr/bin/mitcad"
+	ln -sfr "${DESTDIR}/usr/lib/mitcad/mitcad-cli" "${DESTDIR}/usr/bin/mitcad-cli"
+	ln -sfr "${DESTDIR}/usr/lib/mitcad/mitcad-thumbnailer" "${DESTDIR}/usr/bin/mitcad-thumbnailer"
+
+	# 4. Integrare desktop, iconițe, MIME, thumbnailer și licențe
+	vinstall packaging/linux/mitcad.desktop 644 usr/share/applications
+	vinstall packaging/linux/mitcad-mime.xml 644 usr/share/mime/packages
+	vinstall packaging/linux/mitcad.thumbnailer 644 usr/share/thumbnailers
+	vinstall app/branding/mitcad.svg 644 usr/share/icons/hicolor/scalable/apps
+	for _sz in 16 20 24 32 40 48 64 96 128 256; do
+		vinstall "app/branding/png/mitcad-${_sz}.png" 644 \
+			"usr/share/icons/hicolor/${_sz}x${_sz}/apps" mitcad.png
+	done
+	vlicense LICENSE
+	vdoc packaging/linux/THIRD-PARTY-NOTICES.txt
+}
