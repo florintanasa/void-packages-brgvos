@@ -38,7 +38,7 @@ distfiles="https://github.com/mitcad/Mitcad/archive/refs/tags/v${version}.tar.gz
   https://github.com/RenderKit/oidn/releases/download/v${_oidn_ver}/oidn-${_oidn_ver}.src.tar.gz
   https://github.com/ispc/ispc/releases/download/v${_ispc_ver}/ispc-v${_ispc_ver}-linux.tar.gz"
 
-checksum="605d6f72a85e44e66122021dc2991dcfa3ef283fecc91d424d8e43fb6ee246d8
+checksum="49e75534d42c8f56619af169acd2491fa05e62349d5456031649dabd313d122c
  7a0eb0bbd01c4fd49573b27adf3cbf625a66c33b9ae7ce60907e72efd990da87
  e9e95b1ee2bad52681f347993fb1a5af5cce458c5ce8a2636c9e476e4babf8e3
  3b85c3929034b0a99da777130c34d99f006fcd3a9d56564159399a33fee0e504
