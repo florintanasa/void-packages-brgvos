@@ -1,6 +1,6 @@
 # Template for 'rustgis'
 pkgname=rustgis
-version=0.6.0
+version=0.7.0
 revision=1
 build_style=cargo
 make_build_args="-p rustgis -p rustgis-cli"
@@ -18,7 +18,7 @@ distfiles="https://github.com/opengeos/RustGIS/archive/refs/tags/v${version}.tar
  https://assets.rustgis.app/data/rivers.geojson>rivers.geojson
  https://assets.rustgis.app/data/lakes.geojson>lakes.geojson"
 
-checksum="60850a7dd447644fe9c75693ababe6784ae38db550dec9d8dafc5fad305e1c0d
+checksum="429b90b73de859b024d117a3a5c9c8afaf8c4d242318227ca8372d1438511558
  bef8ee61e46685049d47b577b86fb76e9f67af41a3d4c38acb67f0021bf31b36
  5248ed3c99667a348a8f14f86c272508d18473fe188d8ac3a4e780ec913fc2ea
  28c87845799741b198122a3e9ab2b1a14a1504eb74187aaf1db0d3af8a758b1e

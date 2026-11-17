@@ -1,6 +1,6 @@
 # Template for 'tracedraw'
 pkgname=tracedraw
-version=0.41.0
+version=0.46.0
 revision=1
 build_style=cargo
 make_build_args="-p tracedraw -p tracedraw-cli"
@@ -8,11 +8,11 @@ hostmakedepends="pkg-config"
 short_desc="Vector illustration, page layout and print; an open-source, clean-room vector editor rebuilt from scratch in pure Rust."
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
-homepage="https://github.com/igtoth/tracedraw"
+homepage="https://github.com/tracedraw/tracedraw"
 
-distfiles="https://github.com/igtoth/tracedraw/archive/refs/tags/v${version}.tar.gz"
+distfiles="https://github.com/tracedraw/tracedraw/archive/refs/tags/v${version}.tar.gz"
 
-checksum=292bd86877e18bdfa4132685c931b030e19cdd9b5bf9e62f9d12c17f52ce4dce
+checksum=48dc32e0dd48064cadec080b3b279c5fc01397ce27147ceb7da081454ae6c9a9
 
 do_install() {
     # Install applications binaries directly from target release
