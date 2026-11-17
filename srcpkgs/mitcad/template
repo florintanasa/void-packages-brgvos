@@ -46,10 +46,11 @@ checksum="49e75534d42c8f56619af169acd2491fa05e62349d5456031649dabd313d122c
  e71fd043a70f1cc80e301d1b90df6c1f536098c4dd94baa612742f6db3369c36
  d74089c835e10fd7e2c4b9225ced38b87d1fb53d35c7ceabd48cdf035da11b11"
 
+skiprdeps="/usr/lib/mitcad/.*"
 build_wrksrc="Mitcad-${version}"
 
 post_extract() {
-	# Mutăm arhivele extrase de xbps-src în subdirectoare ordonate
+	# Move the archives extracted by xbps-src into organized subdirectories
 	mkdir -p "${wrksrc}/_deps"
 	mv "${wrksrc}/vcpkg-${_vcpkg_commit}" "${wrksrc}/_deps/vcpkg"
 	mv "${wrksrc}/corrosion-${_corrosion_ver}" "${wrksrc}/_deps/corrosion"
@@ -66,7 +67,7 @@ pre_configure() {
 	export MITCAD_RENDER_DEPS="${wrksrc}/_deps/render-deps"
 	export MITCAD_RENDER_JOBS="${XBPS_MAKEJOBS}"
 
-	# 1. Inițializăm un repo git în vcpkg doar dacă nu există deja
+	# 1. Initialize a git repo in vcpkg only if it does not already exist
 	if [ ! -d "${VCPKG_ROOT}/.git" ]; then
 		git -C "${VCPKG_ROOT}" init -q
 		git -C "${VCPKG_ROOT}" config user.email "build@brgvos.local"
@@ -79,35 +80,34 @@ pre_configure() {
 	sed -i "s/${_vcpkg_commit}/${_local_vcpkg_commit}/" vcpkg.json
 	"${VCPKG_ROOT}/bootstrap-vcpkg.sh" -disableMetrics
 
-	# 2. Pre-populăm directorul build-cycles.sh (src și downloads)
+	# 2. Pre-populate the build-cycles.sh directory (src and downloads)
 	mkdir -p "${MITCAD_RENDER_DEPS}/src" "${MITCAD_RENDER_DEPS}/downloads"
 	ln -sfn "${wrksrc}/_deps/cycles" "${MITCAD_RENDER_DEPS}/src/cycles-${_cycles_ver}"
 	ln -sfn "${wrksrc}/_deps/oidn" "${MITCAD_RENDER_DEPS}/src/oidn-${_oidn_ver}"
 	ln -sfn "${wrksrc}/_deps/ispc" "${MITCAD_RENDER_DEPS}/src/ispc-v${_ispc_ver}-linux"
 
-	# Copiem arhivele din XBPS_SRCDISTDIR în downloads/ ca fetch() din build-cycles.sh să le vadă gata descărcate
+	# Copy the archives from XBPS_SRCDISTDIR to downloads/ so that fetch() in build-cycles.sh sees them as already downloaded
 	cp "${XBPS_SRCDISTDIR}/${pkgname}-${version}/oidn-${_oidn_ver}.src.tar.gz" "${MITCAD_RENDER_DEPS}/downloads/"
 	cp "${XBPS_SRCDISTDIR}/${pkgname}-${version}/ispc-v${_ispc_ver}-linux.tar.gz" "${MITCAD_RENDER_DEPS}/downloads/"
 
-	# Eliminăm blocul git clone/checkout pentru cycles (folosim arhiva din distfiles)
+	# Remove the git clone/checkout block for cycles (we use the archive from distfiles)
     sed -i '/if \[ ! -d "\$CYCLES_SRC\/.git" \]/,+3d' tools/dev-env/build-cycles.sh
+	sed -i '/rev-parse HEAD/,+3d' tools/dev-env/build-cycles.sh
 
-	# 3. Construim Cycles (CPU) + OpenImageDenoise + dependențele vcpkg
+	# 3. Build Cycles (CPU) + OpenImageDenoise + vcpkg dependencies
 	bash tools/dev-env/build-cycles.sh "${MITCAD_RENDER_DEPS}"
 
-	# 4. Adăugăm căile locale către CMake
+	# 4. Add local paths to CMake
 	configure_args+=" -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
 	configure_args+=" -DMITCAD_RENDER_DEPS=${MITCAD_RENDER_DEPS}"
 	configure_args+=" -DFETCHCONTENT_SOURCE_DIR_CORROSION=${wrksrc}/_deps/corrosion"
 	configure_args+=" -DFETCHCONTENT_SOURCE_DIR_QTKEYCHAIN=${wrksrc}/_deps/qtkeychain"
 }
 
-skiprdeps="/usr/lib/mitcad/.*"
-
 do_install() {
 	local _oidn_lib="${wrksrc}/_deps/render-deps/install/oidn/lib64"
 
-	# 1. Instalăm binarele și resursele în /usr/lib/mitcad
+	# 1. Install the binaries and resources into /usr/lib/mitcad
 	vmkdir usr/lib/mitcad
 	vinstall build/app/mitcad 755 usr/lib/mitcad
 	vinstall build/app/mitcad-render 755 usr/lib/mitcad
@@ -115,14 +115,14 @@ do_install() {
 	vinstall build/tools/cli/mitcad-cli 755 usr/lib/mitcad
 	vinstall build/core/mitcad-thumbnailer 755 usr/lib/mitcad
 
-	# Copiem subdirectoarele de resurse (fonts, translations, webbrowser)
+	# We copy the resource subdirectories (fonts, translations, webbrowser)
 	for d in fonts translations webbrowser; do
 		if [ -d "build/app/${d}" ]; then
 			vcopy "build/app/${d}" usr/lib/mitcad
 		fi
 	done
 
-	# Copiem și în /usr/share/mitcad (în caz că aplicația caută în ../share/mitcad)
+	# Also copy to /usr/share/mitcad (in case the application looks in ../share/mitcad)
 	vmkdir usr/share/mitcad
 	for d in fonts translations webbrowser; do
 		if [ -d "build/app/${d}" ]; then
@@ -130,18 +130,21 @@ do_install() {
 		fi
 	done
 
-	# 2. Copiem bibliotecile dinamice OpenImageDenoise în /usr/lib/mitcad și setăm RPATH
+	# 2. Copy the OpenImageDenoise dynamic libraries to /usr/lib/mitcad and set the RPATH
 	cp -a "${_oidn_lib}"/libOpenImageDenoise*.so* "${DESTDIR}/usr/lib/mitcad/"
-	patchelf --set-rpath '$ORIGIN' "${DESTDIR}/usr/lib/mitcad/mitcad-render"
-	patchelf --set-rpath '$ORIGIN' "${DESTDIR}/usr/lib/mitcad/mitcad"
+	for _bin in "${DESTDIR}/usr/lib/mitcad/mitcad" \
+	            "${DESTDIR}/usr/lib/mitcad/mitcad-render" \
+	            "${DESTDIR}/usr/lib/mitcad"/libOpenImageDenoise*.so*; do
+		[ -f "$_bin" ] && [ ! -L "$_bin" ] && patchelf --force-rpath --set-rpath '$ORIGIN' "$_bin"
+	done
 
-	# 3. Creăm comenzile din /usr/bin
+	# 3. Create the commands in /usr/bin
 	vmkdir usr/bin
 	ln -sfr "${DESTDIR}/usr/lib/mitcad/mitcad" "${DESTDIR}/usr/bin/mitcad"
 	ln -sfr "${DESTDIR}/usr/lib/mitcad/mitcad-cli" "${DESTDIR}/usr/bin/mitcad-cli"
 	ln -sfr "${DESTDIR}/usr/lib/mitcad/mitcad-thumbnailer" "${DESTDIR}/usr/bin/mitcad-thumbnailer"
 
-	# 4. Integrare desktop, iconițe, MIME, thumbnailer și licențe
+	# 4. Desktop integration, icons, MIME, thumbnailer, and licenses
 	vinstall packaging/linux/mitcad.desktop 644 usr/share/applications
 	vinstall packaging/linux/mitcad-mime.xml 644 usr/share/mime/packages
 	vinstall packaging/linux/mitcad.thumbnailer 644 usr/share/thumbnailers
