@@ -1,6 +1,6 @@
 # Template file for 'mitcad'
 pkgname=mitcad
-version=0.65.0
+version=0.66.0
 revision=1
 build_style=cmake
 configure_args="-GNinja -DCMAKE_BUILD_TYPE=Release
@@ -38,7 +38,7 @@ distfiles="https://github.com/mitcad/Mitcad/archive/refs/tags/v${version}.tar.gz
   https://github.com/RenderKit/oidn/releases/download/v${_oidn_ver}/oidn-${_oidn_ver}.src.tar.gz
   https://github.com/ispc/ispc/releases/download/v${_ispc_ver}/ispc-v${_ispc_ver}-linux.tar.gz"
 
-checksum="49e75534d42c8f56619af169acd2491fa05e62349d5456031649dabd313d122c
+checksum="3b87d174465d6f5a38f6acc1428ac2d00ef8c924be67ccab303096e7034f8fc2
  7a0eb0bbd01c4fd49573b27adf3cbf625a66c33b9ae7ce60907e72efd990da87
  e9e95b1ee2bad52681f347993fb1a5af5cce458c5ce8a2636c9e476e4babf8e3
  3b85c3929034b0a99da777130c34d99f006fcd3a9d56564159399a33fee0e504
