@@ -1,6 +1,6 @@
 # Template for 'mailcraft'
 pkgname=mailcraft
-version=0.13.0
+version=0.14.0
 revision=1
 build_style=cargo
 make_build_args="-p mailcraft -p mailcraft-cli"
@@ -9,10 +9,10 @@ hostmakedepends="pkg-config"
 short_desc="An open-source, clean-room mail, calendar and contacts program built in pure Rust"
 maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="Apache-2.0, MIT"
-homepage="https://getartcraft.com/apps/mailcraft"
+homepage="https://mailcraft.work/"
 distfiles="https://github.com/UCS-Care-Group/mailcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=ae9dcc90be17aab280ed3674ec4651efa72771f80acbb1fb06c66bd0e5213852
+checksum=da3b3687d8353e9ff8005d4407941afcdfdb61005ff3141bdd86f5519ed06333
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI) 
