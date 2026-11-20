@@ -1,6 +1,6 @@
 # Template file for 'lemonade-desktop'
 pkgname=lemonade-desktop
-version=2026.46.2
+version=2026.47.1
 revision=1
 build_style=gnu-makefile
 hostmakedepends="pkg-config nodejs rust cargo git libwebkit2gtk41-devel libnotify-devel libayatana-appindicator-devel"
@@ -13,7 +13,7 @@ homepage="https://github.com/lemonade-sdk/lemonade"
 
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz>lemonade-${version}.tar.gz"
 
-checksum=a74b690d04ae23d612e0309cd79a48e67c67e07f0fae2b5937a4de8ff5ae2bb5
+checksum=92a70f048c72045bc7b679cde23e553fcd6bd9f091b626781405222d81402901
 
 do_build() {
 	cd ${wrksrc}/src/app
