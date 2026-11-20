@@ -1,0 +1,24 @@
+# Template file for 'qucs-s'
+pkgname=qucs-s
+version=26.1.1
+revision=1
+build_style=cmake
+hostmakedepends="bison cmake dos2unix flex git gperf pkg-config qt6-tools-devel"
+makedepends="qt6-base-devel qt6-svg-devel"
+depends="ngspice"
+short_desc="Interactive schematic capture and SPICE frontend"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="GPL-2.0-or-later"
+homepage="https://github.com/ra3xdh/qucs_s"
+distfiles="https://github.com/ra3xdh/qucs_s/archive/refs/tags/${version}.tar.gz"
+
+do_fetch() {
+	:
+}
+
+do_extract() {
+	cd ${XBPS_BUILDDIR}
+	git clone --depth 1 --branch ${version} https://github.com/ra3xdh/qucs_s ${pkgname}-${version}
+	cd ${pkgname}-${version}
+	git submodule update --init --recursive --depth 1
+}
