@@ -1,6 +1,6 @@
 # Template file for 'ollama-rocm-bin'
 pkgname=ollama-rocm-bin
-version=0.40.16
+version=0.40.17
 revision=1
 archs="x86_64"
 hostmakedepends="zstd tar"
@@ -14,7 +14,7 @@ license="MIT"
 homepage="https://ollama.com"
 distfiles="https://github.com/ollama/ollama/releases/download/v${version}/ollama-linux-amd64-rocm.tar.zst"
 
-checksum=e41b4e45e5f83f65aa70ae01da3f9afdb1954bf4e1dd36f51d512e02082fac26
+checksum=830e7068a16a3946edb1ee23f3ba455c9f966f9155be9934ca87f62004e20fe7
 
 do_install() {
 	mkdir -p ${DESTDIR}/usr
