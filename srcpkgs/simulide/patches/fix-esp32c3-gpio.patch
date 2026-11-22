@@ -1,0 +1,95 @@
+diff --git a/qemu_simulide/hw/gpio/esp32c3_gpio.c b/qemu_simulide/hw/gpio/esp32c3_gpio.c
+index 0541817..bf4a36a 100644
+--- a/qemu_simulide/hw/gpio/esp32c3_gpio.c
++++ b/qemu_simulide/hw/gpio/esp32c3_gpio.c
+@@ -35,14 +35,14 @@ static uint64_t esp32c3_gpio_read(void *opaque, hwaddr addr, unsigned int size)
+             r = s->strap_mode;
+             break;
+         case 0x3C: //GPIO_IN_REG
+-            qemu_set_irq(s->gpios_sync[0], -1); //request sync
+-            r = s->gpio_in;
++            //qemu_set_irq(s->gpios_sync[0], -1); //request sync (gpios_sync removed)
++            r = s->gpio_in[0];
+             break;
+         case 0x44: //GPIO_STATUS_REG
+-            r = s->gpio_status;
++            r = s->gpio_status[0];
+             break;
+         case 0x5C: //GPIO_PCPU_INT_REG
+-            r = s->gpio_acpu_int; //using ESP32 GPIO support
++            r = s->gpio_pcpu_int[0]; //using ESP32 GPIO support
+             break;
+         default:
+             break;
+@@ -93,25 +93,25 @@ static void esp32c3_gpio_write(void *opaque, hwaddr addr, uint64_t value,
+             s->strap_mode = value;
+             break;
+         case 0x44: //GPIO_STATUS_REG
+-            s->gpio_status = value;
++            s->gpio_status[0] = value;
+             break;
+         case 0x48: //GPIO_STATUS_W1TS_REG 
+-            s->gpio_status |= value;
++            s->gpio_status[0] |= value;
+             break;
+         case 0x4c: //GPIO_STATUS_W1TC_REG 
+             clearirq = 1;
+             for (int i = 0; i < 32; i++) {
+                 if ((1 << i) & value) {
+                     int int_type = (s->gpio_pin[i] >> 7) & 7;
+-                    if ((int_type == 4 && !(s->gpio_in & (1 << i))) ||
+-                        (int_type == 5 && (s->gpio_in & (1 << i))))
++                    if ((int_type == 4 && !(s->gpio_in[0] & (1 << i))) ||
++                        (int_type == 5 && (s->gpio_in[0] & (1 << i))))
+                         clearirq = 0;
+                 }
+             }
+             if (clearirq) {
+-                s->gpio_status &= ~value;
+-                s->gpio_pcpu_int &= ~value;
+-                s->gpio_acpu_int &= ~value;
++                s->gpio_status[0] &= ~value;
++                s->gpio_pcpu_int[0] &= ~value;
++                s->gpio_acpu_int[0] &= ~value;
+                 qemu_set_irq(s->irq, 0);
+             }
+             break;
+@@ -123,12 +123,12 @@ static void esp32c3_gpio_write(void *opaque, hwaddr addr, uint64_t value,
+     else if (addr >= 0x154 && addr < 0x354) { //GPIO_FUNCY_IN_SEL_CFG_REG
+         int n = (addr - 0x154) / 4;
+         s->gpio_in_sel[n] = value;
+-        qemu_set_irq(s->gpios_sync[0], (0x1000 | n)); //report in sel cfg change
++        //qemu_set_irq(s->gpios_sync[0], (0x1000 | n)); //report in sel cfg change (gpios_sync removed)
+     }
+     else if (addr >= 0x554 && addr < 0x5AC) { //GPIO_FUNCX_OUT_SEL_CFG_REG 
+         int n = (addr - 0x554) / 4;
+         s->gpio_out_sel[n] = value;
+-        qemu_set_irq(s->gpios_sync[0], (0x2000 | n)); ////report out sel cfg change
++        //qemu_set_irq(s->gpios_sync[0], (0x2000 | n)); //report out sel cfg change (gpios_sync removed)
+     }
+ 
+     //printf("out 0x%04X in 0x%04X enable 0x%04X \n"  ,s->gpio_out, s->gpio_in, s->gpio_enable);
+@@ -137,11 +137,11 @@ static void esp32c3_gpio_write(void *opaque, hwaddr addr, uint64_t value,
+         uint32_t diff = (s->gpio_out ^ oldvalue) | (s->gpio_enable ^ oldenable);
+         for (int i = 0; i < 32; i++) {
+             if (((1 << i) & diff)&&((1 << i) & s->gpio_enable)){
+-                qemu_set_irq(s->gpios[i], (s->gpio_out & (1 << i)) ? 1 : 0);
++                //qemu_set_irq(s->gpios[i], (s->gpio_out & (1 << i)) ? 1 : 0); //gpios removed
+                 if(s->gpio_out & (1 << i)){
+-                   s->gpio_in |= (1 << i);
++                   s->gpio_in[0] |= (1 << i);
+                 }else{
+-                   s->gpio_in &= ~(1 << i); 
++                   s->gpio_in[0] &= ~(1 << i); 
+                 } 
+             }
+         }
+@@ -150,7 +150,7 @@ static void esp32c3_gpio_write(void *opaque, hwaddr addr, uint64_t value,
+         uint32_t diff =(s->gpio_enable ^ oldenable);
+         for (int i = 0; i < 32; i++) {
+             if ((1 << i) & diff){
+-                qemu_set_irq(s->gpios_dir[i], (s->gpio_enable & (1 << i)) ? 1 : 0); 
++                //qemu_set_irq(s->gpios_dir[i], (s->gpio_enable & (1 << i)) ? 1 : 0); //gpios_dir removed
+             }
+         }
+     }                  

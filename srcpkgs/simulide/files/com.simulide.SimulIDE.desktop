@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=SimulIDE
+GenericName=Circuit Simulator
+Comment=Electronic circuit simulator with microcontroller support
+Exec=simulide
+Icon=simulide
+Terminal=false
+Type=Application
+StartupWMClass=simulide
+Categories=Education;Electronics;Engineering;Science;Development;

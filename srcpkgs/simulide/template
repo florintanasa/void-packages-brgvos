@@ -1,0 +1,60 @@
+# Template file for 'simulide'
+pkgname=simulide
+version=260501
+revision=1
+build_style=qmake
+build_wrksrc="simulide_2/build_XX"
+hostmakedepends="qt5-qmake qt5-host-tools qt5-tools perl python3 meson ninja
+ pkg-config python3-tomli python3-distlib python3-pip"
+makedepends="qt5-svg-devel qt5-multimedia-devel qt5-serialport-devel
+ glib-devel pixman-devel zlib-devel ncurses-devel
+ libcurl-devel libgcrypt-devel libslirp-devel"
+short_desc="Electronic circuit simulator with microcontroller support"
+maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
+license="AGPL-3.0-or-later"
+homepage="https://simulide.com"
+distfiles="https://simulide.com/p/fls/SimulIDE_2-R${version}_Sources.zip"
+
+checksum=3b44d711f232d199af79cc84059cb7559b1e713b39acc649ec6d128e47361757
+
+pre_build() {
+	cd "${wrksrc}/qemu_simulide"
+	sed -i 's/,riscv32-softmmu//g' build_libqemu-esp32.sh
+	sed -i '50,$d' build_libqemu-esp32.sh
+	./build_libqemu-esp32.sh
+	mkdir -p "${wrksrc}/simulide_2/resources/data/bin"
+	cp -f build/libqemu-xtensa.so "${wrksrc}/simulide_2/resources/data/bin/"
+}
+
+do_install() {
+	vmkdir usr/bin
+	vmkdir usr/lib/simulide/data/bin
+	vmkdir usr/share/icons/hicolor/128x128/apps
+	vmkdir usr/share/applications
+
+	# Install resources (data, fonts, icons, translations) alongside the binary
+	vcopy "${wrksrc}/simulide_2/resources/*" usr/lib/simulide/
+
+	# Install main binary & QEMU shared library in /usr/lib/simulide (FHS compliant)
+	vinstall "${wrksrc}/simulide_2/build_XX/executables/SimulIDE_2.0.0-/simulide" 0755 \
+		usr/lib/simulide
+	vinstall "${wrksrc}/qemu_simulide/build/libqemu-xtensa.so" 0755 \
+		usr/lib/simulide/data/bin
+
+	# Wrapper script in /usr/bin
+	cat > "${DESTDIR}/usr/bin/simulide" <<'EOF'
+#!/bin/sh
+export LD_LIBRARY_PATH="/usr/lib/simulide/data/bin:${LD_LIBRARY_PATH}"
+exec "/usr/lib/simulide/simulide" "$@"
+EOF
+	chmod 755 "${DESTDIR}/usr/bin/simulide"
+
+	# Icon & desktop entry
+	vinstall "${wrksrc}/simulide_2/resources/icons/simulide.png" 0644 \
+		usr/share/icons/hicolor/128x128/apps
+	vinstall "${FILESDIR}/com.simulide.SimulIDE.desktop" 0644 usr/share/applications
+
+	# Install LICENSE
+	vlicense "${wrksrc}/simulide_2/COPYING"
+}
+
