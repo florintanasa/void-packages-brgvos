@@ -1,6 +1,6 @@
 # Template file for 'oh-my-posh'
 pkgname=oh-my-posh
-version=33.1.0
+version=33.3.1
 revision=1
 hostmakedepends="git go"
 short_desc="Prompt theme engine for any shell written in Go"
@@ -9,7 +9,7 @@ license="MIT"
 homepage="https://ohmyposh.dev"
 distfiles="https://github.com/JanDeDobbeleer/oh-my-posh/archive/refs/tags/v${version}.tar.gz"
 
-checksum=9e3acbaa1a8d06fe3b1e6b3a483534bfa9092a0887bd2c80dc79e6c65cf365d3
+checksum=790cb6863820f9fd11bab70d3816d630a30bd0828ece118ca6a1cbc0356754e3
 
 do_build() {
 	cd src
