@@ -1,6 +1,6 @@
 # Template file for 'mitcad'
 pkgname=mitcad
-version=0.71.0
+version=0.72.0
 revision=1
 build_style=cmake
 configure_args="-GNinja -DCMAKE_BUILD_TYPE=Release
@@ -38,7 +38,7 @@ distfiles="https://github.com/mitcad/Mitcad/archive/refs/tags/v${version}.tar.gz
   https://github.com/RenderKit/oidn/releases/download/v${_oidn_ver}/oidn-${_oidn_ver}.src.tar.gz
   https://github.com/ispc/ispc/releases/download/v${_ispc_ver}/ispc-v${_ispc_ver}-linux.tar.gz"
 
-checksum="c32eacb5b503e2ac227ae2858f7f60c0cbe86e32d228fd3987edba09258e9258
+checksum="ee2af7ac83a81436e5ddadebee23afb522ac933a5638734936e1d941c260553c
  7a0eb0bbd01c4fd49573b27adf3cbf625a66c33b9ae7ce60907e72efd990da87
  e9e95b1ee2bad52681f347993fb1a5af5cce458c5ce8a2636c9e476e4babf8e3
  3b85c3929034b0a99da777130c34d99f006fcd3a9d56564159399a33fee0e504
@@ -102,7 +102,7 @@ pre_configure() {
 	bash tools/dev-env/build-cycles.sh "${MITCAD_RENDER_DEPS}"
 
 	# 4. Add local paths to CMake
-	echo "set(VCPKG_BUILD_TYPE release)" >> "${VCPKG_ROOT}/triplets/x64-linux.cmake"
+    echo "set(VCPKG_BUILD_TYPE release)" >> "${VCPKG_ROOT}/triplets/x64-linux.cmake"
 	configure_args+=" -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
 	configure_args+=" -DMITCAD_RENDER_DEPS=${MITCAD_RENDER_DEPS}"
 	configure_args+=" -DFETCHCONTENT_SOURCE_DIR_CORROSION=${wrksrc}/_deps/corrosion"
