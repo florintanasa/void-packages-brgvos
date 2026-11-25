@@ -1,6 +1,6 @@
 # Template for 'mailcraft'
 pkgname=mailcraft
-version=0.14.0
+version=0.15.0
 revision=1
 build_style=cargo
 make_build_args="-p mailcraft -p mailcraft-cli"
@@ -12,7 +12,7 @@ license="Apache-2.0, MIT"
 homepage="https://mailcraft.work/"
 distfiles="https://github.com/UCS-Care-Group/mailcraft/archive/refs/tags/v${version}.tar.gz"
 
-checksum=da3b3687d8353e9ff8005d4407941afcdfdb61005ff3141bdd86f5519ed06333
+checksum=7f2c7eb381b84f37f788412dcbd0bd8c2ccfe662ff89ebf9c8b2a33775c0c237
 
 do_install() {
 	# 1. Install application for Desktop and command line (CLI) 
