@@ -1,0 +1,14 @@
+# Template file for 'python3-fake-useragent'
+pkgname=python3-fake-useragent
+version=2.2.0
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-setuptools python3-wheel"
+depends="python3"
+short_desc="Up-to-date simple useragent faker with real world database"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="Apache-2.0"
+homepage="https://github.com"
+distfiles="${PYPI_SITE}/f/fake-useragent/fake_useragent-${version}.tar.gz"
+checksum=4e6ab6571e40cc086d788523cf9e018f618d07f9050f822ff409a4dfe17c16b2
+
