@@ -1,0 +1,17 @@
+# Template file for 'python3-flexcache'
+pkgname=python3-flexcache
+version=0.3
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-setuptools python3-wheel python3-setuptools_scm"
+depends="python3 python3-typing_extensions"
+short_desc="Cached dictionary with flexible key computation"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/hgreingers/flexcache"
+distfiles="${PYPI_SITE}/f/flexcache/flexcache-${version}.tar.gz"
+checksum=18743bd5a0621bfe2cf8d519e4c3bfdf57a269c15d1ced3fb4b64e0ff4600656
+
+post_install() {
+	vlicense LICENSE
+}
