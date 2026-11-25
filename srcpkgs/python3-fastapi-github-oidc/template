@@ -1,0 +1,17 @@
+# Template file for 'python3-fastapi-github-oidc'
+pkgname=python3-fastapi-github-oidc
+version=0.3.0
+revision=1
+build_style=python3-pep517
+hostmakedepends="hatchling hatch-vcs git"
+depends="python3 python3-fastapi"
+short_desc="GitHub OIDC for FastAPI"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/fastapi-github/oidc"
+distfiles="${PYPI_SITE}/f/fastapi_github_oidc/fastapi_github_oidc-${version}.tar.gz"
+checksum=2a363a735265cbdcbf15479ad97637155b725cd10eb20c1bb44c21d0a5da735c
+
+post_install() {
+	vlicense LICENSE
+}
