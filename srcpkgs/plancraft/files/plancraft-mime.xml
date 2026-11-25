@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://freedesktop.org">
+  <mime-type type="application/x-plancraft">
+    <comment>PlanCraft Project File</comment>
+    <glob pattern="*.plancraft"/>
+    <icon name="plancraft"/>
+  </mime-type>
+</mime-info>

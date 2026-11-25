@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=PlanCraft
+GenericName=Project Planner
+Comment=Desktop project planner and scheduler with built-in MCP server
+Exec=plancraft %f
+Icon=plancraft
+Terminal=false
+Type=Application
+Categories=Office;ProjectManagement;
+MimeType=application/x-plancraft;application/xml;
+StartupNotify=true

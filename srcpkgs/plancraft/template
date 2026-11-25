@@ -1,0 +1,27 @@
+# Template file for 'plancraft'
+pkgname=plancraft
+version=0.8.5
+revision=1
+build_style=cargo
+make_build_args="-p plancraft-app"
+make_install_args="--path crates/plancraft-app"
+hostmakedepends="pkg-config"
+makedepends="libxkbcommon-devel wayland-devel libX11-devel libXcursor-devel
+ libXi-devel libXrandr-devel MesaLib-devel fontconfig-devel freetype-devel
+ gtk+3-devel"
+short_desc="Desktop project planner and scheduler in Rust with built-in MCP server"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="CC0-1.0"
+homepage="https://github.com/rallegretti/PlanCraft"
+distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
+checksum=f0f6851584edb48aba759865d432b92a2064a0ca100d8838e0a4d91f871bcc80
+
+post_install() {
+	vinstall "${FILESDIR}/plancraft.desktop" 644 usr/share/applications
+	vinstall "${FILESDIR}/plancraft-mime.xml" 644 usr/share/mime/packages
+	if [ -f assets/logo.svg ]; then
+		vinstall assets/logo.svg 644 usr/share/icons/hicolor/scalable/apps plancraft.svg
+	fi
+	vlicense LICENSE
+}
+
