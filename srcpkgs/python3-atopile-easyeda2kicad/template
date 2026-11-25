@@ -1,0 +1,17 @@
+# Template file for 'python3-atopile-easyeda2kicad'
+pkgname=python3-atopile-easyeda2kicad
+version=0.9.9
+revision=1
+build_style=python3-pep517
+hostmakedepends="hatchling hatch-vcs python3-setuptools"
+depends="python3 python3-GitPython python3-xmltodict python3-httpx python3-pydantic python3-truststore python3-fake-useragent"
+short_desc="Convert EasyEDA parts to KiCad symbols"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="AGPL-3.0-or-later"
+homepage="https://github.com/atopile/easyeda2kicad"
+distfiles="${PYPI_SITE}/a/atopile-easyeda2kicad/atopile_easyeda2kicad-${version}.tar.gz"
+checksum=57af22e81f36db7571815623556b4b8ac424afe5058c1e07c20aca3f90de1744
+
+post_install() {
+	vlicense LICENSE
+}
