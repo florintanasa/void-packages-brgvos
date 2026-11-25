@@ -1,0 +1,17 @@
+# Template file for 'python3-pydantic-settings'
+pkgname=python3-pydantic-settings
+version=2.16.3
+revision=1
+build_style=python3-pep517
+hostmakedepends="hatchling"
+depends="python3 python3-pydantic python3-dotenv python3-typing-inspection python3-typing_extensions"
+short_desc="Settings management for pydantic"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://pypi.org/project/pydantic-settings/"
+distfiles="${PYPI_SITE}/p/pydantic-settings/pydantic_settings-${version}.tar.gz"
+checksum=10e36f616623ebb586c05ca3d3cd22927146869db413d4f14c20c514442a1337
+
+post_install() {
+	vlicense LICENSE
+}
