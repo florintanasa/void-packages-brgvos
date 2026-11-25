@@ -1,0 +1,17 @@
+# Template file for 'python3-kicadcliwrapper'
+pkgname=python3-kicadcliwrapper
+version=1.1.1
+revision=1
+build_style=python3-pep517
+hostmakedepends="hatchling hatch-vcs"
+depends="python3 black python3-typing_extensions"
+short_desc="Python wrapper for the KiCad CLI"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://pypi.org/project/kicadcliwrapper/"
+distfiles="${PYPI_SITE}/k/kicadcliwrapper/kicadcliwrapper-${version}.tar.gz"
+checksum=faf209ca4dc0cd468803e1a7594ef3547ae5877b76444640b3bfd1214fcf4b18
+
+post_install() {
+	vlicense LICENSE
+}
