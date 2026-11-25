@@ -1,0 +1,34 @@
+# Template file for 'rei3'
+pkgname=rei3
+version=3.13.4
+revision=1
+build_style=go
+go_import_path="r3"
+depends="postgresql-client"
+short_desc="Free and open-source low-code application platform"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="Apache-2.0, BSD-2-Clause, GPL-3.0-only, ISC, MIT"
+homepage="https://rei3.de"
+distfiles="https://github.com/r3-team/r3/archive/refs/tags/v${version}.tar.gz"
+checksum=e1d2d352efad3d3b8ca901e9d83da86da509af7fd776af4c32592862e239a761
+conf_files="/etc/default/rei3 /etc/rei3/config.json"
+system_accounts="_rei3"
+_rei3_homedir="/var/lib/rei3"
+make_dirs="/var/lib/rei3 0750 _rei3 _rei3 /etc/rei3 0750 root _rei3"
+
+pre_build() {
+	local _app_ver _client_ver
+	_app_ver=$(tr -d '[:space:]' < VERSION.txt)
+	_client_ver=$(tr -d '[:space:]' < VERSION_CLIENT.txt)
+	go_ldflags="-X main.appVersion=${_app_ver} -X main.appVersionClient=${_client_ver}"
+}
+
+post_install() {
+	vinstall "${FILESDIR}/rei3.default" 644 etc/default rei3
+	vinstall config_template.json 640 etc/rei3 config.json
+	vsv rei3
+	vlicense LICENSE.Apache-2.0
+	vlicense LICENSE.BSD-2
+	vlicense LICENSE.ISC
+	vlicense LICENSE.MIT
+}

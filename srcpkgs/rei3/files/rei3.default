@@ -1,0 +1,10 @@
+# Configuration file for the REI3 service.
+
+# REI3 data directory (e.g. /var/lib/rei3 or /srv/rei3)
+REI3_ROOT="/var/lib/rei3"
+
+# REI3 main configuration file
+REI3_CONFIG="/etc/rei3/config.json"
+
+# Extra options passed to r3 (e.g. -http)
+OPTS=""

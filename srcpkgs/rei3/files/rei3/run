@@ -1,0 +1,31 @@
+#!/bin/sh
+exec 2>&1
+[ -r /etc/default/rei3 ] && . /etc/default/rei3
+[ -r ./conf ] && . ./conf
+
+: ${REI3_ROOT:="/var/lib/rei3"}
+: ${REI3_CONFIG:="/etc/rei3/config.json"}
+
+if [ -f "$REI3_CONFIG" ]; then
+	chgrp _rei3 "$REI3_CONFIG" 2>/dev/null || true
+	chmod 0640 "$REI3_CONFIG" 2>/dev/null || true
+fi
+
+if [ ! -d "$REI3_ROOT" ]; then
+	mkdir -p "$REI3_ROOT" || exit 1
+	chown _rei3:_rei3 "$REI3_ROOT"
+	chmod 0750 "$REI3_ROOT"
+fi
+
+if [ "$REI3_ROOT" != "/var/lib/rei3" ]; then
+	if [ -d /var/lib/rei3 ] && [ ! -L /var/lib/rei3 ]; then
+		rmdir /var/lib/rei3 2>/dev/null || true
+	fi
+	if [ ! -e /var/lib/rei3 ]; then
+		echo "Creating symlink /var/lib/rei3 -> $REI3_ROOT"
+		ln -sfn "$REI3_ROOT" /var/lib/rei3
+	fi
+fi
+
+cd "$REI3_ROOT" || exit 1
+exec chpst -u _rei3:_rei3 /usr/bin/r3 -config "$REI3_CONFIG" ${OPTS}
