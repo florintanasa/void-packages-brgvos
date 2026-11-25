@@ -1,0 +1,17 @@
+# Template file for 'python3-questionary'
+pkgname=python3-questionary
+version=2.1.1
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-poetry-core"
+depends="python3  python3-prompt_toolkit"
+short_desc="Interactive shell prompts for Python"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/tmbo/questionary"
+distfiles="${PYPI_SITE}/q/questionary/questionary-${version}.tar.gz"
+checksum=3d7e980292bb0107abaa79c68dd3eee3c561b83a0f89ae482860b181c8bd412d
+
+post_install() {
+	vlicense LICENSE
+}
