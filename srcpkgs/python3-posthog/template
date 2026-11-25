@@ -1,0 +1,21 @@
+# Template file for 'python3-posthog'
+pkgname=python3-posthog
+version=8.1.1
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-setuptools python3-wheel"
+depends="python3 python3-dateutil python3-distro python3-requests python3-six python3-typing_extensions python3-urllib3"
+short_desc="Python client for PostHog"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/posthog/posthog-python"
+distfiles="${PYPI_SITE}/p/posthog/posthog-${version}.tar.gz"
+checksum=b57d24ebb0edb437c58544897d1b19fa0f907063b4bcf7f72a883f8f76eef684
+
+pre_build() {
+	sed -i 's/setuptools>=83\.0\.0/setuptools>=80.0.0/' pyproject.toml
+}
+
+post_install() {
+	vlicense LICENSE
+}
