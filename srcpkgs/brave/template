@@ -1,6 +1,6 @@
 # Template file for `brave`
 pkgname=brave
-version=1.99.56
+version=1.100.59
 revision=1
 archs="x86_64"
 short_desc="The browser that puts you first"
@@ -11,7 +11,7 @@ distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/
 
 conf_files="/etc/apparmor.d/brave-browser-stable"
 
-checksum=8b115b4242b54b743c05ab73fb4ffe2ace5d9e59756ce0e8d65e8b07f08a5d58
+checksum=54ef4f65ba3b6fa6ed767820e005d606196fc9b78b65cc6da68cfea2eb7c0a75
 
 nopie=yes
 
