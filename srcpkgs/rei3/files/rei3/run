@@ -7,8 +7,10 @@ exec 2>&1
 : ${REI3_CONFIG:="/etc/rei3/config.json"}
 
 if [ -f "$REI3_CONFIG" ]; then
-	chgrp _rei3 "$REI3_CONFIG" 2>/dev/null || true
-	chmod 0640 "$REI3_CONFIG" 2>/dev/null || true
+	_cfg_dir=$(dirname "$REI3_CONFIG")
+	chown root:_rei3 "$_cfg_dir" "$REI3_CONFIG" 2>/dev/null || true
+	chmod 0770 "$_cfg_dir" 2>/dev/null || true
+	chmod 0660 "$REI3_CONFIG" 2>/dev/null || true
 fi
 
 if [ ! -d "$REI3_ROOT" ]; then
@@ -16,6 +18,14 @@ if [ ! -d "$REI3_ROOT" ]; then
 	chown _rei3:_rei3 "$REI3_ROOT"
 	chmod 0750 "$REI3_ROOT"
 fi
+
+for _dir in data data/certificates data/files data/temp data/transfer; do
+	if [ ! -d "${REI3_ROOT}/${_dir}" ]; then
+		mkdir -p "${REI3_ROOT}/${_dir}" || exit 1
+		chown _rei3:_rei3 "${REI3_ROOT}/${_dir}"
+		chmod 0750 "${REI3_ROOT}/${_dir}"
+	fi
+done
 
 if [ "$REI3_ROOT" != "/var/lib/rei3" ]; then
 	if [ -d /var/lib/rei3 ] && [ ! -L /var/lib/rei3 ]; then
@@ -28,4 +38,4 @@ if [ "$REI3_ROOT" != "/var/lib/rei3" ]; then
 fi
 
 cd "$REI3_ROOT" || exit 1
-exec chpst -u _rei3:_rei3 /usr/bin/r3 -config "$REI3_CONFIG" ${OPTS}
+exec chpst -u _rei3:_rei3 /usr/bin/r3 -run -keepworkdir -config "$REI3_CONFIG" ${OPTS}

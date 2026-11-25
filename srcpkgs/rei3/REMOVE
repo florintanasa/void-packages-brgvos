@@ -1,0 +1,8 @@
+#!/bin/sh
+case "$ACTION" in
+post)
+	if [ -L var/lib/rei3 ]; then
+		rm -f var/lib/rei3
+	fi
+	;;
+esac

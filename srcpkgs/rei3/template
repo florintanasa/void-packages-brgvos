@@ -18,7 +18,7 @@ make_dirs="/var/lib/rei3 0750 _rei3 _rei3 /etc/rei3 0750 root _rei3"
 
 pre_build() {
 	local _app_ver _client_ver
-	_app_ver=$(tr -d '[:space:]' < VERSION.txt)
+	_app_ver=$(tr -d '[:space:]' < VERSION.txt | sed 's/\.0$/.9999/')
 	_client_ver=$(tr -d '[:space:]' < VERSION_CLIENT.txt)
 	go_ldflags="-X main.appVersion=${_app_ver} -X main.appVersionClient=${_client_ver}"
 }
