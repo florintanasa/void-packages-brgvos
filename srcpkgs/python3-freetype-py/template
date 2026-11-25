@@ -1,0 +1,17 @@
+# Template file for 'python3-freetype-py'
+pkgname=python3-freetype-py
+version=2.5.1
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-setuptools python3-setuptools_scm python3-wheel freetype-devel unzip"
+depends="python3 freetype"
+short_desc="Modern Python bindings to FreeType"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="BSD-3-Clause"
+homepage="https://github.com"
+distfiles="${PYPI_SITE}/f/freetype-py/freetype-py-${version}.zip"
+checksum=cfe2686a174d0dd3d71a9d8ee9bf6a2c23f5872385cf8ce9f24af83d076e2fbd
+
+post_install() {
+	vlicense LICENSE.txt
+}
