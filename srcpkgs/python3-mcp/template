@@ -1,0 +1,28 @@
+# Template file for 'python3-mcp'
+pkgname=python3-mcp
+version=1.26.0
+revision=1
+build_style=python3-pep517
+hostmakedepends="hatchling"
+depends="python3 python3-PyJWT python3-anyio python3-httpx python3-httpx-sse
+ python3-jsonschema python3-pydantic python3-pydantic-settings
+ python3-python-multipart python3-sse-starlette python3-starlette
+ python3-typing_extensions python3-typing-inspection python3-uvicorn"
+short_desc="Model Context Protocol Python SDK"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://pypi.org"
+distfiles="${PYPI_SITE}/m/mcp/mcp-${version}.tar.gz"
+checksum=db6e2ef491eecc1a0d93711a76f28dec2e05999f93afd48795da1c1137142c66
+
+pre_build() {
+	sed -i -e 's/"uv-dynamic-versioning"//' \
+	       -e 's/dynamic = \["version"\]/version = "'"${version}"'"/' \
+	       -e '/\[tool\.hatch\.version\]/,/^$/d' \
+	       -e '/\[tool\.hatch\.metadata\.hooks\.uv-dynamic-versioning\]/,/^$/d' \
+	       pyproject.toml
+}
+
+post_install() {
+	vlicense LICENSE
+}
