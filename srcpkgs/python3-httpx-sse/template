@@ -1,0 +1,17 @@
+# Template file for 'python3-httpx-sse'
+pkgname=python3-httpx-sse
+version=0.4.3
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-setuptools python3-setuptools-scm python3-wheel"
+depends="python3 python3-httpx"
+short_desc="Consume Server-Sent Event (SSE) messages with HTTPX"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com"
+distfiles="${PYPI_SITE}/h/httpx-sse/httpx_sse-${version}.tar.gz"
+checksum=9b1ed0127459a66014aec3c56bebd93da3c1bc8bb6618c8082039a44889a755d
+
+post_install() {
+	vlicense LICENSE
+}
