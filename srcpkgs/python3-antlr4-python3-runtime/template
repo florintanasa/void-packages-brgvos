@@ -1,0 +1,21 @@
+# Template file for 'python3-antlr4-python3-runtime'
+pkgname=python3-antlr4-python3-runtime
+version=4.13.2
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-setuptools"
+short_desc="ANTLR 4 Python 3 Runtime"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="BSD-3-Clause"
+homepage="https://www.antlr.org"
+distfiles="${PYPI_SITE}/a/antlr4-python3-runtime/antlr4_python3_runtime-${version}.tar.gz"
+checksum=909b647e1d2fc2b70180ac586df3933e38919c85f98ccc656a96cd3f25ef3916
+
+post_install() {
+	vlicense LICENSE
+}
+
+post_install() {
+	sed -n '/^# Copyright/,/^# THIS SOFTWARE/p' src/antlr4/__init__.py > LICENSE
+	vlicense LICENSE
+}
