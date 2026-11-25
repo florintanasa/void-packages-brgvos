@@ -1,0 +1,17 @@
+# Template file for 'python3-pint'
+pkgname=python3-pint
+version=0.26.2
+revision=1
+build_style=python3-pep517
+hostmakedepends="hatchling hatch-vcs"
+depends="python3 python3-platformdirs python3-typing_extensions python3-flexcache python3-flexparser"
+short_desc="Python Units Library"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="BSD-3-Clause"
+homepage="https://github.com/hgreingers/pint"
+distfiles="${PYPI_SITE}/p/pint/pint-${version}.tar.gz"
+checksum=391e5d2fc01fdb121c113b8eb47386688575542c1f5144c465ff318bf5133573
+
+post_install() {
+	vlicense LICENSE
+}
