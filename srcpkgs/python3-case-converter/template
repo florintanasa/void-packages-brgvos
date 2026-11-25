@@ -1,0 +1,17 @@
+# Template file for 'python3-case-converter'
+pkgname=python3-case-converter
+version=1.2.0
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-setuptools python3-wheel"
+depends="python3"
+short_desc="Convert strings between various cases"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/DrMaxWell78/case_converter"
+distfiles="${PYPI_SITE}/c/case_converter/case_converter-${version}.tar.gz"
+checksum=4e0281ae60d4335e57300bafd61cfb3fa65734587fe9efd32f6cec1a506685c5
+
+post_install() {
+	vlicense LICENSE
+}
