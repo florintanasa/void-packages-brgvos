@@ -1,0 +1,18 @@
+# Template file for 'python3-pynng'
+pkgname=python3-pynng
+version=0.9.0
+revision=1
+build_style=python3-module
+hostmakedepends="cmake ninja python3-cffi python3-setuptools python3-wheel"
+makedepends="nng-devel python3-devel"
+depends="python3 python3-cffi python3-sniffio"
+short_desc="Python bindings for the NNG (Nanomsg) messaging library"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/svc-pynng/pynng"
+distfiles="${PYPI_SITE}/p/pynng/pynng-${version}.tar.gz"
+checksum=fcd839abf82a2934fa8c27ff57b574b41810458e35895bac6288814defa8fb4e
+
+post_install() {
+	vlicense LICENSE.txt
+}
