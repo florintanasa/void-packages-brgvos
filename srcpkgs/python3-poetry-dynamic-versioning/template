@@ -1,0 +1,18 @@
+# Template file for 'python3-poetry-dynamic-versioning'
+pkgname=python3-poetry-dynamic-versioning
+version=1.10.1
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-flit_core python3-poetry-core"
+depends="python3 python3-dunamai python3-tomlkit python3-Jinja2"
+checkdepends="python3-pytest"
+short_desc="Plugin for Poetry to enable dynamic versioning based on VCS tags"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/mtkennerly/poetry-dynamic-versioning"
+distfiles="${PYPI_SITE}/p/poetry_dynamic_versioning/poetry_dynamic_versioning-${version}.tar.gz"
+checksum=b7beb9785f527b56a5ae5011f2951b04ad56dd7e654b74f7e09c2924ed1efa25
+
+post_install() {
+	vlicense LICENSE
+}
