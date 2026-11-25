@@ -1,9 +1,9 @@
 # Template file for 'OpenCADStudio-git'
 pkgname=OpenCADStudio-git
-version=2026.11.08.0
+version=2026.11.25.0
 revision=1
 _branch=main
-_commit=fb0a667e269b6c924233ecd450a11dd7cba40eea
+_commit=8e5f39f6ee0468a7e29260d57b5390d7d01207e8
 build_style=cargo
 configure_args="--bin OpenCADStudio"
 hostmakedepends="pkg-config git"
@@ -36,5 +36,6 @@ post_install() {
 
 	# Fix and install the desktop entry launcher
 	vinstall packaging/OpenCADStudio.desktop 644 usr/share/applications
+	vinstall packaging/io.github.HakanSeven12.OpenCadStudio.metainfo.xml 644 usr/share/metainfo
 }
 
