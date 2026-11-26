@@ -1,6 +1,6 @@
 # Template file for 'python3-posthog'
 pkgname=python3-posthog
-version=8.1.1
+version=8.2.8
 revision=1
 build_style=python3-pep517
 hostmakedepends="python3-setuptools python3-wheel"
@@ -10,7 +10,7 @@ maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://github.com/posthog/posthog-python"
 distfiles="${PYPI_SITE}/p/posthog/posthog-${version}.tar.gz"
-checksum=b57d24ebb0edb437c58544897d1b19fa0f907063b4bcf7f72a883f8f76eef684
+checksum=9882e94ad897fbe5eb4e218dd68c434be31797615c94041cd7b9e8bee2bc4bcb
 
 pre_build() {
 	sed -i 's/setuptools>=83\.0\.0/setuptools>=80.0.0/' pyproject.toml
