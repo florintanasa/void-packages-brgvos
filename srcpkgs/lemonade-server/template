@@ -1,6 +1,6 @@
 # Template file for 'lemonade-server'
 pkgname=lemonade-server
-version=2026.47.1
+version=2026.48.3
 revision=1
 _httplibver=0.67.0
 build_style=cmake
@@ -28,7 +28,7 @@ homepage="https://github.com/lemonade-sdk/lemonade"
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz>lemonade-${version}.tar.gz
  https://github.com/yhirose/cpp-httplib/archive/refs/tags/v${_httplibver}.tar.gz>cpp-httplib-${_httplibver}.tar.gz"
 
-checksum="92a70f048c72045bc7b679cde23e553fcd6bd9f091b626781405222d81402901
+checksum="5baaf8cca063bd85f03fdd6fe8be2fc849750fa48f79ecad22d8c1dd6a067dca
  be711ddaf7a3655d8f23aa5655709250b24d247aedd4b2629989d18b6164e5be"
 
 build_wrksrc="lemonade-${version}"
