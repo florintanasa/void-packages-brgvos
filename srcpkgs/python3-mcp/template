@@ -1,6 +1,6 @@
 # Template file for 'python3-mcp'
 pkgname=python3-mcp
-version=1.26.0
+version=2.3.0
 revision=1
 build_style=python3-pep517
 hostmakedepends="hatchling"
@@ -13,7 +13,7 @@ maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://pypi.org"
 distfiles="${PYPI_SITE}/m/mcp/mcp-${version}.tar.gz"
-checksum=db6e2ef491eecc1a0d93711a76f28dec2e05999f93afd48795da1c1137142c66
+checksum=8b147a50441cf059dc88c684e0aeed3687f0aa0f39c6cde7b90330effd2b34d8
 
 pre_build() {
 	sed -i -e 's/"uv-dynamic-versioning"//' \
