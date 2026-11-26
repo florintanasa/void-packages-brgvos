@@ -1,6 +1,6 @@
 # Template file for 'slimbook-keyboard-dkms'
 pkgname=slimbook-keyboard-dkms
-version=0.2.8
+version=0.2.10
 revision=1
 # We only install sources, so no_target is appropriate
 no_target=yes
@@ -12,7 +12,7 @@ maintainer="Florin Tanasă <florin.tanasa@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://github.com/Slimbook-Team/slimbook-keyboard-dkms"
 distfiles="https://github.com/Slimbook-Team/slimbook-keyboard-dkms/archive/refs/tags/${version}.tar.gz>slimbook-keyboard-dkms-${version}.tar.gz"
-checksum=8ddc77c6bfd1b14ebf8bd83faa76774082f575031ef154604ba004c4b2509363
+checksum=fdd8a1cc5e4a2aa1f9fa2fd590c2c1c566a2eb8cf8a37fced4f6c9f30ee4357a
 
 wrksrc="slimbook-keyboard-dkms-${version}"
 
