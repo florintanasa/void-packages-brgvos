@@ -1,6 +1,6 @@
 # Template for 'tracedraw'
 pkgname=tracedraw
-version=0.52.0
+version=0.53.0
 revision=1
 build_style=cargo
 make_build_args="-p tracedraw -p tracedraw-cli"
@@ -12,11 +12,7 @@ homepage="https://github.com/tracedraw/tracedraw"
 
 distfiles="https://github.com/tracedraw/tracedraw/archive/refs/tags/v${version}.tar.gz"
 
-checksum=bacea280b9177b80dd73d098df0aa2053a26de4f85fac5e83cf57d81c02c1867
-
-pre_build() {
-	cargo update --workspace --offline
-}
+checksum=cf34aab664203593b3ebffa18262e9a33742216bef11f130453a290e9e2c3607
 
 do_install() {
     # Install applications binaries directly from target release
