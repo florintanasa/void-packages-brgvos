@@ -1,6 +1,6 @@
 # Template file for 'python3-kicad-python'
 pkgname=python3-kicad-python
-version=0.8.0
+version=0.9.0
 revision=1
 build_style=python3-module
 hostmakedepends="python3-setuptools python3-grpcio-tools"
@@ -10,7 +10,7 @@ maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
 license="MIT"
 homepage="https://pypi.org/project/kicad-python/"
 distfiles="${PYPI_SITE}/k/kicad_python/kicad_python-${version}.tar.gz"
-checksum=6d51b9a3098f3196927f9ce124adc160450862cf287dc3994dec4de4f968e0fa
+checksum=181806fb17b342473d0f3eaf583a6be1f5b55f542dc69f06af03eab10779b865
 
 pre_build() {
 	rm -f build.py
