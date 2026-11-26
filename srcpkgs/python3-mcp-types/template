@@ -1,0 +1,17 @@
+# Template file for 'python3-mcp-types'
+pkgname=python3-mcp-types
+version=2.3.0
+revision=1
+build_style=python3-pep517
+hostmakedepends="hatchling python3-uv-dynamic-versioning"
+depends="python3 python3-pydantic python3-typing_extensions"
+short_desc="Model Context Protocol schema types for Python"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com"
+distfiles="${PYPI_SITE}/m/mcp-types/mcp_types-${version}.tar.gz"
+checksum=d1e46549edb35ee19a94940fcee6d1addd7e589ab7ea92dda83f5d84781fc362
+
+post_install() {
+	vlicense LICENSE
+}
