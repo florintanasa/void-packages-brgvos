@@ -1,0 +1,21 @@
+# Template file for 'python3-ordered-set'
+pkgname=python3-ordered-set
+version=4.1.0
+revision=1
+build_style=python3-pep517
+hostmakedepends="python3-flit_core"
+depends="python3"
+short_desc="MutableSet that remembers its order, so that every entry has an index"
+maintainer="Florin Tănasă <florin.tanasa@gmail.com>"
+license="MIT"
+homepage="https://github.com/rspeer/ordered-set"
+distfiles="${PYPI_SITE}/o/ordered-set/ordered-set-${version}.tar.gz"
+checksum=694a8e44c87657c59292ede72891eb91d34131f6531463aab3009191c77364a8
+
+pre_build() {
+	sed -i 's/flit_core >=3.2,<4/flit_core>=3.2/' pyproject.toml
+}
+
+post_install() {
+	vlicense MIT-LICENSE
+}
